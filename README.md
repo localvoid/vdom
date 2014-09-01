@@ -9,11 +9,11 @@
 import 'package:vdom/vdom.dart';
 
 main() {
-  final a = new VElement('div', 'key A');
+  final a = new VElement('div', 'unique_key');
   final aHtmlElement = a.render();
 
-  final b = new VElement('div', 'key B');
-  b.children = [new VText('text key', 'Text Content')];
+  final b = new VElement('div', 'unique_key');
+  b.children = [new VText('text_key', 'Text Content')];
 
   final patch = a.diff(b);
 

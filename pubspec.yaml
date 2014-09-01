@@ -6,7 +6,7 @@ homepage: https://github.com/localvoid/vdom
 environment:
   sdk: '>=1.6.0'
 dependencies:
-  browser: any
-  collection: any
+  browser: '>=0.10.0+2 <0.11.0'
+  collection: '>=1.0.0 <2.0.0'
 dev_dependencies:
   unittest: any

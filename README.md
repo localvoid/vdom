@@ -17,6 +17,6 @@ main() {
 
   final patch = a.diff(b);
 
-  patch.apply(a);
+  patch.apply(aHtmlElement);
 }
 ```

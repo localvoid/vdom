@@ -66,6 +66,11 @@ UnorderedListPatch unorderedListDiff(List a, List b) {
           }
         });
       }
+
+      if (removedResult.isEmpty && insertedResult.isEmpty) {
+        return null;
+      }
+
       return new UnorderedListPatch(
           removedResult.isEmpty ? null : removedResult,
           insertedResult.isEmpty ? null : removedResult);

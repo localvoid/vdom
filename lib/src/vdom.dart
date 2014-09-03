@@ -17,4 +17,4 @@ part 'package:vdom/src/patches/vtext_patch.dart';
 part 'package:vdom/src/nodes/vnode.dart';
 part 'package:vdom/src/nodes/velement.dart';
 part 'package:vdom/src/nodes/vtext.dart';
-
+part 'package:vdom/src/nodes/singleton.dart';

@@ -82,9 +82,7 @@ class VElement extends VNode {
       });
     }
     if (classes != null) {
-      for (var cls in classes) {
-        result.classes.add(cls);
-      }
+      result.classes.addAll(classes);
     }
 
     return result;

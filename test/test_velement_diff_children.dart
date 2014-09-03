@@ -3,7 +3,7 @@ import 'package:unittest/html_enhanced_config.dart';
 import 'package:vdom/src/vdom.dart';
 
 VElement e(int key, [List<VNode> children]) {
-  return new VElement('div', key.toString(), children);
+  return new VElement(key.toString(), 'div', children);
 }
 
 /**

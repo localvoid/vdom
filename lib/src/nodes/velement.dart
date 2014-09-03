@@ -36,7 +36,7 @@ class VElement extends VNode {
   /**
    * Create a new [VElement]
    */
-  VElement(this.tag, String key, [this.children = null]) : super(key);
+  VElement(String key, this.tag, [this.children = null]) : super(key);
 
   /**
    * Run diff against [other] [VElement]

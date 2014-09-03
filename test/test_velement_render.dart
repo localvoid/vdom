@@ -9,14 +9,14 @@ void main() {
   group('Basic', () {
     test('Create empty div', () {
       final frag = new DocumentFragment();
-      final n = new VElement('div', 'key');
+      final n = new VElement('key', 'div');
       frag.append(n.render());
       expect(frag.innerHtml, equals('<div></div>'));
     });
 
     test('Create empty span', () {
       final frag = new DocumentFragment();
-      final n = new VElement('span', 'key');
+      final n = new VElement('key', 'span');
       frag.append(n.render());
       expect(frag.innerHtml, equals('<span></span>'));
     });
@@ -25,7 +25,7 @@ void main() {
   group('Attributes', () {
     test('Create div with 1 attribute', () {
       final frag = new DocumentFragment();
-      final n = new VElement('div', 'key');
+      final n = new VElement('key', 'div');
       n.attributes = {
         'id': 'test-id'
       };
@@ -35,7 +35,7 @@ void main() {
 
     test('Create div with 2 attributes', () {
       final frag = new DocumentFragment();
-      final n = new VElement('div', 'key');
+      final n = new VElement('key', 'div');
       n.attributes = {
         'id': 'test-id',
         'data-test': 'test-data'
@@ -48,7 +48,7 @@ void main() {
   group('Styles', () {
     test('Create div with 1 style', () {
       final frag = new DocumentFragment();
-      final n = new VElement('div', 'key');
+      final n = new VElement('key', 'div');
       n.styles = {
         'top': '10px'
       };
@@ -58,7 +58,7 @@ void main() {
 
     test('Create div with 2 styles', () {
       final frag = new DocumentFragment();
-      final n = new VElement('div', 'key');
+      final n = new VElement('key', 'div');
       n.styles = {
         'top': '10px',
         'left': '20px'
@@ -71,7 +71,7 @@ void main() {
   group('Classes', () {
     test('Create div with 1 class', () {
       final frag = new DocumentFragment();
-      final n = new VElement('div', 'key');
+      final n = new VElement('key', 'div');
       n.classes = ['button'];
       frag.append(n.render());
       expect(frag.innerHtml, equals('<div class="button"></div>'));
@@ -79,7 +79,7 @@ void main() {
 
     test('Create div with 2 classes', () {
       final frag = new DocumentFragment();
-      final n = new VElement('div', 'key');
+      final n = new VElement('key', 'div');
       n.classes = ['button', 'button.important'];
       frag.append(n.render());
       expect(frag.innerHtml, equals('<div class="button button.important"></div>'));
@@ -89,16 +89,16 @@ void main() {
   group('Children', () {
     test('Create div with 1 child', () {
       final frag = new DocumentFragment();
-      final n = new VElement('div', 'key');
-      n.children = [new VElement('span', '0')];
+      final n = new VElement('key', 'div');
+      n.children = [new VElement('0', 'span')];
       frag.append(n.render());
       expect(frag.innerHtml, equals('<div><span></span></div>'));
     });
 
     test('Create div with 2 children', () {
       final frag = new DocumentFragment();
-      final n = new VElement('div', 'key');
-      n.children = [new VElement('span', '0'), new VElement('span', '1')];
+      final n = new VElement('key', 'div');
+      n.children = [new VElement('0', 'span'), new VElement('1', 'span')];
       frag.append(n.render());
       expect(frag.innerHtml, equals('<div><span></span><span></span></div>'));
     });

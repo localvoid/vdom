@@ -7,10 +7,10 @@ void main() {
 
   group('Insert', () {
     group('Into empty', () {
-      final a = new VElement('div', '0');
+      final a = new VElement('0', 'div');
 
       test('1 attribute', () {
-        final b = new VElement('div', '0');
+        final b = new VElement('0', 'div');
         b.attributes = {
           'attr10': 'value10'
         };
@@ -23,7 +23,7 @@ void main() {
       });
 
       test('2 attributes', () {
-        final b = new VElement('div', '0');
+        final b = new VElement('0', 'div');
         b.attributes = {
           'attr10': 'value10',
           'attr11': 'value11'
@@ -38,13 +38,13 @@ void main() {
     });
 
     group('Into element with 1 attribute', () {
-      final a = new VElement('div', '0');
+      final a = new VElement('0', 'div');
       a.attributes = {
         'attr01': 'value01',
       };
 
       test('1 attribute', () {
-        final b = new VElement('div', '0');
+        final b = new VElement('0', 'div');
         b.attributes = {
           'attr01': 'value01',
           'attr10': 'value10'
@@ -58,7 +58,7 @@ void main() {
       });
 
       test('2 attributes', () {
-        final b = new VElement('div', '0');
+        final b = new VElement('0', 'div');
         b.attributes = {
           'attr01': 'value01',
           'attr10': 'value10',
@@ -74,14 +74,14 @@ void main() {
     });
 
     group('Into element with 2 attribute', () {
-      final a = new VElement('div', '0');
+      final a = new VElement('0', 'div');
       a.attributes = {
         'attr01': 'value01',
         'attr02': 'value02'
       };
 
       test('1 attribute', () {
-        final b = new VElement('div', '0');
+        final b = new VElement('0', 'div');
         b.attributes = {
           'attr01': 'value01',
           'attr02': 'value02',
@@ -96,7 +96,7 @@ void main() {
       });
 
       test('2 attributes', () {
-        final b = new VElement('div', '0');
+        final b = new VElement('0', 'div');
         b.attributes = {
           'attr01': 'value01',
           'attr02': 'value02',
@@ -115,12 +115,12 @@ void main() {
 
   group('Remove', () {
     test('From element with 1 attribute', () {
-      final a = new VElement('div', '0');
+      final a = new VElement('0', 'div');
       a.attributes = {
         'attr01': 'value01'
       };
 
-      final b = new VElement('div', '0');
+      final b = new VElement('0', 'div');
 
       final patch = a.diff(b);
       expect(patch, isNotNull);
@@ -130,14 +130,14 @@ void main() {
     });
 
     group('From element with 2 attributes', () {
-      final a = new VElement('div', '0');
+      final a = new VElement('0', 'div');
       a.attributes = {
         'attr01': 'value01',
         'attr02': 'value02'
       };
 
       test('1 attribute', () {
-        final b = new VElement('div', '0');
+        final b = new VElement('0', 'div');
         b.attributes = {
           'attr02': 'value02'
         };
@@ -150,7 +150,7 @@ void main() {
       });
 
       test('2 attributes', () {
-        final b = new VElement('div', '0');
+        final b = new VElement('0', 'div');
 
         final patch = a.diff(b);
         expect(patch, isNotNull);

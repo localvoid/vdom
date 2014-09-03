@@ -8,4 +8,4 @@
 library vdom;
 
 export 'package:vdom/src/vdom.dart' show VNode, VElement, VText, VNodePatch,
-    VElementPatch, VTextPatch;
+    VElementPatch, VTextPatch, VSingletonElement, VSingletonText;

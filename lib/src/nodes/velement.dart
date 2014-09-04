@@ -129,7 +129,7 @@ VElementChildrenPatch _diffChildren(List<VNode> a, List<VNode> b) {
           }
           return null;
         }
-        return new VElementChildrenPatch([0], null, [b], [0], null, null);
+        return new VElementChildrenPatch([0], null, [bNode.render()], [0], null, null);
       } else if (aLength == 1) {
         final aNode = a.first;
         final insertedNodes = new List();

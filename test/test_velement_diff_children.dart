@@ -6,6 +6,10 @@ VElement e(int key, [List<VNode> children]) {
   return new VElement(key.toString(), 'div', children);
 }
 
+VText t(int key) {
+  return new VText('text_' + key.toString(), key.toString());
+}
+
 /**
  * Generate list of VElements from simple integers.
  *
@@ -20,10 +24,24 @@ List<VElement> gen(List items) {
     if (i is List) {
       result.add(e(i[0], gen(i[1])));
     } else {
-      result.add(e(i));
+      result.add(e(i, [t(i)]));
     }
   }
   return result;
+}
+
+void checkInnerHtml(VElement a, VElement b, VElementPatch p) {
+  final aHtmlNode = a.render();
+  final bHtmlNode = b.render();
+
+  p.apply(aHtmlNode);
+
+  final aHtml = aHtmlNode.innerHtml;
+  final bHtml = bHtmlNode.innerHtml;
+
+  if (aHtml != bHtml) {
+    throw new TestFailure('Expected: "$bHtml" Actual: "$aHtml"');
+  }
 }
 
 void main() {
@@ -81,7 +99,7 @@ void main() {
           final patch = a.diff(b);
 
           expect(patch, isNotNull);
-          expect(patch is VElementPatch, isTrue);
+          checkInnerHtml(a, b, patch);
           expect(patch.attributesPatch, isNull);
           expect(patch.stylesPatch, isNull);
           expect(patch.classListPatch, isNull);
@@ -154,7 +172,7 @@ void main() {
           final patch = a.diff(b);
 
           expect(patch, isNotNull);
-          expect(patch is VElementPatch, isTrue);
+          checkInnerHtml(a, b, patch);
           expect(patch.attributesPatch, isNull);
           expect(patch.stylesPatch, isNull);
           expect(patch.classListPatch, isNull);
@@ -262,7 +280,7 @@ void main() {
           final patch = a.diff(b);
 
           expect(patch, isNotNull);
-          expect(patch is VElementPatch, isTrue);
+          checkInnerHtml(a, b, patch);
           expect(patch.attributesPatch, isNull);
           expect(patch.stylesPatch, isNull);
           expect(patch.classListPatch, isNull);
@@ -345,7 +363,7 @@ void main() {
           final patch = a.diff(b);
 
           expect(patch, isNotNull);
-          expect(patch is VElementPatch, isTrue);
+          checkInnerHtml(a, b, patch);
           expect(patch.attributesPatch, isNull);
           expect(patch.stylesPatch, isNull);
           expect(patch.classListPatch, isNull);
@@ -448,7 +466,7 @@ void main() {
           final patch = a.diff(b);
 
           expect(patch, isNotNull);
-          expect(patch is VElementPatch, isTrue);
+          checkInnerHtml(a, b, patch);
           expect(patch.attributesPatch, isNull);
           expect(patch.stylesPatch, isNull);
           expect(patch.classListPatch, isNull);
@@ -472,12 +490,12 @@ void main() {
         'name': 'Swap 2 items in 2-items list',
         'a': [0, 1],
         'b': [1, 0],
-        'moves': [0, -1]
+        'moves': [1, 0]
       }, {
         'name': 'Reverse 4-items list',
         'a': [0, 1, 2, 3],
         'b': [3, 2, 1, 0],
-        'moves': [0, -1, 1, 0, 2, 1]
+        'moves': [1, 0, 2, 1, 3, 2]
       }, {
         'a': [0, 1, 2, 3, 4],
         'b': [1, 2, 3, 4, 0],
@@ -489,7 +507,7 @@ void main() {
       }, {
         'a': [0, 1, 2, 3, 4],
         'b': [1, 0, 2, 3, 4],
-        'moves': [0, 2]
+        'moves': [1, 0]
       }, {
         'a': [0, 1, 2, 3, 4],
         'b': [2, 0, 1, 3, 4],
@@ -505,15 +523,15 @@ void main() {
       }, {
         'a': [0, 1, 2, 3, 4],
         'b': [0, 1, 3, 2, 4],
-        'moves': [2, 4]
+        'moves': [3, 2]
       }, {
         'a': [0, 1, 2, 3, 4, 5, 6],
         'b': [2, 1, 0, 3, 4, 5, 6],
-        'moves': [0, 3, 1, 0]
+        'moves': [1, 0, 2, 1]
       }, {
         'a': [0, 1, 2, 3, 4, 5, 6],
         'b': [0, 3, 4, 1, 2, 5, 6],
-        'moves': [2, 5, 1, 2]
+        'moves': [4, 1, 3, 4]
       }, {
         'a': [0, 1, 2, 3, 4, 5, 6],
         'b': [0, 2, 3, 5, 6, 1, 4],
@@ -521,7 +539,7 @@ void main() {
       }, {
         'a': [0, 1, 2, 3, 4, 5, 6],
         'b': [0, 1, 5, 3, 2, 4, 6],
-        'moves': [2, 4, 5, 3]
+        'moves': [3, 2, 5, 3]
       }, {
         'a': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
         'b': [8, 1, 3, 4, 5, 6, 0, 7, 2, 9],
@@ -548,7 +566,7 @@ void main() {
         final patch = a.diff(b);
 
         expect(patch, isNotNull);
-        expect(patch is VElementPatch, isTrue);
+        checkInnerHtml(a, b, patch);
         expect(patch.attributesPatch, isNull);
         expect(patch.stylesPatch, isNull);
         expect(patch.classListPatch, isNull);
@@ -568,27 +586,27 @@ void main() {
     final tests = [{
         'a': [0, 1],
         'b': [2, 1, 0],
-        'movedPositions': [0, -1],
+        'movedPositions': [1, 0],
         'insertedPositions': [0]
       }, {
         'a': [0, 1],
         'b': [1, 0, 2],
-        'movedPositions': [0, -1],
+        'movedPositions': [1, 0],
         'insertedPositions': [2]
       }, {
         'a': [0, 1, 2],
         'b': [3, 0, 2, 1],
-        'movedPositions': [1, -1],
+        'movedPositions': [2, 1],
         'insertedPositions': [0]
       }, {
         'a': [0, 1, 2],
         'b': [0, 2, 1, 3],
-        'movedPositions': [1, -1],
+        'movedPositions': [2, 1],
         'insertedPositions': [3]
       }, {
         'a': [0, 1, 2],
         'b': [0, 2, 3, 1],
-        'movedPositions': [1, -1],
+        'movedPositions': [2, 1],
         'insertedPositions': [2]
       }, {
         'a': [0, 1, 2],
@@ -598,17 +616,17 @@ void main() {
       }, {
         'a': [0, 1, 2, 3, 4],
         'b': [5, 4, 3, 2, 1, 0],
-        'movedPositions': [0, -1, 1, 0, 2, 1, 3, 2],
+        'movedPositions': [1, 0, 2, 1, 3, 2, 4, 3],
         'insertedPositions': [0]
       }, {
         'a': [0, 1, 2, 3, 4],
         'b': [5, 4, 3, 6, 2, 1, 0],
-        'movedPositions': [0, -1, 1, 0, 2, 1, 3, 2],
+        'movedPositions': [1, 0, 2, 1, 3, 2, 4, 3],
         'insertedPositions': [0, 3]
       }, {
         'a': [0, 1, 2, 3, 4],
         'b': [5, 4, 3, 6, 2, 1, 0, 7],
-        'movedPositions': [0, -1, 1, 0, 2, 1, 3, 2],
+        'movedPositions': [1, 0, 2, 1, 3, 2, 4, 3],
         'insertedPositions': [0, 3, 7]
       }];
     for (var t in tests) {
@@ -627,7 +645,7 @@ void main() {
         final patch = a.diff(b);
 
         expect(patch, isNotNull);
-        expect(patch is VElementPatch, isTrue);
+        checkInnerHtml(a, b, patch);
         expect(patch.attributesPatch, isNull);
         expect(patch.stylesPatch, isNull);
         expect(patch.classListPatch, isNull);
@@ -648,37 +666,37 @@ void main() {
     final tests = [{
         'a': [0, 1, 2],
         'b': [1, 0],
-        'movedPositions': [0, -1],
+        'movedPositions': [1, 0],
         'removedPositions': [2]
       }, {
         'a': [2, 0, 1],
         'b': [1, 0],
-        'movedPositions': [0, -1],
+        'movedPositions': [1, 0],
         'removedPositions': [0]
       }, {
         'a': [7, 0, 1, 8, 2, 3, 4, 5, 9],
         'b': [7, 5, 4, 8, 3, 2, 1, 0],
-        'movedPositions': [1, -1, 2, 1, 4, 2, 6, 3, 7, 6],
+        'movedPositions': [1, -1, 2, 1, 5, 4, 6, 3, 7, 6],
         'removedPositions': [8]
       }, {
         'a': [7, 0, 1, 8, 2, 3, 4, 5, 9],
         'b': [5, 4, 8, 3, 2, 1, 0, 9],
-        'movedPositions': [0, 7, 1, 0, 3, 1, 5, 2, 6, 5],
+        'movedPositions': [0, 7, 1, 0, 4, 3, 5, 2, 6, 5],
         'removedPositions': [0]
       }, {
         'a': [7, 0, 1, 8, 2, 3, 4, 5, 9],
         'b': [7, 5, 4, 3, 2, 1, 0, 9],
-        'movedPositions': [1, 7, 2, 1, 3, 2, 4, 3, 5, 4],
+        'movedPositions': [2, 1, 3, 2, 4, 3, 5, 4, 6, 5],
         'removedPositions': [3]
       }, {
         'a': [7, 0, 1, 8, 2, 3, 4, 5, 9],
         'b': [5, 4, 3, 2, 1, 0, 9],
-        'movedPositions': [0, 6, 1, 0, 2, 1, 3, 2, 4, 3],
+        'movedPositions': [1, 0, 2, 1, 3, 2, 4, 3, 5, 4],
         'removedPositions': [0, 3]
       }, {
         'a': [7, 0, 1, 8, 2, 3, 4, 5, 9],
         'b': [5, 4, 3, 2, 1, 0],
-        'movedPositions': [0, -1, 1, 0, 2, 1, 3, 2, 4, 3],
+        'movedPositions': [1, 0, 2, 1, 3, 2, 4, 3, 5, 4],
         'removedPositions': [0, 3, 8]
       }];
 
@@ -698,7 +716,7 @@ void main() {
         final patch = a.diff(b);
 
         expect(patch, isNotNull);
-        expect(patch is VElementPatch, isTrue);
+        checkInnerHtml(a, b, patch);
         expect(patch.attributesPatch, isNull);
         expect(patch.stylesPatch, isNull);
         expect(patch.classListPatch, isNull);
@@ -784,7 +802,7 @@ void main() {
         final patch = a.diff(b);
 
         expect(patch, isNotNull);
-        expect(patch is VElementPatch, isTrue);
+        checkInnerHtml(a, b, patch);
         expect(patch.attributesPatch, isNull);
         expect(patch.stylesPatch, isNull);
         expect(patch.classListPatch, isNull);
@@ -805,49 +823,49 @@ void main() {
     final tests = [{
         'a': [0, 1, 2],
         'b': [3, 2, 1],
-        'movedPositions': [0, -1],
+        'movedPositions': [1, 0],
         'removedPositions': [0],
         'insertedPositions': [0]
       }, {
         'a': [0, 1, 2],
         'b': [2, 1, 3],
-        'movedPositions': [0, -1],
+        'movedPositions': [1, 0],
         'removedPositions': [0],
         'insertedPositions': [2]
       }, {
         'a': [1, 2, 0],
         'b': [2, 1, 3],
-        'movedPositions': [0, -1],
+        'movedPositions': [1, 0],
         'removedPositions': [2],
         'insertedPositions': [2]
       }, {
         'a': [1, 2, 0],
         'b': [3, 2, 1],
-        'movedPositions': [0, -1],
+        'movedPositions': [1, 0],
         'removedPositions': [2],
         'insertedPositions': [0]
       }, {
         'a': [0, 1, 2, 3, 4, 5],
         'b': [6, 1, 3, 2, 4, 7],
-        'movedPositions': [1, 3],
+        'movedPositions': [2, 1],
         'removedPositions': [0, 5],
         'insertedPositions': [0, 5]
       }, {
         'a': [0, 1, 2, 3, 4, 5],
         'b': [6, 1, 7, 3, 2, 4],
-        'movedPositions': [1, 3],
+        'movedPositions': [2, 1],
         'removedPositions': [0, 5],
         'insertedPositions': [0, 2]
       }, {
         'a': [0, 1, 2, 3, 4, 5],
         'b': [6, 7, 3, 2, 4],
-        'movedPositions': [0, 2],
+        'movedPositions': [1, 0],
         'removedPositions': [0, 1, 5],
         'insertedPositions': [0, 1]
       }, {
         'a': [0, 2, 3, 4, 5],
         'b': [6, 1, 7, 3, 2, 4],
-        'movedPositions': [0, 2],
+        'movedPositions': [1, 0],
         'removedPositions': [0, 4],
         'insertedPositions': [0, 1, 2]
       }];
@@ -867,7 +885,7 @@ void main() {
         final patch = a.diff(b);
 
         expect(patch, isNotNull);
-        expect(patch is VElementPatch, isTrue);
+        checkInnerHtml(a, b, patch);
         expect(patch.attributesPatch, isNull);
         expect(patch.stylesPatch, isNull);
         expect(patch.classListPatch, isNull);
@@ -910,56 +928,56 @@ void main() {
       }, {
         'a': [0, [1, [0, 1]], 2],
         'b': [3, 2, [1, [1, 0]]],
-        'movedPositions': [0, -1],
+        'movedPositions': [1, 0],
         'modifiedPositions': [1],
         'removedPositions': [0],
         'insertedPositions': [0]
       }, {
         'a': [0, [1, [0, 1]], 2],
         'b': [2, [1, [1, 0]], 3],
-        'movedPositions': [0, -1],
+        'movedPositions': [1, 0],
         'modifiedPositions': [1],
         'removedPositions': [0],
         'insertedPositions': [2]
       }, {
         'a': [[1, [0, 1]], [2, [0, 1]], 0],
         'b': [[2, [1, 0]], [1, [1, 0]], 3],
-        'movedPositions': [0, -1],
+        'movedPositions': [1, 0],
         'modifiedPositions': [0, 1],
         'removedPositions': [2],
         'insertedPositions': [2]
       }, {
         'a': [[1, [0, 1]], 2, 0],
         'b': [3, [2, [1, 0]], 1],
-        'movedPositions': [0, -1],
+        'movedPositions': [1, 0],
         'modifiedPositions': [0, 1],
         'removedPositions': [2],
         'insertedPositions': [0]
       }, {
         'a': [0, 1, 2, [3, [1, 0]], 4, 5],
         'b': [6, [1, [0, 1]], 3, 2, 4, 7],
-        'movedPositions': [1, 3],
+        'movedPositions': [2, 1],
         'modifiedPositions': [1, 3],
         'removedPositions': [0, 5],
         'insertedPositions': [0, 5]
       }, {
         'a': [0, 1, 2, 3, 4, 5],
         'b': [6, [1, [1]], 7, [3, [1]], [2, [1]], [4, [1]]],
-        'movedPositions': [1, 3],
+        'movedPositions': [2, 1],
         'modifiedPositions': [1, 2, 3, 4],
         'removedPositions': [0, 5],
         'insertedPositions': [0, 2]
       }, {
         'a': [0, 1, [2, [0]], 3, [4, [0]], 5],
         'b': [6, 7, 3, 2, 4],
-        'movedPositions': [0, 2],
+        'movedPositions': [1, 0],
         'modifiedPositions': [2, 4],
         'removedPositions': [0, 1, 5],
         'insertedPositions': [0, 1]
       }, {
         'a': [0, [2, [0]], [3, [0]], [4, [0]], 5],
         'b': [6, 1, 7, 3, 2, 4],
-        'movedPositions': [0, 2],
+        'movedPositions': [1, 0],
         'modifiedPositions': [1, 2, 3],
         'removedPositions': [0, 4],
         'insertedPositions': [0, 1, 2]
@@ -982,7 +1000,7 @@ void main() {
         final patch = a.diff(b);
 
         expect(patch, isNotNull);
-        expect(patch is VElementPatch, isTrue);
+        checkInnerHtml(a, b, patch);
         expect(patch.attributesPatch, isNull);
         expect(patch.stylesPatch, isNull);
         expect(patch.classListPatch, isNull);

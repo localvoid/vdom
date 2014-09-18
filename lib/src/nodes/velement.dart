@@ -321,10 +321,9 @@ VElementChildrenPatch _diffChildren2(List<VNode> a, List<VNode> b) {
   var movedPositions;
 
   if (moved) {
-    // create new lists without removed/inserted nodes
-    // and use position ids instead of vnodes
-    final a2 = new List<int>(a.length - removedPositions.length);
-    final b2 = new List<int>(a.length - removedPositions.length);
+    // create new list without removed/inserted nodes
+    // and use source position ids instead of vnodes
+    final c = new List<int>(a.length - removedPositions.length);
 
     // fill new lists and find all inserted/unchanged nodes
     var insertedOffset = 0;
@@ -336,16 +335,32 @@ VElementChildrenPatch _diffChildren2(List<VNode> a, List<VNode> b) {
         insertedOffset++;
         changesCounter++;
       } else {
-        if (insertedOffset > 0) {
-          node.target -= insertedOffset;
-        }
-        b2[i - insertedOffset] = i;
-        a2[node.source] = i;
+        c[i - insertedOffset] = node.source;
       }
     }
 
-    final myersDiff = new ChildrenPositionsDiff(a2, b2, b);
-    movedPositions = myersDiff.run();
+    final seq = _lis(c);
+
+    movedPositions = [];
+    var i = c.length - 1;
+    var j = seq.length - 1;
+
+    while (i >= 0) {
+      if (j < 0 || i != seq[j]) {
+        var t;
+        if (i + 1 == c.length) {
+          t = -1;
+        } else {
+          t = c[i + 1];
+        }
+        movedPositions.add(c[i]);
+        movedPositions.add(t);
+      } else {
+        j--;
+      }
+      i--;
+    }
+
     changesCounter += movedPositions.length;
   } else {
     for (var i = 0; i < b.length; i++) {
@@ -386,287 +401,50 @@ VElementChildrenPatch _diffChildren2(List<VNode> a, List<VNode> b) {
       modifiedPositions.isEmpty ? null : modifiedPositions);
 }
 
-/**
- * Algorithm that finds Shortest Edit Script that transform positions from
- * children list A into children list B.
- *
- * It is a slight modification of Myer's diff algorithm.
- *
- * For small lists (lower than [ForwardThreshold]) forward greedy algorithm is
- * used, and for larger lists recursive linear algorithm is used.
- */
-class ChildrenPositionsDiff {
-  static const ForwardThreshold = 100;
-
-  final List<int> a, b;
-  final List<VNode> _nodes;
-  final List<int> _result = [];
-
-  ChildrenPositionsDiff(this.a, this.b, this._nodes);
-
-  List<int> run() {
-    if (a.length < ForwardThreshold) {
-      return runForward();
-    }
-    return runLinear();
-  }
-
-  List<int> runForward() {
-    var v = _forwardLCS();
-    _solveForward(v);
-    return _result;
-  }
-
-  List<int> runLinear() {
-    _linear(0, 0, a.length, a.length);
-    return _result;
-  }
-
-  void _insert(int x) {
-    var n = _nodes[b[x]];
-    var t;
-    if (x + 1 == a.length) {
-      t = -1;
-    } else {
-      t = _nodes[b[x + 1]].source;
-    }
-    _result.add(n.source);
-    _result.add(t);
-  }
-
-  List<List<int>> _forwardLCS() {
-    int N = a.length;
-
-    var Vc = [0, 0];
-    var Vs = [];
-
-    int iStart = 0;
-    int iEnd = 0;
-
-    for (int d = 0; d <= 2 * N; d++) {
-      final Vp = Vc;
-      final iOutOfBounds = iStart + iEnd;
-      final ixStart = iStart;
-      final ipStart = Vp[0];
-      Vc = new List<int>(d + 2 - iOutOfBounds);
-      Vc[0] = iStart;
-      Vs.add(Vc);
-
-      for (var i = iStart; i <= d - iEnd; i++) {
-        final j = i << 1;
-        final k = -d + j;
-
-        int ip;
-
-        int x;
-        int y;
-
-        if (i == 0 || i != d && Vp[i - 1 - ipStart + 1] < Vp[i - ipStart + 1]) {
-          ip = i;
-          x = Vp[ip - ipStart + 1];
-        } else {
-          ip = i - 1;
-          x = Vp[ip - ipStart + 1] + 1;
-        }
-
-        final kPrev = ((ip << 1) - (d - 1));
-        y = x - k;
-
-        while (x < N && y < N && a[x] == b[y]) {
-          x++;
-          y++;
-        }
-
-        Vc[i - ixStart + 1] = x;
-
-        if (x > N) {
-          iEnd++;
-        } else if (y > N) {
-          iStart++;
-        }
-
-        if (x >= N && y >= N) {
-          return Vs;
-        }
-      }
-    }
-    return Vs;
-  }
-
-  void _solveForward(List<List<int>> Vs) {
-    final N = a.length;
-
-    var x = N;
-    var y = N;
-
-    for (int d = Vs.length - 1; (d > 0) && (x > 0 || y > 0); d--) {
-      final Vc = Vs[d];
-      final Vp = Vs[d - 1];
-      final icOff = 1 - Vc[0];
-      final ipOff = 1 - Vp[0];
-
-      final k = x - y;
-      final i = (k + d) >> 1;
-
-      bool down = (i == 0 || (i != d && Vp[ipOff + i - 1] < Vp[ipOff + i]));
-      final ip = down ? i : i - 1;
-      final kp = ((ip << 1) - (d - 1));
-
-      x = Vp[ipOff + ip];
-      y = x - kp;
-
-      if (down) {
-        _insert(y);
-      }
-    }
-  }
-
-  int _findMiddleSnake(int aOff, int bOff, int aLength, int bLength,
-      _MiddleSnake out) {
-    int delta = aLength - bLength;
-    int front = delta & 1;
-    int maxD = (aLength + bLength + 1) ~/ 2;
-
-    // middle snake
-    int msx, msy, msu, msv;
-
-    // forward and reverse V arrays
-    int vOff = maxD;
-    int vLength = vOff << 1 + 1;
-    final vf = new List<int>(vLength);
-    final vr = new List<int>(vLength);
-
-    vf[vOff + 1] = 0;
-    vr[vOff + 1] = 0;
-
-    int kfStart = 0;
-    int kfEnd = 0;
-    int krStart = 0;
-    int krEnd = 0;
-
-    for (int d = 0; d <= maxD; d++) {
-      // forward
-      for (int k = -d + kfStart; k <= d - kfEnd; k += 2) {
-        int kOff = k + vOff;
-        int x, y;
-
-        if (k == -d || (k != d && vf[kOff - 1] < vf[kOff + 1])) { // down
-          x = vf[kOff + 1];
-        } else {
-          x = vf[kOff - 1] + 1;
-        }
-        y = x - k;
-
-        msx = x;
-        msy = y;
-
-        while (x < aLength && y < bLength && a[aOff + x] == b[bOff + y]) {
-          x++;
-          y++;
-        }
-
-        vf[kOff] = x;
-
-        if (x > aLength) {
-          kfEnd += 2;
-        } else if (y > bLength) {
-          kfStart += 2;
-        } else if (front == 1) {
-          int krOff = vOff + delta - k;
-          if (krOff >= 0 && krOff < vLength && vr[krOff] != null) {
-            int xr = aLength - vr[krOff];
-            if (x >= xr) {
-              out.x = msx;
-              out.y = msy;
-              out.u = x;
-              out.v = y;
-              return (d << 1) - 1;
-            }
-          }
-        }
-      }
-
-      // backward
-      for (int k = -d + krStart; k <= d - krEnd; k += 2) {
-        int kOff = k + vOff;
-        int x, y;
-
-        if (k == -d || (k != d && vr[kOff - 1] < vr[kOff + 1])) { // down
-          x = vr[kOff + 1];
-        } else {
-          x = vr[kOff - 1] + 1;
-        }
-        y = x - k;
-
-        msu = x;
-        msv = y;
-
-        while (x < aLength &&
-            y < bLength &&
-            a[aOff + aLength - x - 1] == b[bOff + bLength - y - 1]) {
-          x++;
-          y++;
-        }
-
-        vr[kOff] = x;
-        if (x > aLength) {
-          krEnd += 2;
-        } else if (y > bLength) {
-          krStart += 2;
-        } else if (front == 0) {
-          int kfOff = vOff + delta - k;
-          if (kfOff >= 0 && kfOff < vLength && vf[kfOff] != null) {
-            int x1 = vf[kfOff];
-            int y1 = vOff + x1 - kfOff;
-            int x2 = aLength - x;
-            if (x1 >= x2) {
-              out.x = x2;
-              out.y = bLength - y;
-              out.u = aLength - msu;
-              out.v = bLength - msv;
-
-              return d << 1;
-            }
-          }
-        }
-      }
-    }
-
-    return -1; // error
-  }
-
-  void _linear(int aOff, int bOff, int n, int m) {
-    int d;
-    if (n == 0) {
-      for (var i = m - 1; i >= 0; i--) {
-        _insert(bOff + i);
-      }
-    } else {
-      var s = new _MiddleSnake();
-      int d = _findMiddleSnake(aOff, bOff, n, m, s);
-
-      if (d > 1) {
-        _linear(aOff + s.u, bOff + s.v, n - s.u, m - s.v);
-        _linear(aOff, bOff, s.x, s.y);
-      } else if (d == 1) {
-        int x = s.x;
-        int u = s.u;
-
-        if (m > n) {
-          if (x == u) {
-            _insert(bOff + (m - 1));
-          } else {
-            _insert(bOff);
-          }
-        }
-      }
-    }
-  }
-}
 
 /**
- * Middle Snake for linear Myer's Diff algorithm.
+ * Algorithm that finds longest increasing subsequence.
  */
-class _MiddleSnake {
-  int x, y, u, v;
+List<int> _lis(List<int> a) {
+  List<int> p = new List<int>.from(a);
+  List<int> result = new List<int>();
+
+  result.add(0);
+
+  for (var i = 0; i < a.length; i++) {
+    if (a[result.last] < a[i]) {
+      p[i] = result.last;
+      result.add(i);
+      continue;
+    }
+
+    var u = 0;
+    var v = result.length - 1;
+    while(u < v) {
+      int c = (u + v) ~/ 2;
+
+      if (a[result[c]] < a[i]) {
+        u = c + 1;
+      } else {
+        v = c;
+      }
+    }
+
+    if (a[i] < a[result[u]]) {
+      if (u > 0) {
+        p[i] = result[u - 1];
+      }
+
+      result[u] = i;
+    }
+  }
+  var u = result.length;
+  var v = result.last;
+
+  while (u-- > 0) {
+    result[u] = v;
+    v = p[v];
+  }
+
+  return result;
 }

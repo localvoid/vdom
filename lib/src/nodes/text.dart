@@ -7,25 +7,25 @@ part of vdom.internal;
 /**
  * Virtual Text Node.
  */
-class VText extends VNode {
+class Text extends Node {
   /**
    * Text data
    */
   String data;
 
   /**
-   * Create a new [VText]
+   * Create a new [Text]
    */
-  VText(String key, this.data) : super(key);
+  Text(String key, this.data) : super(key);
 
   /**
-   * Run diff against [other] [VElement]
+   * Run diff against [other] [Element]
    */
-  VTextPatch diff(VText other) {
+  TextPatch diff(Text other) {
     if (data == other.data) {
       return null;
     }
-    return new VTextPatch(other.data);
+    return new TextPatch(other.data);
   }
 
   /**
@@ -35,5 +35,5 @@ class VText extends VNode {
     return new html.Text(data);
   }
 
-  String toString() => 'VText $key';
+  String toString() => 'Text $key';
 }

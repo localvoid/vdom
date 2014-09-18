@@ -5,15 +5,15 @@
 part of vdom.internal;
 
 /**
- * [VElementPatch]
+ * [ElementPatch]
  */
-class VElementPatch extends VNodePatch {
+class ElementPatch extends NodePatch {
   final MapPatch attributesPatch;
   final MapPatch stylesPatch;
   final UnorderedListPatch classListPatch;
-  final VElementChildrenPatch childrenPatch;
+  final ElementChildrenPatch childrenPatch;
 
-  VElementPatch(this.attributesPatch, this.stylesPatch, this.classListPatch,
+  ElementPatch(this.attributesPatch, this.stylesPatch, this.classListPatch,
       this.childrenPatch);
 
   void apply(html.Element node) {
@@ -33,7 +33,7 @@ class VElementPatch extends VNodePatch {
 }
 
 /**
- * [VElementChildrenPatch] contains modifications to the childNodes list.
+ * [ElementChildrenPatch] contains modifications to the childNodes list.
  *
  * Child Nodes Patch should be executed in the following order:
  *
@@ -44,7 +44,7 @@ class VElementPatch extends VNodePatch {
  * - insert [insertedNodes] nodes at [insertedPositions]
  * - apply patch recursively on [modifiedNodes] at [modifiedPositions]
  */
-class VElementChildrenPatch {
+class ElementChildrenPatch {
   /**
    * [removedPositions] is a list of positions to the nodes from the source
    * childNodes list that should be removed.
@@ -84,30 +84,30 @@ class VElementChildrenPatch {
   final List<int> movedPositions;
 
   /**
-   * [insertedNodes] is a list of new [VNode] objects that should be placed at
+   * [insertedNodes] is a list of new [Node] objects that should be placed at
    * the corresponding positions from the [insertedPositions] list.
    */
   final List<html.Node> insertedNodes;
 
   /**
-   * [insertedPositions] is a list of positions where new [VNode] objects
+   * [insertedPositions] is a list of positions where new [Node] objects
    * should be placed.
    */
   final List<int> insertedPositions;
 
   /**
-   * [modifiedNodes] is a list of [VNodePatch] patches that should be applied
+   * [modifiedNodes] is a list of [NodePatch] patches that should be applied
    * recursively to the nodes at the corresponding positions from the
    * [modifiedPositions] list.
    */
-  final List<VNodePatch> modifiedNodes; // TODO: rename to modifiedPatches?
+  final List<NodePatch> modifiedNodes; // TODO: rename to modifiedPatches?
 
   /**
    * [modifiedPositions] is a list of positions to the modified nodes.
    */
   final List<int> modifiedPositions;
 
-  VElementChildrenPatch(this.removedPositions, this.movedPositions,
+  ElementChildrenPatch(this.removedPositions, this.movedPositions,
       this.insertedNodes, this.insertedPositions, this.modifiedNodes,
       this.modifiedPositions);
 }
@@ -145,7 +145,7 @@ void _applyClassListPatch(UnorderedListPatch patch, html.Element node) {
   classes.addAll(patch.inserted);
 }
 
-void _applyChildrenPatch(VElementChildrenPatch patch, html.Node node) {
+void _applyChildrenPatch(ElementChildrenPatch patch, html.Node node) {
   final children = node.childNodes;
   final removedPositions = patch.removedPositions;
   final movedPositions = patch.movedPositions;

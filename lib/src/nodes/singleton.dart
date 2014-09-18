@@ -4,20 +4,20 @@ part of vdom.internal;
  * Singleton [VElement] contains reference to the rendered [node], and when
  * it is diffed against other element, it copies reference to other element.
  */
-class VSingletonElement extends VElement {
+class SingletonElement extends Element {
   /**
    * Reference to the rendered [node]
    */
   html.Element node;
 
-  VSingletonElement(String key, String tag, [List<VNode> children = null]) :
+  SingletonElement(String key, String tag, [List<Node> children = null]) :
       super(
       key,
       tag,
       children);
 
-  VElementPatch diff(VElement other) {
-    if (other is VSingletonElement) {
+  ElementPatch diff(Element other) {
+    if (other is SingletonElement) {
       other.node = node;
     }
     return super.diff(other);
@@ -34,10 +34,10 @@ class VSingletonElement extends VElement {
 }
 
 /**
- * Singleton [VText] contains reference to the rendered [node], and when
+ * Singleton [Text] contains reference to the rendered [node], and when
  * it is diffed against other text, it copies reference to other text.
  */
-class VSingletonText extends VText {
+class VSingletonText extends Text {
   /**
    * Reference to the rendered [node]
    */
@@ -45,7 +45,7 @@ class VSingletonText extends VText {
 
   VSingletonText(String key, String data) : super(key, data);
 
-  VTextPatch diff(VText other) {
+  TextPatch diff(Text other) {
     if (other is VSingletonText) {
       other.node = node;
     }

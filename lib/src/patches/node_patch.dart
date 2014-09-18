@@ -7,7 +7,7 @@ part of vdom.internal;
 /**
  * Abstract base class for patches that applied to nodes.
  */
-abstract class VNodePatch {
+abstract class NodePatch {
 
   /**
    * Apply patch to the [node]

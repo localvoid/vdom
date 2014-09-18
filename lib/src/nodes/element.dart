@@ -7,7 +7,7 @@ part of vdom.internal;
 /**
  * Virtual Dom Element
  */
-class VElement extends VNode {
+class Element extends Node {
   /**
    * Element tag name
    */
@@ -31,17 +31,17 @@ class VElement extends VNode {
   /**
    * Element children
    */
-  List<VNode> children;
+  List<Node> children;
 
   /**
    * Create a new [VElement]
    */
-  VElement(String key, this.tag, [this.children = null]) : super(key);
+  Element(String key, this.tag, [this.children = null]) : super(key);
 
   /**
    * Run diff against [other] [VElement]
    */
-  VElementPatch diff(VElement other) {
+  ElementPatch diff(Element other) {
     final attributeChanges = mapDiff(attributes, other.attributes);
     final styleChanges = mapDiff(styles, other.styles);
     final classesChanges = unorderedListDiff(classes, other.classes);
@@ -54,7 +54,7 @@ class VElement extends VNode {
       return null;
     }
 
-    return new VElementPatch(
+    return new ElementPatch(
         attributeChanges,
         styleChanges,
         classesChanges,
@@ -91,7 +91,7 @@ class VElement extends VNode {
   String toString() => 'VElement $key';
 }
 
-VElementChildrenPatch _diffChildren(List<VNode> a, List<VNode> b) {
+ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
   if (a != null && a.length > 0) {
     if (b == null || b.length == 0) {
       // all childrens from list [a] were removed
@@ -101,7 +101,7 @@ VElementChildrenPatch _diffChildren(List<VNode> a, List<VNode> b) {
       for (var i = 0; i < aLength; i++) {
         removedPositions[i] = i;
       }
-      return new VElementChildrenPatch(
+      return new ElementChildrenPatch(
           removedPositions,
           null,
           null,
@@ -119,7 +119,7 @@ VElementChildrenPatch _diffChildren(List<VNode> a, List<VNode> b) {
           var modified = aNode.diff(bNode);
 
           if (modified != null) {
-            return new VElementChildrenPatch(
+            return new ElementChildrenPatch(
                 null,
                 null,
                 null,
@@ -129,7 +129,13 @@ VElementChildrenPatch _diffChildren(List<VNode> a, List<VNode> b) {
           }
           return null;
         }
-        return new VElementChildrenPatch([0], null, [bNode.render()], [0], null, null);
+        return new ElementChildrenPatch(
+            [0],
+            null,
+            [bNode.render()],
+            [0],
+            null,
+            null);
       } else if (aLength == 1) {
         final aNode = a.first;
         final insertedNodes = new List();
@@ -162,7 +168,7 @@ VElementChildrenPatch _diffChildren(List<VNode> a, List<VNode> b) {
         } else {
           removedPositions = [0];
         }
-        return new VElementChildrenPatch(
+        return new ElementChildrenPatch(
             removedPositions,
             null,
             insertedNodes,
@@ -200,7 +206,7 @@ VElementChildrenPatch _diffChildren(List<VNode> a, List<VNode> b) {
           insertedNodes = [bNode.render()];
           insertedPositions = [0];
         }
-        return new VElementChildrenPatch(
+        return new ElementChildrenPatch(
             removedPositions,
             null,
             insertedNodes,
@@ -221,7 +227,7 @@ VElementChildrenPatch _diffChildren(List<VNode> a, List<VNode> b) {
       insertedNodes[i] = b[i].render();
       insertedPositions[i] = i;
     }
-    return new VElementChildrenPatch(
+    return new ElementChildrenPatch(
         null,
         null,
         insertedNodes,
@@ -233,7 +239,7 @@ VElementChildrenPatch _diffChildren(List<VNode> a, List<VNode> b) {
   return null;
 }
 
-VElementChildrenPatch _diffChildren2(List<VNode> a, List<VNode> b) {
+ElementChildrenPatch _diffChildren2(List<Node> a, List<Node> b) {
   final unchangedSourcePositions = new List<int>();
   final unchangedTargetPositions = new List<int>();
   final removedPositions = new List<int>();
@@ -282,7 +288,7 @@ VElementChildrenPatch _diffChildren2(List<VNode> a, List<VNode> b) {
       }
     }
   } else {
-    final keyIndex = new HashMap<String, VNode>();
+    final keyIndex = new HashMap<String, Node>();
     var lastTarget = 0;
     var removeOffset = 0;
 
@@ -392,7 +398,7 @@ VElementChildrenPatch _diffChildren2(List<VNode> a, List<VNode> b) {
     return null;
   }
 
-  return new VElementChildrenPatch(
+  return new ElementChildrenPatch(
       removedPositions.isEmpty ? null : removedPositions,
       movedPositions,
       insertedNodes.isEmpty ? null : insertedNodes,
@@ -420,7 +426,7 @@ List<int> _lis(List<int> a) {
 
     var u = 0;
     var v = result.length - 1;
-    while(u < v) {
+    while (u < v) {
       int c = (u + v) ~/ 2;
 
       if (a[result[c]] < a[i]) {

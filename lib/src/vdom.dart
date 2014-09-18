@@ -10,11 +10,11 @@ import 'dart:html' as html;
 part 'package:vdom/src/list_diff.dart';
 part 'package:vdom/src/map_diff.dart';
 
-part 'package:vdom/src/patches/vnode_patch.dart';
-part 'package:vdom/src/patches/velement_patch.dart';
-part 'package:vdom/src/patches/vtext_patch.dart';
+part 'package:vdom/src/patches/node_patch.dart';
+part 'package:vdom/src/patches/element_patch.dart';
+part 'package:vdom/src/patches/text_patch.dart';
 
-part 'package:vdom/src/nodes/vnode.dart';
-part 'package:vdom/src/nodes/velement.dart';
-part 'package:vdom/src/nodes/vtext.dart';
+part 'package:vdom/src/nodes/node.dart';
+part 'package:vdom/src/nodes/element.dart';
+part 'package:vdom/src/nodes/text.dart';
 part 'package:vdom/src/nodes/singleton.dart';

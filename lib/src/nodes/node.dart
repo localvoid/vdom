@@ -5,9 +5,9 @@
 part of vdom.internal;
 
 /**
- * Abstract [VNode] class
+ * Abstract [Node] class
  */
-abstract class VNode {
+abstract class Node {
   /**
    * Key used in matching algorithm to identify node positions in children lists.
    * Key should be unique among its siblings.
@@ -28,17 +28,17 @@ abstract class VNode {
    */
   int target = -1;
 
-  VNode(this.key);
+  Node(this.key);
 
   /**
-   * Run diff against [other] [VNode]
+   * Run diff against [other] [Node]
    */
-  VNodePatch diff(VNode other);
+  NodePatch diff(Node other);
 
   /**
    * Render [html.Node]
    */
   html.Node render();
 
-  String toString() => 'VNode $key';
+  String toString() => 'Node $key';
 }

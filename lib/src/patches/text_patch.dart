@@ -5,12 +5,12 @@
 part of vdom.internal;
 
 /**
- * [VTextPatch]
+ * [TextPatch]
  */
-class VTextPatch extends VNodePatch {
+class TextPatch extends NodePatch {
   final String newData;
 
-  VTextPatch(this.newData);
+  TextPatch(this.newData);
 
   void apply(html.Text node) {
     node.data = newData;

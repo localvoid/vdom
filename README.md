@@ -6,14 +6,14 @@
 ## Usage example
 
 ```dart
-import 'package:vdom/vdom.dart';
+import 'package:vdom/vdom.dart' as v;
 
 main() {
-  final a = new VElement('unique_key', 'div');
+  final a = new v.Element('unique_key', 'div');
   final aHtmlElement = a.render();
 
-  final b = new VElement('unique_key', 'div');
-  b.children = [new VText('text_key', 'Text Content')];
+  final b = new v.Element('unique_key', 'div');
+  b.children = [new v.Text('text_key', 'Text Content')];
 
   final patch = a.diff(b);
 

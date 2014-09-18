@@ -1,13 +1,13 @@
 import 'package:unittest/unittest.dart';
 import 'package:unittest/html_enhanced_config.dart';
-import 'package:vdom/src/vdom.dart';
+import 'package:vdom/src/vdom.dart' as v;
 
-VElement e(int key, [List<VNode> children]) {
-  return new VElement(key.toString(), 'div', children);
+v.Element e(int key, [List<v.Node> children]) {
+  return new v.Element(key.toString(), 'div', children);
 }
 
-VText t(int key) {
-  return new VText('text_' + key.toString(), key.toString());
+v.Text t(int key) {
+  return new v.Text('text_' + key.toString(), key.toString());
 }
 
 /**
@@ -18,7 +18,7 @@ VText t(int key) {
  * of its own.
  *
  */
-List<VElement> gen(List items) {
+List<v.Element> gen(List items) {
   final result = [];
   for (var i in items) {
     if (i is List) {
@@ -30,7 +30,7 @@ List<VElement> gen(List items) {
   return result;
 }
 
-void checkInnerHtml(VElement a, VElement b, VElementPatch p) {
+void checkInnerHtml(v.Element a, v.Element b, v.ElementPatch p) {
   final aHtmlNode = a.render();
   final bHtmlNode = b.render();
 

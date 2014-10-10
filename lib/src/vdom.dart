@@ -18,3 +18,4 @@ part 'package:vdom/src/nodes/node.dart';
 part 'package:vdom/src/nodes/element.dart';
 part 'package:vdom/src/nodes/text.dart';
 part 'package:vdom/src/nodes/singleton.dart';
+part 'package:vdom/src/nodes/component.dart';

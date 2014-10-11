@@ -10,7 +10,7 @@ class SingletonElement extends Element {
    */
   html.Element node;
 
-  SingletonElement(String key, String tag, [List<Node> children = null]) :
+  SingletonElement(Object key, String tag, [List<Node> children = null]) :
       super(
       key,
       tag,
@@ -43,7 +43,7 @@ class VSingletonText extends Text {
    */
   html.Text node;
 
-  VSingletonText(String key, String data) : super(key, data);
+  VSingletonText(Object key, String data) : super(key, data);
 
   TextPatch diff(Text other) {
     if (other is VSingletonText) {

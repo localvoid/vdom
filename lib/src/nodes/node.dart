@@ -12,7 +12,7 @@ abstract class Node {
    * Key used in matching algorithm to identify node positions in children lists.
    * Key should be unique among its siblings.
    */
-  final String key;
+  final Object key;
 
   /**
    * Used by diff algorithm.

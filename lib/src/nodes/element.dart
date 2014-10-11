@@ -36,7 +36,7 @@ class Element extends Node {
   /**
    * Create a new [VElement]
    */
-  Element(String key, this.tag, [this.children = null]) : super(key);
+  Element(Object key, this.tag, [this.children = null]) : super(key);
 
   /**
    * Run diff against [other] [VElement]
@@ -288,7 +288,7 @@ ElementChildrenPatch _diffChildren2(List<Node> a, List<Node> b) {
       }
     }
   } else {
-    final keyIndex = new HashMap<String, Node>();
+    final keyIndex = new HashMap<Object, Node>();
     var lastTarget = 0;
     var removeOffset = 0;
 

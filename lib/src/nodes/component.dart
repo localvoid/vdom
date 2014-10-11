@@ -15,7 +15,7 @@ abstract class ComponentBase {
 abstract class Component extends Node with ComponentBase {
   Element _element;
 
-  Component(String key) : super(key);
+  Component(Object key) : super(key);
 
   ElementPatch diff(Component other) {
     if (isChanged(other)) {
@@ -37,7 +37,7 @@ abstract class Component extends Node with ComponentBase {
 class DelegatingComponent extends Component {
   final ComponentBase _component;
 
-  DelegatingComponent(this._component, String key) : super(key);
+  DelegatingComponent(this._component, Object key) : super(key);
 
   bool isChanged(ComponentBase other) {
     return _component.isChanged(other);

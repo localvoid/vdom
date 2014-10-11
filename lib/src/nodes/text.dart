@@ -16,7 +16,7 @@ class Text extends Node {
   /**
    * Create a new [Text]
    */
-  Text(String key, this.data) : super(key);
+  Text(Object key, this.data) : super(key);
 
   /**
    * Run diff against [other] [Element]

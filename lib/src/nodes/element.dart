@@ -36,7 +36,9 @@ class Element extends Node {
   /**
    * Create a new [VElement]
    */
-  Element(Object key, this.tag, [this.children = null]) : super(key);
+  Element(Object key, this.tag, [this.children = null, this.attributes = null,
+      this.classes = null, this.styles = null]) : super(
+      key);
 
   /**
    * Run diff against [other] [VElement]

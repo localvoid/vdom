@@ -37,7 +37,7 @@ abstract class Component extends Node with ComponentBase {
 class DelegatingComponent extends Component {
   final ComponentBase _component;
 
-  DelegatingComponent(this._component, Object key) : super(key);
+  DelegatingComponent(Object key, this._component) : super(key);
 
   bool isChanged(ComponentBase other) {
     return _component.isChanged(other);

@@ -7,6 +7,10 @@
  */
 library vdom;
 
+import 'package:vdom/src/vdom.dart';
+
 export 'package:vdom/src/vdom.dart' show Node, Element, Text, NodePatch,
     ElementPatch, TextPatch, SingletonElement, SingletonText, ComponentBase,
     Component, DelegatingComponent;
+
+part 'package:vdom/src/api.dart';

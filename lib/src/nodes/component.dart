@@ -12,7 +12,7 @@ abstract class ComponentBase {
   Element build();
 }
 
-abstract class Component extends Node with ComponentBase {
+abstract class Component extends Node implements ComponentBase {
   Element _element;
 
   Component(Object key) : super(key);

@@ -3,7 +3,7 @@
 pubspec.lock
 
 build/
-packages/
+packages
 
 .buildlog
 *.js_

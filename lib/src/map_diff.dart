@@ -20,6 +20,10 @@ class MapPatch {
 }
 
 MapPatch mapDiff(Map a, Map b) {
+  if (identical(a, b)) {
+    return null;
+  }
+
   if (a != null && a.length > 0) {
     if (b == null || b.length == 0) {
       // all keys removed

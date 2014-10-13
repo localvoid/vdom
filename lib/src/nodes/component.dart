@@ -18,7 +18,7 @@ abstract class Component extends Node implements ComponentBase {
   Component(Object key) : super(key);
 
   ElementPatch diff(Component other) {
-    if (isChanged(other)) {
+    if (!identical(this, other) && isChanged(other)) {
       if (other._element == null) {
         other._element = other.build();
       }

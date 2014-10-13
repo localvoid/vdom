@@ -19,10 +19,10 @@ class Text extends Node {
   Text(Object key, this.data) : super(key);
 
   /**
-   * Run diff against [other] [Element]
+   * Run diff against [other] [Text]
    */
   TextPatch diff(Text other) {
-    if (data == other.data) {
+    if (identical(this, other) || data == other.data) {
       return null;
     }
     return new TextPatch(other.data);

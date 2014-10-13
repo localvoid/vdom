@@ -12,6 +12,10 @@ class UnorderedListPatch {
 }
 
 UnorderedListPatch unorderedListDiff(List a, List b) {
+  if (identical(a, b)) {
+    return null;
+  }
+
   if (a != null && a.length > 0) {
     if (b == null || b.length == 0) {
       return new UnorderedListPatch(new List.from(a), null);

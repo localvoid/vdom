@@ -44,6 +44,10 @@ class Element extends Node {
    * Run diff against [other] [VElement]
    */
   ElementPatch diff(Element other) {
+    if (identical(this, other)) {
+      return null;
+    }
+
     final attributeChanges = mapDiff(attributes, other.attributes);
     final styleChanges = mapDiff(styles, other.styles);
     final classesChanges = unorderedListDiff(classes, other.classes);

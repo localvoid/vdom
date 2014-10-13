@@ -333,3 +333,11 @@ Element footer(Object key, [List<Node> children = null, Map<String,
     String> attributes = null, List<String> classes = null]) {
   return new Element(key, 'footer', children, attributes, classes);
 }
+
+Text text(Object key, String data) {
+  return new Text(key, data);
+}
+
+DelegatingComponent delegatingComponent(Object key, ComponentBase component) {
+  return new DelegatingComponent(key, component);
+}

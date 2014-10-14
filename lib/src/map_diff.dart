@@ -5,15 +5,11 @@
 part of vdom.internal;
 
 class MapPatch {
-  /**
-   * Keys that should be modified. Their values are stored in the
-   * corresponding positions in the [values] list.
-   */
+  /// Keys that should be modified. Their values are stored in the
+  /// corresponding positions in the [values] list.
   final List keys;
 
-  /**
-   * Values.
-   */
+  /// Values.
   final List values;
 
   MapPatch(this.keys, this.values);

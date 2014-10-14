@@ -4,9 +4,7 @@
 
 part of vdom.internal;
 
-/**
- * [TextPatch]
- */
+/// [TextPatch]
 class TextPatch extends NodePatch {
   final String newData;
 

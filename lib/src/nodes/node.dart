@@ -4,41 +4,17 @@
 
 part of vdom.internal;
 
-/**
- * Abstract [Node] class
- */
+/// Abstract [Node] class
 abstract class Node {
-  /**
-   * Key used in matching algorithm to identify node positions in children lists.
-   * Key should be unique among its siblings.
-   */
+  /// Key used in matching algorithm to identify node positions in children lists.
+  /// Key should be unique among its siblings.
   final Object key;
 
-  /**
-   * Used by diff algorithm.
-   *
-   * TODO: make it private.
-   */
-  int source = -1;
+  const Node(this.key);
 
-  /**
-   * Used by diff algorithm.
-   *
-   * TODO: make it private.
-   */
-  int target = -1;
-
-  Node(this.key);
-
-  /**
-   * Run diff against [other] [Node]
-   */
+  /// Run diff against [other] [Node]
   NodePatch diff(Node other);
 
-  /**
-   * Render [html.Node]
-   */
+  /// Render [html.Node]
   html.Node render();
-
-  String toString() => 'Node $key';
 }

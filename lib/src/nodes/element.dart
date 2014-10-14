@@ -4,50 +4,32 @@
 
 part of vdom.internal;
 
-/**
- * Virtual Dom Element
- */
+
+/// Virtual Dom Element
 class Element extends Node {
-  /**
-   * Element tag name
-   */
+  /// [Element] tag name
   final String tag;
 
-  /**
-   * Element attributes
-   */
-  Map<String, String> attributes;
+  /// [Element] attributes
+  final Map<String, String> attributes;
 
-  /**
-   * Element styles
-   */
-  Map<String, String> styles;
+  /// [Element] styles
+  final Map<String, String> styles;
 
-  /**
-   * Element classes
-   */
-  List<String> classes;
+  /// Element classes
+  final List<String> classes;
 
-  /**
-   * Element children
-   */
-  List<Node> children;
+  /// Element children
+  final List<Node> children;
 
-  /**
-   * Create a new [VElement]
-   */
-  Element(Object key, this.tag, [this.children = null, this.attributes = null,
-      this.classes = null, this.styles = null]) : super(
+  /// Create a new [Element]
+  const Element(Object key, this.tag, [this.children = null, this.attributes =
+      null, this.classes = null, this.styles = null]) : super(
       key);
 
-  /**
-   * Run diff against [other] [VElement]
-   */
+  /// Run diff against [other] [Element] and return [ElementPatch] or [null] if
+  /// nothing is changed
   ElementPatch diff(Element other) {
-    if (identical(this, other)) {
-      return null;
-    }
-
     final attributeChanges = mapDiff(attributes, other.attributes);
     final styleChanges = mapDiff(styles, other.styles);
     final classesChanges = unorderedListDiff(classes, other.classes);
@@ -67,9 +49,7 @@ class Element extends Node {
         childrenChanges);
   }
 
-  /**
-   * Render [html.Element]
-   */
+  /// Render [Element] and return [html.Element]
   html.Element render() {
     var result = new html.Element.tag(tag);
     if (children != null) {
@@ -94,15 +74,16 @@ class Element extends Node {
     return result;
   }
 
-  String toString() => 'VElement $key';
+  String toString() => '<$tag key="$key">${children.join()}</$tag>';
 }
 
 ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
-  if (a != null && a.length > 0) {
-    if (b == null || b.length == 0) {
-      // all childrens from list [a] were removed
-      final aLength = a.length;
+  if (a != null && a.isNotEmpty) {
+    final aLength = a.length;
 
+    if (b == null || b.isEmpty) {
+      // when [b] is empty, it means that all childrens from list [a] were
+      // removed
       final removedPositions = new List(aLength);
       for (var i = 0; i < aLength; i++) {
         removedPositions[i] = i;
@@ -114,13 +95,18 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
           null,
           null,
           null);
+
     } else {
-      final aLength = a.length;
       final bLength = b.length;
 
       if (aLength == 1 && bLength == 1) {
+        // fast path when [a] and [b] have just 1 child
+        //
+        // if both lists have child with the same key, then just diff them,
+        // otherwise return patch with [a] child removed and [b] child inserted
         final aNode = a.first;
         final bNode = b.first;
+
         if (aNode.key == bNode.key) {
           var modified = aNode.diff(bNode);
 
@@ -135,6 +121,7 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
           }
           return null;
         }
+
         return new ElementChildrenPatch(
             [0],
             null,
@@ -142,13 +129,19 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
             [0],
             null,
             null);
+
       } else if (aLength == 1) {
+        // fast path when [a] have 1 child
+
         final aNode = a.first;
         final insertedNodes = new List();
         final insertedPositions = new List();
         var removedPositions;
         var modifiedNodes;
         var modifiedPositions;
+
+        // [a] child position
+        // if it is -1, then the child is removed
         var unchangedPosition = -1;
 
         for (var i = 0; i < bLength; i++) {
@@ -161,6 +154,7 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
             insertedPositions.add(i);
           }
         }
+
         if (unchangedPosition != -1) {
           for (var i = unchangedPosition + 1; i < bLength; i++) {
             insertedNodes.add(b[i].render());
@@ -174,6 +168,7 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
         } else {
           removedPositions = [0];
         }
+
         return new ElementChildrenPatch(
             removedPositions,
             null,
@@ -182,12 +177,17 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
             modifiedNodes,
             modifiedPositions);
       } else if (bLength == 1) {
-        final bNode = b[0];
+        // fast path when [b] have 1 child
+
+        final bNode = b.first;
         final removedPositions = new List();
         var insertedNodes;
         var insertedPositions;
         var modifiedNodes;
         var modifiedPositions;
+
+        // [a] child position
+        // if it is -1, then the child is inserted
         var unchangedPosition = -1;
 
         for (var i = 0; i < aLength; i++) {
@@ -199,6 +199,7 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
             removedPositions.add(i);
           }
         }
+
         if (unchangedPosition != -1) {
           for (var i = unchangedPosition + 1; i < aLength; i++) {
             removedPositions.add(i);
@@ -212,6 +213,7 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
           insertedNodes = [bNode.render()];
           insertedPositions = [0];
         }
+
         return new ElementChildrenPatch(
             removedPositions,
             null,
@@ -219,7 +221,11 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
             insertedPositions,
             modifiedNodes,
             modifiedPositions);
+
       } else {
+        // both [a] and [b] have more than 1 child, so we should handle
+        // more complex situations with inserting/removing and repositioning
+        // childrens
         return _diffChildren2(a, b);
       }
     }
@@ -246,19 +252,22 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
 }
 
 ElementChildrenPatch _diffChildren2(List<Node> a, List<Node> b) {
+  final aLength = a.length;
+  final bLength = b.length;
   final unchangedSourcePositions = new List<int>();
   final unchangedTargetPositions = new List<int>();
   final removedPositions = new List<int>();
   final insertedNodes = new List<html.Node>();
   final insertedPositions = new List<int>();
-  final aLength = a.length;
-  final bLength = b.length;
+
+  final sources = new List<int>.filled(bLength, -1);
+  final targets = new List<int>.filled(bLength, -1);
 
   var moved = false;
   var changesCounter = 0;
 
   // when both lists are small, the join operation is much faster with simple
-  // list search instead of hashmap join
+  // MxN list search instead of hashmap join
   if (aLength * bLength <= 16) {
     var lastTarget = 0;
     var removeOffset = 0;
@@ -269,14 +278,15 @@ ElementChildrenPatch _diffChildren2(List<Node> a, List<Node> b) {
 
       for (var j = 0; j < bLength; j++) {
         final bNode = b[j];
-        bNode.target = j;
+        targets[j] = j;
         if (aNode.key == bNode.key) {
-          bNode.source = i - removeOffset;
+          sources[j] = i - removeOffset;
 
           // check if items in wrong order
-          lastTarget = lastTarget > j ? lastTarget : j;
           if (lastTarget > j) {
             moved = true;
+          } else {
+            lastTarget = j;
           }
 
           unchangedSourcePositions.add(i);
@@ -293,61 +303,64 @@ ElementChildrenPatch _diffChildren2(List<Node> a, List<Node> b) {
         changesCounter++;
       }
     }
+
   } else {
-    final keyIndex = new HashMap<Object, Node>();
+    final keyIndex = new HashMap<Object, int>();
     var lastTarget = 0;
     var removeOffset = 0;
 
     // index nodes from list [b]
     for (var i = 0; i < bLength; i++) {
       final node = b[i];
-      node.target = i;
-      keyIndex[node.key] = node;
+      targets[i] = i;
+      keyIndex[node.key] = i;
     }
 
     // index nodes from list [a] and check if they're removed
     for (var i = 0; i < aLength; i++) {
       final sourceNode = a[i];
-      final targetNode = keyIndex[sourceNode.key];
-      if (targetNode != null) {
-        targetNode.source = i - removeOffset;
+      final targetIndex = keyIndex[sourceNode.key];
+      if (targetIndex != null) {
+        final targetNode = b[targetIndex];
 
-        unchangedSourcePositions.add(i);
-        unchangedTargetPositions.add(targetNode.target);
+        sources[targetIndex] = i - removeOffset;
 
         // check if items in wrong order
-        lastTarget = lastTarget > targetNode.target ?
-            lastTarget :
-            targetNode.target;
-        if (lastTarget > targetNode.target) {
+        final t = targets[targetIndex];
+        if (lastTarget > t) {
           moved = true;
+        } else {
+          lastTarget = t;
         }
+
+        unchangedSourcePositions.add(i);
+        unchangedTargetPositions.add(targets[targetIndex]);
       } else {
         removedPositions.add(i);
         removeOffset++;
         changesCounter++;
       }
     }
-
   }
+
   var movedPositions;
 
   if (moved) {
     // create new list without removed/inserted nodes
     // and use source position ids instead of vnodes
-    final c = new List<int>(a.length - removedPositions.length);
+    final c = new List<int>.filled(a.length - removedPositions.length, 0);
 
     // fill new lists and find all inserted/unchanged nodes
     var insertedOffset = 0;
     for (var i = 0; i < b.length; i++) {
       final node = b[i];
-      if (node.source == -1) {
+      if (sources[i] == -1) {
         insertedNodes.add(node.render());
         insertedPositions.add(i);
         insertedOffset++;
         changesCounter++;
       } else {
-        c[i - insertedOffset] = node.source;
+        c[i - insertedOffset] = sources[i];
       }
     }
 
@@ -377,7 +390,7 @@ ElementChildrenPatch _diffChildren2(List<Node> a, List<Node> b) {
   } else {
     for (var i = 0; i < b.length; i++) {
       final node = b[i];
-      if (node.source == -1) {
+      if (sources[i] == -1) {
         insertedNodes.add(node.render());
         insertedPositions.add(i);
         changesCounter++;
@@ -413,10 +426,7 @@ ElementChildrenPatch _diffChildren2(List<Node> a, List<Node> b) {
       modifiedPositions.isEmpty ? null : modifiedPositions);
 }
 
-
-/**
- * Algorithm that finds longest increasing subsequence.
- */
+/// Algorithm that finds longest increasing subsequence.
 List<int> _lis(List<int> a) {
   List<int> p = new List<int>.from(a);
   List<int> result = new List<int>();

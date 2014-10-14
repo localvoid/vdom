@@ -4,23 +4,15 @@
 
 part of vdom.internal;
 
-/**
- * Virtual Text Node.
- */
+/// Virtual Text Node.
 class Text extends Node {
-  /**
-   * Text data
-   */
-  String data;
+  /// Text data
+  final String data;
 
-  /**
-   * Create a new [Text]
-   */
-  Text(Object key, this.data) : super(key);
+  /// Create a new [Text]
+  const Text(Object key, this.data) : super(key);
 
-  /**
-   * Run diff against [other] [Text]
-   */
+  /// Run diff against [other] [Text]
   TextPatch diff(Text other) {
     if (identical(this, other) || data == other.data) {
       return null;
@@ -28,12 +20,10 @@ class Text extends Node {
     return new TextPatch(other.data);
   }
 
-  /**
-   * Render [html.Text]
-   */
+  /// Render [html.Text]
   html.Text render() {
     return new html.Text(data);
   }
 
-  String toString() => 'Text $key';
+  String toString() => '$data';
 }

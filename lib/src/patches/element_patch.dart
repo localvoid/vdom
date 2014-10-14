@@ -4,9 +4,7 @@
 
 part of vdom.internal;
 
-/**
- * [ElementPatch]
- */
+/// [ElementPatch]
 class ElementPatch extends NodePatch {
   final MapPatch attributesPatch;
   final MapPatch stylesPatch;
@@ -32,79 +30,66 @@ class ElementPatch extends NodePatch {
   }
 }
 
-/**
- * [ElementChildrenPatch] contains modifications to the childNodes list.
- *
- * Child Nodes Patch should be executed in the following order:
- *
- * - save references to all [removedPositions] nodes
- * - save references to all [movedPositions] source and target nodes
- * - remove elements using saved references
- * - move elements using saved references
- * - insert [insertedNodes] nodes at [insertedPositions]
- * - apply patch recursively on [modifiedNodes] at [modifiedPositions]
- */
+/// [ElementChildrenPatch] contains modifications to the childNodes list.
+///
+/// [ElementChildrenPatch] should be applied in the following order:
+///
+/// * save references to all [removedPositions] nodes
+/// * save references to all [movedPositions] source and target nodes
+/// * remove elements using saved references
+/// * move elements using saved references
+/// * insert [insertedNodes] nodes at [insertedPositions]
+/// * apply patch recursively on [modifiedNodes] at [modifiedPositions]
+///
 class ElementChildrenPatch {
-  /**
-   * [removedPositions] is a list of positions to the nodes from the source
-   * childNodes list that should be removed.
-   */
+  /// [removedPositions] is a list of positions to the nodes from the source
+  /// childNodes list that should be removed.
   final List<int> removedPositions;
 
-  /**
-   * [movedPositions] is a list of positions to the nodes from the source
-   * childNodes list followed by the position of the element that should be
-   * be next to it, the target position is also from the source childNodes
-   * list.
-   *
-   * Here is an example on how to retrieve source and target locations
-   *
-   * ```dart
-   *     for (var i = 0; i < movedPositions.length / 2; i++) {
-   *       final offset = i * 2;
-   *       final source = movedPositions[offset];
-   *       final target = movedPositions[offset + 1];
-   *     }
-   * ```
-   *
-   * Target locations isn't an exact position where the item should be
-   * placed, it is a position of the next element. So, before applying this
-   * patch it is necessary to save all references and then just insert source
-   * nodes before target nodes. If target node is equal to `-1`, the node
-   * should be appended to the list.
-   *
-   * Modifications should be applied by traversing source/target list from left
-   * to right.
-   *
-   * It is stored in such bizarre way to make diff algorithm slightly more
-   * efficient without calculating their target positions after moving previous
-   * item.
-   *
-   */
+  /// [movedPositions] is a list of positions to the nodes from the source
+  /// childNodes list followed by the position of the element that should be
+  /// be next to it, the target position is also from the source childNodes
+  /// list.
+  ///
+  /// Here is an example on how to retrieve source and target locations
+  ///
+  /// ```dart
+  ///     for (var i = 0; i < movedPositions.length / 2; i++) {
+  ///       final offset = i * 2;
+  ///       final source = movedPositions[offset];
+  ///       final target = movedPositions[offset + 1];
+  ///     }
+  /// ```
+  ///
+  /// Target locations isn't an exact position where the item should be
+  /// placed, it is a position of the next element. So, before applying this
+  /// patch it is necessary to save all references and then just insert source
+  /// nodes before target nodes. If target node is equal to `-1`, the node
+  /// should be appended to the list.
+  ///
+  /// Modifications should be applied by traversing source/target list from left
+  /// to right.
+  ///
+  /// It is stored in such bizarre way to make diff algorithm slightly more
+  /// efficient without calculating their target positions after moving previous
+  /// item.
+  ///
   final List<int> movedPositions;
 
-  /**
-   * [insertedNodes] is a list of new [Node] objects that should be placed at
-   * the corresponding positions from the [insertedPositions] list.
-   */
+  /// [insertedNodes] is a list of new [Node] objects that should be placed at
+  /// the corresponding positions from the [insertedPositions] list.
   final List<html.Node> insertedNodes;
 
-  /**
-   * [insertedPositions] is a list of positions where new [Node] objects
-   * should be placed.
-   */
+  /// [insertedPositions] is a list of positions where new [Node] objects
+  /// should be placed.
   final List<int> insertedPositions;
 
-  /**
-   * [modifiedNodes] is a list of [NodePatch] patches that should be applied
-   * recursively to the nodes at the corresponding positions from the
-   * [modifiedPositions] list.
-   */
+  /// [modifiedNodes] is a list of [NodePatch] patches that should be applied
+  /// recursively to the nodes at the corresponding positions from the
+  /// [modifiedPositions] list.
   final List<NodePatch> modifiedNodes; // TODO: rename to modifiedPatches?
 
-  /**
-   * [modifiedPositions] is a list of positions to the modified nodes.
-   */
+  /// [modifiedPositions] is a list of positions to the modified nodes.
   final List<int> modifiedPositions;
 
   ElementChildrenPatch(this.removedPositions, this.movedPositions,

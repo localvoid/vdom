@@ -4,13 +4,9 @@
 
 part of vdom.internal;
 
-/**
- * Abstract base class for patches that applied to nodes.
- */
+/// Abstract base class for patches that applied to nodes.
 abstract class NodePatch {
 
-  /**
-   * Apply patch to the [node]
-   */
+  /// Apply patch to the [node]
   void apply(html.Node node);
 }

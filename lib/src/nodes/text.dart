@@ -7,10 +7,10 @@ part of vdom.internal;
 /// Virtual Text Node.
 class Text extends Node {
   /// Text data
-  final String data;
+  String data;
 
   /// Create a new [Text]
-  const Text(Object key, this.data) : super(key);
+  Text(Object key, this.data) : super(key);
 
   /// Run diff against [other] [Text]
   TextPatch diff(Text other) {

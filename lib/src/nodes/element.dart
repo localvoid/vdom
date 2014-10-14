@@ -11,19 +11,19 @@ class Element extends Node {
   final String tag;
 
   /// [Element] attributes
-  final Map<String, String> attributes;
+  Map<String, String> attributes;
 
   /// [Element] styles
-  final Map<String, String> styles;
+  Map<String, String> styles;
 
   /// Element classes
-  final List<String> classes;
+  List<String> classes;
 
   /// Element children
-  final List<Node> children;
+  List<Node> children;
 
   /// Create a new [Element]
-  const Element(Object key, this.tag, [this.children = null, this.attributes =
+  Element(Object key, this.tag, [this.children = null, this.attributes =
       null, this.classes = null, this.styles = null]) : super(
       key);
 

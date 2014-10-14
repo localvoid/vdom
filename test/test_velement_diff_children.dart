@@ -10,14 +10,12 @@ v.Text t(int key) {
   return new v.Text('text_' + key.toString(), key.toString());
 }
 
-/**
- * Generate list of VElements from simple integers.
- *
- * For example, list `[0, 1, [2, [0, 1, 2]], 3]` will create
- * list with 4 VElements and the 2nd element will have key `2` and 3 childrens
- * of its own.
- *
- */
+
+/// Generate list of VElements from simple integers.
+///
+/// For example, list `[0, 1, [2, [0, 1, 2]], 3]` will create
+/// list with 4 VElements and the 2nd element will have key `2` and 3 childrens
+/// of its own.
 List<v.Element> gen(List items) {
   final result = [];
   for (var i in items) {

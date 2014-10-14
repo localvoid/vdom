@@ -10,10 +10,9 @@ void main() {
       final a = new v.Element('0', 'div');
 
       test('1 attribute', () {
-        final b = new v.Element('0', 'div');
-        b.attributes = {
+        final b = new v.Element('0', 'div', null, {
           'attr10': 'value10'
-        };
+        });
 
         final patch = a.diff(b);
         expect(patch, isNotNull);
@@ -23,11 +22,10 @@ void main() {
       });
 
       test('2 attributes', () {
-        final b = new v.Element('0', 'div');
-        b.attributes = {
+        final b = new v.Element('0', 'div', null, {
           'attr10': 'value10',
           'attr11': 'value11'
-        };
+        });
 
         final patch = a.diff(b);
         expect(patch, isNotNull);
@@ -38,17 +36,15 @@ void main() {
     });
 
     group('Into element with 1 attribute', () {
-      final a = new v.Element('0', 'div');
-      a.attributes = {
+      final a = new v.Element('0', 'div', null, {
         'attr01': 'value01',
-      };
+      });
 
       test('1 attribute', () {
-        final b = new v.Element('0', 'div');
-        b.attributes = {
+        final b = new v.Element('0', 'div', null, {
           'attr01': 'value01',
           'attr10': 'value10'
-        };
+        });
 
         final patch = a.diff(b);
         expect(patch, isNotNull);
@@ -58,12 +54,11 @@ void main() {
       });
 
       test('2 attributes', () {
-        final b = new v.Element('0', 'div');
-        b.attributes = {
+        final b = new v.Element('0', 'div', null, {
           'attr01': 'value01',
           'attr10': 'value10',
           'attr11': 'value11'
-        };
+        });
 
         final patch = a.diff(b);
         expect(patch, isNotNull);
@@ -74,19 +69,17 @@ void main() {
     });
 
     group('Into element with 2 attribute', () {
-      final a = new v.Element('0', 'div');
-      a.attributes = {
+      final a = new v.Element('0', 'div', null, {
         'attr01': 'value01',
         'attr02': 'value02'
-      };
+      });
 
       test('1 attribute', () {
-        final b = new v.Element('0', 'div');
-        b.attributes = {
+        final b = new v.Element('0', 'div', null, {
           'attr01': 'value01',
           'attr02': 'value02',
           'attr10': 'value10'
-        };
+        });
 
         final patch = a.diff(b);
         expect(patch, isNotNull);
@@ -96,13 +89,12 @@ void main() {
       });
 
       test('2 attributes', () {
-        final b = new v.Element('0', 'div');
-        b.attributes = {
+        final b = new v.Element('0', 'div', null, {
           'attr01': 'value01',
           'attr02': 'value02',
           'attr10': 'value10',
           'attr11': 'value11'
-        };
+        });
 
         final patch = a.diff(b);
         expect(patch, isNotNull);
@@ -115,10 +107,9 @@ void main() {
 
   group('Remove', () {
     test('From element with 1 attribute', () {
-      final a = new v.Element('0', 'div');
-      a.attributes = {
+      final a = new v.Element('0', 'div', null, {
         'attr01': 'value01'
-      };
+      });
 
       final b = new v.Element('0', 'div');
 
@@ -130,17 +121,15 @@ void main() {
     });
 
     group('From element with 2 attributes', () {
-      final a = new v.Element('0', 'div');
-      a.attributes = {
+      final a = new v.Element('0', 'div', null, {
         'attr01': 'value01',
         'attr02': 'value02'
-      };
+      });
 
       test('1 attribute', () {
-        final b = new v.Element('0', 'div');
-        b.attributes = {
+        final b = new v.Element('0', 'div', null, {
           'attr02': 'value02'
-        };
+        });
 
         final patch = a.diff(b);
         expect(patch, isNotNull);

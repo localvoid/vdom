@@ -1,3 +1,12 @@
+# v0.3.1 (2014-10-15)
+
+- Added arguments for attributes, classes and styles in the [Element]
+  default constructor.
+- Added Components [ComponentBase] [Component] and [DelegatingComponent]
+- Added simple API for virtual DOM creation.
+- Added simple benchmark.
+- Refactored children diff algorithm.
+
 # v0.3.0 (2014-09-19)
 
 - [BREAKING CHANGE] Removed V prefix from class names.

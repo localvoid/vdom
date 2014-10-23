@@ -28,7 +28,9 @@ abstract class Component extends Node implements ComponentBase {
   }
 
   html.Node render() {
-    assert(_element != null);
+    if (_element == null) {
+      _element = build();
+    }
 
     return _element.render();
   }

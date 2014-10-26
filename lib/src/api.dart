@@ -4,11 +4,6 @@
 
 part of vdom;
 
-Element element(Object key, String tag, [List<Node> children = null, Map<String,
-    String> attributes = null, List<String> classes = null]) {
-  return new Element(key, tag, children, attributes, classes);
-}
-
 Element a(Object key, [List<Node> children = null, Map<String,
     String> attributes = null, List<String> classes = null]) {
   return new Element(key, 'a', children, attributes, classes);
@@ -334,10 +329,6 @@ Element footer(Object key, [List<Node> children = null, Map<String,
   return new Element(key, 'footer', children, attributes, classes);
 }
 
-Text text(Object key, String data) {
+Text t(Object key, String data) {
   return new Text(key, data);
-}
-
-DelegatingComponent delegatingComponent(Object key, ComponentBase component) {
-  return new DelegatingComponent(key, component);
 }

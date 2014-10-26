@@ -42,6 +42,8 @@ class ElementPatch extends NodePatch {
 /// * apply patch recursively on [modifiedNodes] at [modifiedPositions]
 ///
 class ElementChildrenPatch {
+  final List<Node> removedNodes;
+
   /// [removedPositions] is a list of positions to the nodes from the source
   /// childNodes list that should be removed.
   final List<int> removedPositions;
@@ -92,7 +94,7 @@ class ElementChildrenPatch {
   /// [modifiedPositions] is a list of positions to the modified nodes.
   final List<int> modifiedPositions;
 
-  ElementChildrenPatch(this.removedPositions, this.movedPositions,
+  ElementChildrenPatch(this.removedNodes, this.removedPositions, this.movedPositions,
       this.insertedNodes, this.insertedPositions, this.modifiedNodes,
       this.modifiedPositions);
 }
@@ -132,6 +134,7 @@ void _applyClassListPatch(UnorderedListPatch patch, html.Element node) {
 
 void _applyChildrenPatch(ElementChildrenPatch patch, html.Node node) {
   final children = node.childNodes;
+  final removedNodes = patch.removedNodes;
   final removedPositions = patch.removedPositions;
   final movedPositions = patch.movedPositions;
   final insertedNodes = patch.insertedNodes;
@@ -152,8 +155,9 @@ void _applyChildrenPatch(ElementChildrenPatch patch, html.Node node) {
     for (var i = 0; i < removedPositions.length; i++) {
       removedElements[i] = children[removedPositions[i]];
     }
-    for (var el in removedElements) {
-      el.remove();
+    for (var i = 0; i < removedElements.length; i++) {
+      removedElements[i].remove();
+      removedNodes[i].detached();
     }
   }
 
@@ -192,6 +196,7 @@ void _applyChildrenPatch(ElementChildrenPatch patch, html.Node node) {
       } else {
         node.append(newNode.render());
       }
+      newNode.attached();
     }
   }
 }

@@ -88,6 +88,7 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
         removedPositions[i] = i;
       }
       return new ElementChildrenPatch(
+          a,
           removedPositions,
           null,
           null,
@@ -113,6 +114,7 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
                 null,
                 null,
                 null,
+                null,
                 [modified],
                 [0]);
           }
@@ -120,6 +122,7 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
         }
 
         return new ElementChildrenPatch(
+            [a[0]],
             [0],
             null,
             [bNode],
@@ -133,6 +136,7 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
         final aNode = a.first;
         final insertedNodes = new List();
         final insertedPositions = new List();
+        var removedNodes;
         var removedPositions;
         var modifiedNodes;
         var modifiedPositions;
@@ -163,10 +167,12 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
             modifiedPositions = [0];
           }
         } else {
+          removedNodes = [a];
           removedPositions = [0];
         }
 
         return new ElementChildrenPatch(
+            removedNodes,
             removedPositions,
             null,
             insertedNodes,
@@ -177,6 +183,7 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
         // fast path when [b] have 1 child
 
         final bNode = b.first;
+        final removedNodes = new List();
         final removedPositions = new List();
         var insertedNodes;
         var insertedPositions;
@@ -193,6 +200,7 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
             unchangedPosition = i;
             break;
           } else {
+            removedNodes.add(aNode);
             removedPositions.add(i);
           }
         }
@@ -212,6 +220,7 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
         }
 
         return new ElementChildrenPatch(
+            removedNodes,
             removedPositions,
             null,
             insertedNodes,
@@ -239,6 +248,7 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
     return new ElementChildrenPatch(
         null,
         null,
+        null,
         insertedNodes,
         insertedPositions,
         null,
@@ -251,6 +261,7 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
 ElementChildrenPatch _diffChildren2(List<Node> a, List<Node> b) {
   final unchangedSourcePositions = new List<int>();
   final unchangedTargetPositions = new List<int>();
+  final removedNodes = new List<Node>();
   final removedPositions = new List<int>();
   final insertedNodes = new List<Node>();
   final insertedPositions = new List<int>();
@@ -291,6 +302,7 @@ ElementChildrenPatch _diffChildren2(List<Node> a, List<Node> b) {
       }
 
       if (removed) {
+        removedNodes.add(aNode);
         removedPositions.add(i);
         removeOffset++;
         changesCounter++;
@@ -327,6 +339,7 @@ ElementChildrenPatch _diffChildren2(List<Node> a, List<Node> b) {
         unchangedSourcePositions.add(i);
         unchangedTargetPositions.add(targetIndex);
       } else {
+        removedNodes.add(sourceNode);
         removedPositions.add(i);
         removeOffset++;
         changesCounter++;
@@ -409,6 +422,7 @@ ElementChildrenPatch _diffChildren2(List<Node> a, List<Node> b) {
   }
 
   return new ElementChildrenPatch(
+      removedNodes.isEmpty ? null : removedNodes,
       removedPositions.isEmpty ? null : removedPositions,
       movedPositions,
       insertedNodes.isEmpty ? null : insertedNodes,

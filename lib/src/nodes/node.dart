@@ -17,4 +17,7 @@ abstract class Node {
 
   /// Render [html.Node]
   html.Node render();
+
+  void attached() {}
+  void detached() {}
 }

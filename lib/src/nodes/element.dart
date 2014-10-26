@@ -23,7 +23,7 @@ class Element extends Node {
   List<Node> children;
 
   /// Create a new [Element]
-  Element(Object key, this.tag, [this.children = null, this.attributes =
+  Element(Object key, this.tag, [this.children = const [], this.attributes =
       null, this.classes = null, this.styles = null]) : super(key);
 
   /// Run diff against [other] [Element] and return [ElementPatch] or [null] if
@@ -66,13 +66,17 @@ class Element extends Node {
       result.classes.addAll(classes);
     }
 
-    if (children != null) {
-      for (var i = 0; i < children.length; i++) {
-        result.append(children[i].render());
-      }
+    for (var i = 0; i < children.length; i++) {
+      result.append(children[i].render());
     }
 
     return result;
+  }
+
+  void attached() {
+    for (var i = 0; i < children.length; i++) {
+      children[i].attached();
+    }
   }
 
   void detached() {
@@ -85,8 +89,8 @@ class Element extends Node {
 }
 
 ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
-  if (a != null && a.isNotEmpty) {
-    if (b == null || b.isEmpty) {
+  if (a.isNotEmpty) {
+    if (b.isEmpty) {
       // when [b] is empty, it means that all childrens from list [a] were
       // removed
       final removedPositions = new List(a.length);
@@ -242,13 +246,11 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
         return _diffChildren2(a, b);
       }
     }
-  } else if (b != null && b.length > 0) {
+  } else if (b.length > 0) {
     // all childrens from list [b] were inserted
-    final bLength = b.length;
-
-    final insertedNodes = new List(bLength);
-    final insertedPositions = new List(bLength);
-    for (var i = 0; i < bLength; i++) {
+    final insertedNodes = new List(b.length);
+    final insertedPositions = new List(b.length);
+    for (var i = 0; i < b.length; i++) {
       insertedNodes[i] = b[i];
       insertedPositions[i] = i;
     }

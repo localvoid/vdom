@@ -2,7 +2,7 @@ import 'package:unittest/unittest.dart';
 import 'package:unittest/html_enhanced_config.dart';
 import 'package:vdom/src/vdom.dart' as v;
 
-v.Element e(int key, [List<v.Node> children]) {
+v.Element e(int key, [List<v.Node> children = const []]) {
   return new v.Element(key.toString(), 'div', children);
 }
 

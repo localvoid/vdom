@@ -78,7 +78,7 @@ class ElementChildrenPatch {
 
   /// [insertedNodes] is a list of new [Node] objects that should be placed at
   /// the corresponding positions from the [insertedPositions] list.
-  final List<html.Node> insertedNodes;
+  final List<Node> insertedNodes;
 
   /// [insertedPositions] is a list of positions where new [Node] objects
   /// should be placed.
@@ -188,9 +188,9 @@ void _applyChildrenPatch(ElementChildrenPatch patch, html.Node node) {
       final nextPosition = insertedPositions[i];
 
       if (nextPosition != children.length) {
-        node.insertBefore(newNode, children[nextPosition]);
+        node.insertBefore(newNode.render(), children[nextPosition]);
       } else {
-        node.append(newNode);
+        node.append(newNode.render());
       }
     }
   }

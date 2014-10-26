@@ -75,6 +75,12 @@ class Element extends Node {
     return result;
   }
 
+  void detached() {
+    for (var i = 0; i < children.length; i++) {
+      children[i].detached();
+    }
+  }
+
   String toString() => '<$tag key="$key">${children.join()}</$tag>';
 }
 
@@ -167,7 +173,7 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
             modifiedPositions = [0];
           }
         } else {
-          removedNodes = [a];
+          removedNodes = [a[0]];
           removedPositions = [0];
         }
 
@@ -207,6 +213,7 @@ ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
 
         if (unchangedPosition != -1) {
           for (var i = unchangedPosition + 1; i < a.length; i++) {
+            removedNodes.add(a[i]);
             removedPositions.add(i);
           }
           final patch = a[unchangedPosition].diff(bNode);

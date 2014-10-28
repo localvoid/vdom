@@ -32,7 +32,7 @@ class Element extends Node {
     final attributeChanges = mapDiff(attributes, other.attributes);
     final styleChanges = mapDiff(styles, other.styles);
     final classesChanges = unorderedListDiff(classes, other.classes);
-    final childrenChanges = _diffChildren(children, other.children);
+    final childrenChanges = diffChildren(children, other.children);
 
     if (attributeChanges == null &&
         styleChanges == null &&
@@ -88,7 +88,7 @@ class Element extends Node {
   String toString() => '<$tag key="$key">${children.join()}</$tag>';
 }
 
-ElementChildrenPatch _diffChildren(List<Node> a, List<Node> b) {
+ElementChildrenPatch diffChildren(List<Node> a, List<Node> b) {
   if (a.isNotEmpty) {
     if (b.isEmpty) {
       // when [b] is empty, it means that all childrens from list [a] were

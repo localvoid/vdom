@@ -15,9 +15,6 @@ class ElementPatch extends NodePatch {
       this.childrenPatch);
 
   void apply(html.Element node) {
-    if (childrenPatch != null) {
-      _applyChildrenPatch(childrenPatch, node);
-    }
     if (attributesPatch != null) {
       _applyAttributesPatch(attributesPatch, node);
     }
@@ -26,6 +23,9 @@ class ElementPatch extends NodePatch {
     }
     if (stylesPatch != null) {
       _applyStylesPatch(stylesPatch, node);
+    }
+    if (childrenPatch != null) {
+      applyChildrenPatch(childrenPatch, node);
     }
   }
 }
@@ -132,7 +132,7 @@ void _applyClassListPatch(UnorderedListPatch patch, html.Element node) {
   classes.addAll(patch.inserted);
 }
 
-void _applyChildrenPatch(ElementChildrenPatch patch, html.Node node) {
+void applyChildrenPatch(ElementChildrenPatch patch, html.Node node) {
   final children = node.childNodes;
   final removedNodes = patch.removedNodes;
   final removedPositions = patch.removedPositions;

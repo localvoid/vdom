@@ -5,8 +5,6 @@ description: Virtual DOM diff/patch.
 homepage: https://github.com/localvoid/vdom
 environment:
   sdk: '>=1.6.0'
-dependencies:
-  collection: '>=1.0.0 <2.0.0'
 dev_dependencies:
   benchmark_harness: any
   browser: any

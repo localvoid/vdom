@@ -8,5 +8,5 @@ part of vdom.internal;
 abstract class NodePatch {
 
   /// Apply patch to the [node]
-  void apply(html.Node node);
+  void apply(html.Node node, [bool isAttached = false]);
 }

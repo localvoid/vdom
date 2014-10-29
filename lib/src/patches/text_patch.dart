@@ -10,7 +10,7 @@ class TextPatch extends NodePatch {
 
   TextPatch(this.newData);
 
-  void apply(html.Text node) {
+  void apply(html.Text node, [bool isAttached = false]) {
     node.data = newData;
   }
 }

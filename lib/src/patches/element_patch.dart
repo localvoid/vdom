@@ -14,7 +14,7 @@ class ElementPatch extends NodePatch {
   ElementPatch(this.attributesPatch, this.stylesPatch, this.classListPatch,
       this.childrenPatch);
 
-  void apply(html.Element node) {
+  void apply(html.Element node, [bool isAttached = false]) {
     if (attributesPatch != null) {
       _applyAttributesPatch(attributesPatch, node);
     }
@@ -25,7 +25,7 @@ class ElementPatch extends NodePatch {
       _applyStylesPatch(stylesPatch, node);
     }
     if (childrenPatch != null) {
-      applyChildrenPatch(childrenPatch, node);
+      applyChildrenPatch(childrenPatch, node, isAttached);
     }
   }
 }
@@ -132,7 +132,7 @@ void _applyClassListPatch(UnorderedListPatch patch, html.Element node) {
   classes.addAll(patch.inserted);
 }
 
-void applyChildrenPatch(ElementChildrenPatch patch, html.Node node) {
+void applyChildrenPatch(ElementChildrenPatch patch, html.Node node, [bool isAttached = false]) {
   final children = node.childNodes;
   final removedNodes = patch.removedNodes;
   final removedPositions = patch.removedPositions;
@@ -146,7 +146,7 @@ void applyChildrenPatch(ElementChildrenPatch patch, html.Node node) {
     for (var i = 0; i < modifiedPositions.length; i++) {
       final vNode = modifiedNodes[i];
       final node = children[modifiedPositions[i]];
-      vNode.apply(node);
+      vNode.apply(node, isAttached);
     }
   }
 
@@ -157,7 +157,9 @@ void applyChildrenPatch(ElementChildrenPatch patch, html.Node node) {
     }
     for (var i = 0; i < removedElements.length; i++) {
       removedElements[i].remove();
-      removedNodes[i].detached();
+      if (isAttached) {
+        removedNodes[i].detached();
+      }
     }
   }
 
@@ -196,7 +198,9 @@ void applyChildrenPatch(ElementChildrenPatch patch, html.Node node) {
       } else {
         node.append(newNode.render());
       }
-      newNode.attached();
+      if (!isAttached) {
+        newNode.attached();
+      }
     }
   }
 }

@@ -198,7 +198,7 @@ void applyChildrenPatch(ElementChildrenPatch patch, html.Node node, [bool isAtta
       } else {
         node.append(newNode.render());
       }
-      if (!isAttached) {
+      if (isAttached) {
         newNode.attached();
       }
     }

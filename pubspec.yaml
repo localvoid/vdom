@@ -1,5 +1,5 @@
 name: vdom
-version: 0.3.4
+version: 0.3.4+1
 author: Boris Kaul <localvoid@gmail.com>
 description: Virtual DOM diff/patch.
 homepage: https://github.com/localvoid/vdom

@@ -210,15 +210,12 @@ void applyChildrenPatch(ElementChildrenPatch patch, html.Node node, [bool isAtta
         }
       }
     } else {
-      final cached = new List(insertedPositions.length);
-      for (var i = 0; i < insertedPositions.length; i++) {
-        final p = insertedPositions[i];
-        cached[i] = p == -1 ? null : children[p];
-      }
+      final cached = insertedPositions.length > 16 ? new List.from(children) : children;
       for (var i = 0; i < insertedPositions.length; i++) {
         final newNode = insertedNodes[i];
 
-        node.insertBefore(newNode.render(), cached[i]);
+        final p = insertedPositions[i];
+        node.insertBefore(newNode.render(), p == -1 ? null : cached[p]);
         if (isAttached) {
           newNode.attached();
         }

@@ -133,7 +133,7 @@ void _applyClassListPatch(UnorderedListPatch patch, html.Element node) {
 }
 
 void applyChildrenPatch(ElementChildrenPatch patch, html.Node node, [bool isAttached = false]) {
-  var children = node.childNodes;
+  final children = node.childNodes;
   final removedNodes = patch.removedNodes;
   final removedPositions = patch.removedPositions;
   final movedPositions = patch.movedPositions;
@@ -210,16 +210,15 @@ void applyChildrenPatch(ElementChildrenPatch patch, html.Node node, [bool isAtta
         }
       }
     } else {
-      final cached = children;
+      final cached = new List(insertedPositions.length);
+      for (var i = 0; i < insertedPositions.length; i++) {
+        final p = insertedPositions[i];
+        cached[i] = p == -1 ? null : children[p];
+      }
       for (var i = 0; i < insertedPositions.length; i++) {
         final newNode = insertedNodes[i];
-        final nextPosition = insertedPositions[i];
 
-        if (nextPosition != cached.length) {
-          node.insertBefore(newNode.render(), cached[nextPosition]);
-        } else {
-          node.append(newNode.render());
-        }
+        node.insertBefore(newNode.render(), cached[i]);
         if (isAttached) {
           newNode.attached();
         }

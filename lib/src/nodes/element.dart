@@ -162,14 +162,14 @@ ElementChildrenPatch diffChildren(List<Node> a, List<Node> b) {
             break;
           } else {
             insertedNodes.add(bNode);
-            insertedPositions.add(i);
+            insertedPositions.add(0);
           }
         }
 
         if (unchangedPosition != -1) {
           for (var i = unchangedPosition + 1; i < b.length; i++) {
             insertedNodes.add(b[i]);
-            insertedPositions.add(i);
+            insertedPositions.add(-1);
           }
           final patch = aNode.diff(b[unchangedPosition]);
           if (patch != null) {
@@ -252,7 +252,7 @@ ElementChildrenPatch diffChildren(List<Node> a, List<Node> b) {
     final insertedPositions = new List(b.length);
     for (var i = 0; i < b.length; i++) {
       insertedNodes[i] = b[i];
-      insertedPositions[i] = i;
+      insertedPositions[i] = -1;
     }
     return new ElementChildrenPatch(
         null,
@@ -357,11 +357,13 @@ ElementChildrenPatch _diffChildren2(List<Node> a, List<Node> b) {
   }
 
   var movedPositions;
+  // new length without removed nodes
+  final newLength = a.length - removedPositions.length;
 
   if (moved) {
     // create new list without removed/inserted nodes
     // and use source position ids instead of vnodes
-    final c = new List<int>.filled(a.length - removedPositions.length, 0);
+    final c = new List<int>.filled(newLength, 0);
 
     // fill new lists and find all inserted/unchanged nodes
     var insertedOffset = 0;
@@ -369,7 +371,8 @@ ElementChildrenPatch _diffChildren2(List<Node> a, List<Node> b) {
       final node = b[i];
       if (sources[i] == -1) {
         insertedNodes.add(node);
-        insertedPositions.add(i);
+        final pos = i - insertedOffset;
+        insertedPositions.add(pos >= newLength ? -1 : pos);
         insertedOffset++;
         changesCounter++;
       } else {
@@ -401,12 +404,15 @@ ElementChildrenPatch _diffChildren2(List<Node> a, List<Node> b) {
 
     changesCounter += movedPositions.length;
   } else {
+    var insertedOffset = 0;
     for (var i = 0; i < b.length; i++) {
       final node = b[i];
       if (sources[i] == -1) {
         insertedNodes.add(node);
-        insertedPositions.add(i);
+        final pos = i - insertedOffset;
+        insertedPositions.add(pos >= newLength ? -1 : pos);
         changesCounter++;
+        insertedOffset++;
       }
     }
   }

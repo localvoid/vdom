@@ -133,7 +133,7 @@ void _applyClassListPatch(UnorderedListPatch patch, html.Element node) {
 }
 
 void applyChildrenPatch(ElementChildrenPatch patch, html.Node node, [bool isAttached = false]) {
-  final children = node.childNodes;
+  var children = node.childNodes;
   final removedNodes = patch.removedNodes;
   final removedPositions = patch.removedPositions;
   final movedPositions = patch.movedPositions;
@@ -143,27 +143,39 @@ void applyChildrenPatch(ElementChildrenPatch patch, html.Node node, [bool isAtta
   final modifiedPositions = patch.modifiedPositions;
 
   if (modifiedPositions != null) {
+    final cached = modifiedPositions.length > 16 ? new List.from(children) : children;
     for (var i = 0; i < modifiedPositions.length; i++) {
       final vNode = modifiedNodes[i];
-      final node = children[modifiedPositions[i]];
+      final node = cached[modifiedPositions[i]];
       vNode.apply(node, isAttached);
     }
   }
 
   if (removedPositions != null) {
-    final removedElements = new List(removedPositions.length);
-    for (var i = 0; i < removedPositions.length; i++) {
-      removedElements[i] = children[removedPositions[i]];
-    }
-    for (var i = 0; i < removedElements.length; i++) {
-      removedElements[i].remove();
-      if (isAttached) {
-        removedNodes[i].detached();
+    if (removedPositions.length == children.length) {
+      var c = children.first;
+      while (c != null) {
+        final next = c.nextNode;
+        c.remove();
+        c = next;
+      }
+    } else {
+      final cached = removedPositions.length > 16 ? new List.from(children) : children;
+      final removedElements = new List(removedPositions.length);
+      for (var i = 0; i < removedPositions.length; i++) {
+        removedElements[i] = cached[removedPositions[i]];
+      }
+      for (var i = 0; i < removedElements.length; i++) {
+        removedElements[i].remove();
+        if (isAttached) {
+          removedNodes[i].detached();
+        }
       }
     }
   }
 
   if (movedPositions != null) {
+    final cached = movedPositions.length > 16 ? new List.from(children) : children;
     final moveOperationsCount = movedPositions.length >> 1;
     final moveSources = new List(moveOperationsCount);
     final moveTargets = new List(moveOperationsCount);
@@ -172,8 +184,8 @@ void applyChildrenPatch(ElementChildrenPatch patch, html.Node node, [bool isAtta
       final offset = i << 1;
       final source = movedPositions[offset];
       final target = movedPositions[offset + 1];
-      moveSources[i] = children[source];
-      moveTargets[i] = target != -1 ? children[target] : -1;
+      moveSources[i] = cached[source];
+      moveTargets[i] = target != -1 ? cached[target] : -1;
     }
 
     for (var i = 0; i < moveOperationsCount; i++) {
@@ -189,17 +201,28 @@ void applyChildrenPatch(ElementChildrenPatch patch, html.Node node, [bool isAtta
   }
 
   if (insertedPositions != null) {
-    for (var i = 0; i < insertedPositions.length; i++) {
-      final newNode = insertedNodes[i];
-      final nextPosition = insertedPositions[i];
-
-      if (nextPosition != children.length) {
-        node.insertBefore(newNode.render(), children[nextPosition]);
-      } else {
+    if (children.length == 0) {
+      for (var i = 0; i < insertedPositions.length; i++) {
+        final newNode = insertedNodes[i];
         node.append(newNode.render());
+        if (isAttached) {
+          newNode.attached();
+        }
       }
-      if (isAttached) {
-        newNode.attached();
+    } else {
+      final cached = children;
+      for (var i = 0; i < insertedPositions.length; i++) {
+        final newNode = insertedNodes[i];
+        final nextPosition = insertedPositions[i];
+
+        if (nextPosition != cached.length) {
+          node.insertBefore(newNode.render(), cached[nextPosition]);
+        } else {
+          node.append(newNode.render());
+        }
+        if (isAttached) {
+          newNode.attached();
+        }
       }
     }
   }

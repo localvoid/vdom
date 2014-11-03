@@ -225,7 +225,7 @@ ElementChildrenPatch diffChildren(List<Node> a, List<Node> b) {
           final patch = a[unchangedPosition].diff(bNode);
           if (patch != null) {
             modifiedNodes = [patch];
-            modifiedPositions = [unchangedPosition];
+            modifiedPositions = [0];
           }
         } else {
           insertedNodes = [bNode];
@@ -293,7 +293,6 @@ ElementChildrenPatch _diffChildren2(List<Node> a, List<Node> b) {
     }
     start++;
   }
-  var sw;
 
   if (start == bLength) {
     if (start == aLength) {
@@ -430,8 +429,12 @@ ElementChildrenPatch _diffChildren2(List<Node> a, List<Node> b) {
               lastTarget = j;
             }
 
-            unchangedSourcePositions.add(iOff);
-            unchangedTargetPositions.add(jOff);
+            final patch = aNode.diff(bNode);
+            if (patch != null) {
+              modifiedNodes.add(patch);
+              modifiedPositions.add(iOff - removeOffset);
+              changesCounter++;
+            }
 
             removed = false;
             break;
@@ -460,10 +463,11 @@ ElementChildrenPatch _diffChildren2(List<Node> a, List<Node> b) {
       // index nodes from list [a] and check if they're removed
       for (var i = 0; i < aLength; i++) {
         final iOff = i + start;
-        final sourceNode = a[iOff];
-        final j = keyIndex[sourceNode.key];
+        final aNode = a[iOff];
+        final j = keyIndex[aNode.key];
         if (j != null) {
           final jOff = j + start;
+          final bNode = b[jOff];
           sources[j] = i - removeOffset;
 
           // check if items in wrong order
@@ -473,10 +477,14 @@ ElementChildrenPatch _diffChildren2(List<Node> a, List<Node> b) {
             lastTarget = j;
           }
 
-          unchangedSourcePositions.add(iOff);
-          unchangedTargetPositions.add(jOff);
+          final patch = aNode.diff(bNode);
+          if (patch != null) {
+            modifiedNodes.add(patch);
+            modifiedPositions.add(iOff - removeOffset);
+            changesCounter++;
+          }
         } else {
-          removedNodes.add(sourceNode);
+          removedNodes.add(aNode);
           removedPositions.add(iOff);
           removeOffset++;
           changesCounter++;
@@ -543,18 +551,6 @@ ElementChildrenPatch _diffChildren2(List<Node> a, List<Node> b) {
           changesCounter++;
           insertedOffset++;
         }
-      }
-    }
-
-    for (var i = 0; i < unchangedSourcePositions.length; i++) {
-      final source = unchangedSourcePositions[i];
-      final target = unchangedTargetPositions[i];
-      final node = a[source];
-      final patch = node.diff(b[target]);
-      if (patch != null) {
-        modifiedPositions.add(source);
-        modifiedNodes.add(patch);
-        changesCounter++;
       }
     }
 

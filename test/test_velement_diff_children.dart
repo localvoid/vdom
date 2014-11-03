@@ -913,7 +913,7 @@ void main() {
         'a': [0, 1, [2, [0]]],
         'b': [2],
         'movedPositions': null,
-        'modifiedPositions': [2],
+        'modifiedPositions': [0],
         'removedPositions': [0, 1],
         'insertedPositions': null
       }, {
@@ -927,14 +927,14 @@ void main() {
         'a': [0, [1, [0, 1]], 2],
         'b': [3, 2, [1, [1, 0]]],
         'movedPositions': [1, 0],
-        'modifiedPositions': [1],
+        'modifiedPositions': [0],
         'removedPositions': [0],
         'insertedPositions': [0]
       }, {
         'a': [0, [1, [0, 1]], 2],
         'b': [2, [1, [1, 0]], 3],
         'movedPositions': [1, 0],
-        'modifiedPositions': [1],
+        'modifiedPositions': [0],
         'removedPositions': [0],
         'insertedPositions': [3]
       }, {
@@ -955,28 +955,28 @@ void main() {
         'a': [0, 1, 2, [3, [1, 0]], 4, 5],
         'b': [6, [1, [0, 1]], 3, 2, 4, 7],
         'movedPositions': [2, 1],
-        'modifiedPositions': [1, 3],
+        'modifiedPositions': [0, 2],
         'removedPositions': [0, 5],
         'insertedPositions': [0, 6]
       }, {
         'a': [0, 1, 2, 3, 4, 5],
         'b': [6, [1, [1]], 7, [3, [1]], [2, [1]], [4, [1]]],
         'movedPositions': [2, 1],
-        'modifiedPositions': [1, 2, 3, 4],
+        'modifiedPositions': [0, 1, 2, 3],
         'removedPositions': [0, 5],
         'insertedPositions': [0, 1]
       }, {
         'a': [0, 1, [2, [0]], 3, [4, [0]], 5],
         'b': [6, 7, 3, 2, 4],
         'movedPositions': [1, 0],
-        'modifiedPositions': [2, 4],
+        'modifiedPositions': [0, 2],
         'removedPositions': [0, 1, 5],
         'insertedPositions': [0, 0]
       }, {
         'a': [0, [2, [0]], [3, [0]], [4, [0]], 5],
         'b': [6, 1, 7, 3, 2, 4],
         'movedPositions': [1, 0],
-        'modifiedPositions': [1, 2, 3],
+        'modifiedPositions': [0, 1, 2],
         'removedPositions': [0, 4],
         'insertedPositions': [0, 0, 0]
       }];

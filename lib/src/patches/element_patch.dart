@@ -2,6 +2,7 @@
 // details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+/// Comments are outdated.
 part of vdom.internal;
 
 /// [ElementPatch]
@@ -146,15 +147,6 @@ void applyChildrenPatch(ElementChildrenPatch patch, html.Node node, [bool isAtta
   final modifiedNodes = patch.modifiedNodes;
   final modifiedPositions = patch.modifiedPositions;
 
-  if (modifiedPositions != null) {
-    final cached = modifiedPositions.length > 16 ? new List.from(children) : children;
-    for (var i = 0; i < modifiedPositions.length; i++) {
-      final vNode = modifiedNodes[i];
-      final node = cached[modifiedPositions[i]];
-      vNode.apply(node, isAttached);
-    }
-  }
-
   if (removedPositions != null) {
     if (removedPositions.length == children.length) {
       var c = children.first;
@@ -164,13 +156,9 @@ void applyChildrenPatch(ElementChildrenPatch patch, html.Node node, [bool isAtta
         c = next;
       }
     } else {
-      final cached = removedPositions.length > 16 ? new List.from(children) : children;
-      final removedElements = new List(removedPositions.length);
+      final cached = removedPositions.length > 1 ? new List.from(children) : children;
       for (var i = 0; i < removedPositions.length; i++) {
-        removedElements[i] = cached[removedPositions[i]];
-      }
-      for (var i = 0; i < removedElements.length; i++) {
-        removedElements[i].remove();
+        cached[removedPositions[i]].remove();
         if (isAttached) {
           removedNodes[i].detached();
         }
@@ -178,25 +166,49 @@ void applyChildrenPatch(ElementChildrenPatch patch, html.Node node, [bool isAtta
     }
   }
 
-  if (movedPositions != null) {
-    final cached = movedPositions.length > 1 ? new List.from(children) : children;
+  if (modifiedPositions != null || movedPositions != null) {
+    var isCached = false;
+    var cached = children;
+    if (modifiedPositions != null && modifiedPositions.length > 16) {
+      cached = new List.from(children);
+      isCached = true;
+    }
     final cachedLength = cached.length;
-    final moveOperationsCount = movedPositions.length >> 1;
-    final moveSources = new List(moveOperationsCount);
-    final moveTargets = new List(moveOperationsCount);
 
-    for (var i = 0; i < moveOperationsCount; i++) {
-      final offset = i << 1;
-      final source = movedPositions[offset];
-      final target = movedPositions[offset + 1];
-      moveSources[i] = cached[source];
-      moveTargets[i] = target < cachedLength ? cached[target] : null;
+    if (modifiedPositions != null) {
+      for (var i = 0; i < modifiedPositions.length; i++) {
+        final vNode = modifiedNodes[i];
+        final node = cached[modifiedPositions[i]];
+        vNode.apply(node, isAttached);
+      }
     }
 
-    for (var i = 0; i < moveOperationsCount; i++) {
-      final source = moveSources[i];
-      final target = moveTargets[i];
-      node.insertBefore(source, target);
+    if (movedPositions != null) {
+      final moveOperationsCount = movedPositions.length >> 1;
+      if (moveOperationsCount > 16 && !isCached) {
+        cached = new List.from(children);
+        for (var i = 0; i < moveOperationsCount; i++) {
+          final offset = i << 1;
+          final source = cached[movedPositions[offset]];
+          final p = movedPositions[offset + 1];
+          final target = p < cachedLength ? cached[p] : null;
+          node.insertBefore(source, target);
+        }
+      } else {
+        final sources = new List(moveOperationsCount);
+        final targets = new List(moveOperationsCount);
+        for (var i = 0; i < moveOperationsCount; i++) {
+          final offset = i << 1;
+          final source = cached[movedPositions[offset]];
+          final p = movedPositions[offset + 1];
+          final target = p < cachedLength ? cached[p] : null;
+          sources[i] = source;
+          targets[i] = target;
+        }
+        for (var i = 0; i < moveOperationsCount; i++) {
+          node.insertBefore(sources[i], targets[i]);
+        }
+      }
     }
   }
 

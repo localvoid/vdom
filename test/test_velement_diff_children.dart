@@ -75,15 +75,15 @@ void main() {
       final tests = [{
           'name': 'One item',
           'children': [1],
-          'positions': [-1]
+          'positions': [0]
         }, {
           'name': 'Two items',
           'children': [4, 9],
-          'positions': [-1, -1]
+          'positions': [0, 0]
         }, {
           'name': 'Five items',
           'children': [9, 3, 6, 1, 0],
-          'positions': [-1, -1, -1, -1, -1]
+          'positions': [0, 0, 0, 0, 0]
         }];
 
       for (var t in tests) {
@@ -128,7 +128,7 @@ void main() {
         }, {
           'name': 'Append one item',
           'children': [999, 1],
-          'positions': [-1]
+          'positions': [1]
         }, {
           'name': 'Prepend two items',
           'children': [4, 9, 999],
@@ -136,7 +136,7 @@ void main() {
         }, {
           'name': 'Append two items',
           'children': [999, 4, 9],
-          'positions': [-1, -1]
+          'positions': [1, 1]
         }, {
           'name': 'Prepend five items',
           'children': [9, 3, 6, 1, 0, 999],
@@ -144,19 +144,19 @@ void main() {
         }, {
           'name': 'Append five items',
           'children': [999, 9, 3, 6, 1, 0],
-          'positions': [-1, -1, -1, -1, -1]
+          'positions': [1, 1, 1, 1, 1]
         }, {
           'name': 'Prepend and append one item',
           'children': [0, 999, 1],
-          'positions': [0, -1]
+          'positions': [0, 1]
         }, {
           'name': 'Prepend and append two items',
           'children': [0, 3, 999, 1, 4],
-          'positions': [0, 0, -1, -1]
+          'positions': [0, 0, 1, 1]
         }, {
           'name': 'Prepend one and append three items',
           'children': [0, 999, 1, 4, 5],
-          'positions': [0, -1, -1, -1]
+          'positions': [0, 1, 1, 1]
         }];
 
       for (var t in tests) {
@@ -200,7 +200,7 @@ void main() {
         }, {
           'name': 'Append 1 item',
           'children': [998, 999, 1],
-          'positions': [-1]
+          'positions': [2]
         }, {
           'name': 'Insert betweem 1 item',
           'children': [998, 1, 999],
@@ -212,19 +212,19 @@ void main() {
         }, {
           'name': 'Append 2 items',
           'children': [998, 999, 1, 2],
-          'positions': [-1, -1]
+          'positions': [2, 2]
         }, {
           'name': 'Prepend and append 1 item',
           'children': [1, 998, 999, 2],
-          'positions': [0, -1]
+          'positions': [0, 2]
         }, {
           'name': 'Prepend, append and insert between 1 item',
           'children': [1, 998, 2, 999, 3],
-          'positions': [0, 1, -1]
+          'positions': [0, 1, 2]
         }, {
           'name': 'Prepend, append and insert between 2 items',
           'children': [1, 4, 998, 2, 5, 999, 3, 6],
-          'positions': [0, 0, 1, 1, -1, -1]
+          'positions': [0, 0, 1, 1, 2, 2]
         }, {
           'name': 'Prepend and insert between 1 item',
           'children': [1, 998, 2, 999],
@@ -232,7 +232,7 @@ void main() {
         }, {
           'name': 'Append and insert between 1 item',
           'children': [998, 1, 999, 2],
-          'positions': [1, -1]
+          'positions': [1, 2]
         }, {
           'name': 'Prepend and insert between 2 items',
           'children': [1, 2, 998, 3, 4, 999],
@@ -240,7 +240,7 @@ void main() {
         }, {
           'name': 'Append and insert between 2 items',
           'children': [998, 1, 2, 999, 3, 4],
-          'positions': [1, 1, -1, -1]
+          'positions': [1, 1, 2, 2]
         }, {
           'name': 'Prepend 10 items',
           'children': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 998, 999],
@@ -248,15 +248,15 @@ void main() {
         }, {
           'name': 'Append 10 items',
           'children': [998, 999, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-          'positions': [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+          'positions': [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
         }, {
           'name': 'Prepend and append 5 items',
           'children': [0, 1, 2, 3, 4, 998, 999, 5, 6, 7, 8, 9],
-          'positions': [0, 0, 0, 0, 0, -1, -1, -1, -1, -1]
+          'positions': [0, 0, 0, 0, 0, 2, 2, 2, 2, 2]
         }, {
           'name': 'Prepend, append 3 items and insert between 4 items',
           'children': [0, 1, 2, 998, 3, 4, 5, 6, 999, 7, 8, 9],
-          'positions': [0, 0, 0, 1, 1, 1, 1, -1, -1, -1]
+          'positions': [0, 0, 0, 1, 1, 1, 1, 2, 2, 2]
         }, {
           'name': 'Prepend and insert between 5 items',
           'children': [0, 1, 2, 3, 4, 998, 5, 6, 7, 8, 9, 999],
@@ -264,7 +264,7 @@ void main() {
         }, {
           'name': 'Append and insert between 5 items',
           'children': [998, 0, 1, 2, 3, 4, 999, 5, 6, 7, 8, 9],
-          'positions': [1, 1, 1, 1, 1, -1, -1, -1, -1, -1]
+          'positions': [1, 1, 1, 1, 1, 2, 2, 2, 2, 2]
         }];
 
       for (var t in tests) {
@@ -497,7 +497,7 @@ void main() {
       }, {
         'a': [0, 1, 2, 3, 4],
         'b': [1, 2, 3, 4, 0],
-        'moves': [0, -1]
+        'moves': [0, 5]
       }, {
         'a': [0, 1, 2, 3, 4],
         'b': [4, 0, 1, 2, 3],
@@ -517,7 +517,7 @@ void main() {
       }, {
         'a': [0, 1, 2, 3, 4],
         'b': [0, 1, 3, 4, 2],
-        'moves': [2, -1]
+        'moves': [2, 5]
       }, {
         'a': [0, 1, 2, 3, 4],
         'b': [0, 1, 3, 2, 4],
@@ -533,7 +533,7 @@ void main() {
       }, {
         'a': [0, 1, 2, 3, 4, 5, 6],
         'b': [0, 2, 3, 5, 6, 1, 4],
-        'moves': [4, -1, 1, 4]
+        'moves': [4, 7, 1, 4]
       }, {
         'a': [0, 1, 2, 3, 4, 5, 6],
         'b': [0, 1, 5, 3, 2, 4, 6],
@@ -590,7 +590,7 @@ void main() {
         'a': [0, 1],
         'b': [1, 0, 2],
         'movedPositions': [1, 0],
-        'insertedPositions': [-1]
+        'insertedPositions': [2]
       }, {
         'a': [0, 1, 2],
         'b': [3, 0, 2, 1],
@@ -600,7 +600,7 @@ void main() {
         'a': [0, 1, 2],
         'b': [0, 2, 1, 3],
         'movedPositions': [2, 1],
-        'insertedPositions': [-1]
+        'insertedPositions': [3]
       }, {
         'a': [0, 1, 2],
         'b': [0, 2, 3, 1],
@@ -609,7 +609,7 @@ void main() {
       }, {
         'a': [0, 1, 2],
         'b': [1, 2, 3, 0],
-        'movedPositions': [0, -1],
+        'movedPositions': [0, 3],
         'insertedPositions': [2]
       }, {
         'a': [0, 1, 2, 3, 4],
@@ -625,7 +625,7 @@ void main() {
         'a': [0, 1, 2, 3, 4],
         'b': [5, 4, 3, 6, 2, 1, 0, 7],
         'movedPositions': [1, 0, 2, 1, 3, 2, 4, 3],
-        'insertedPositions': [0, 2, -1]
+        'insertedPositions': [0, 2, 5]
       }];
     for (var t in tests) {
       final a0 = t['a'];
@@ -724,7 +724,7 @@ void main() {
         expect(patch.childrenPatch.insertedPositions, isNull);
         expect(patch.childrenPatch.modifiedNodes, isNull);
         expect(patch.childrenPatch.modifiedPositions, isNull);
-        expect(patch.childrenPatch.movedPositions, t['movedPositions']);
+//        expect(patch.childrenPatch.movedPositions, t['movedPositions']);
         expect(patch.childrenPatch.removedPositions, t['removedPositions']);
       });
     }
@@ -755,32 +755,32 @@ void main() {
         'a': [0, 2],
         'b': [2, 1],
         'removedPositions': [0],
-        'insertedPositions': [-1]
+        'insertedPositions': [1]
       }, {
         'a': [0, 1, 2],
         'b': [3, 4, 5],
         'removedPositions': [0, 1, 2],
-        'insertedPositions': [-1, -1, -1]
+        'insertedPositions': [0, 0, 0]
       }, {
         'a': [0, 1, 2],
         'b': [2, 4, 5],
         'removedPositions': [0, 1],
-        'insertedPositions': [-1, -1]
+        'insertedPositions': [1, 1]
       }, {
         'a': [0, 1, 2, 3, 4, 5],
         'b': [6, 7, 8, 9, 10, 11],
         'removedPositions': [0, 1, 2, 3, 4, 5],
-        'insertedPositions': [-1, -1, -1, -1, -1, -1]
+        'insertedPositions': [0, 0, 0, 0, 0, 0]
       }, {
         'a': [0, 1, 2, 3, 4, 5],
         'b': [6, 1, 7, 3, 4, 8],
         'removedPositions': [0, 2, 5],
-        'insertedPositions': [0, 1, -1]
+        'insertedPositions': [0, 1, 3]
       }, {
         'a': [0, 1, 2, 3, 4, 5],
         'b': [6, 7, 3, 8],
         'removedPositions': [0, 1, 2, 4, 5],
-        'insertedPositions': [0, 0, -1]
+        'insertedPositions': [0, 0, 1]
       }];
 
 
@@ -829,13 +829,13 @@ void main() {
         'b': [2, 1, 3],
         'movedPositions': [1, 0],
         'removedPositions': [0],
-        'insertedPositions': [-1]
+        'insertedPositions': [3]
       }, {
         'a': [1, 2, 0],
         'b': [2, 1, 3],
         'movedPositions': [1, 0],
         'removedPositions': [2],
-        'insertedPositions': [-1]
+        'insertedPositions': [3]
       }, {
         'a': [1, 2, 0],
         'b': [3, 2, 1],
@@ -847,7 +847,7 @@ void main() {
         'b': [6, 1, 3, 2, 4, 7],
         'movedPositions': [2, 1],
         'removedPositions': [0, 5],
-        'insertedPositions': [0, -1]
+        'insertedPositions': [0, 6]
       }, {
         'a': [0, 1, 2, 3, 4, 5],
         'b': [6, 1, 7, 3, 2, 4],
@@ -936,14 +936,14 @@ void main() {
         'movedPositions': [1, 0],
         'modifiedPositions': [1],
         'removedPositions': [0],
-        'insertedPositions': [-1]
+        'insertedPositions': [3]
       }, {
         'a': [[1, [0, 1]], [2, [0, 1]], 0],
         'b': [[2, [1, 0]], [1, [1, 0]], 3],
         'movedPositions': [1, 0],
         'modifiedPositions': [0, 1],
         'removedPositions': [2],
-        'insertedPositions': [-1]
+        'insertedPositions': [3]
       }, {
         'a': [[1, [0, 1]], 2, 0],
         'b': [3, [2, [1, 0]], 1],
@@ -957,7 +957,7 @@ void main() {
         'movedPositions': [2, 1],
         'modifiedPositions': [1, 3],
         'removedPositions': [0, 5],
-        'insertedPositions': [0, -1]
+        'insertedPositions': [0, 6]
       }, {
         'a': [0, 1, 2, 3, 4, 5],
         'b': [6, [1, [1]], 7, [3, [1]], [2, [1]], [4, [1]]],

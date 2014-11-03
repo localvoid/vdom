@@ -171,7 +171,7 @@ ElementChildrenPatch diffChildren(List<Node> a, List<Node> b) {
         if (unchangedPosition != -1) {
           for (var i = unchangedPosition + 1; i < b.length; i++) {
             insertedNodes.add(b[i]);
-            insertedPositions.add(-1);
+            insertedPositions.add(1);
           }
           final patch = aNode.diff(b[unchangedPosition]);
           if (patch != null) {
@@ -254,7 +254,7 @@ ElementChildrenPatch diffChildren(List<Node> a, List<Node> b) {
     final insertedPositions = new List(b.length);
     for (var i = 0; i < b.length; i++) {
       insertedNodes[i] = b[i];
-      insertedPositions[i] = -1;
+      insertedPositions[i] = 0;
     }
     return new ElementChildrenPatch(
         null,
@@ -270,31 +270,200 @@ ElementChildrenPatch diffChildren(List<Node> a, List<Node> b) {
 }
 
 ElementChildrenPatch _diffChildren2(List<Node> a, List<Node> b) {
-  final unchangedSourcePositions = new List<int>();
-  final unchangedTargetPositions = new List<int>();
-  final removedNodes = new List<Node>();
-  final removedPositions = new List<int>();
-  final insertedNodes = new List<Node>();
-  final insertedPositions = new List<int>();
-
-  final sources = new List<int>.filled(b.length, -1);
-
-  var moved = false;
+  final modifiedPositions = [];
+  final modifiedNodes = [];
   var changesCounter = 0;
+  var aLength = a.length;
+  var bLength = b.length;
 
-  // when both lists are small, the join operation is much faster with simple
-  // MxN list search instead of hashmap join
-  if (a.length * b.length <= 16) {
-    var lastTarget = 0;
-    var removeOffset = 0;
+  final minLength = aLength < bLength ? aLength : bLength;
 
-    for (var i = 0; i < a.length; i++) {
-      final aNode = a[i];
-      var removed = true;
+  var start = 0;
+  while(start < minLength) {
+    final aNode = a[start];
+    final bNode = b[start];
+    if (aNode.key != bNode.key) {
+      break;
+    }
+    final patch = aNode.diff(bNode);
+    if (patch != null) {
+      modifiedPositions.add(start);
+      modifiedNodes.add(patch);
+      changesCounter++;
+    }
+    start++;
+  }
+  var sw;
 
-      for (var j = 0; j < b.length; j++) {
-        final bNode = b[j];
-        if (aNode.key == bNode.key) {
+  if (start == bLength) {
+    if (start == aLength) {
+      if (changesCounter == 0) {
+        return null;
+      }
+      return new ElementChildrenPatch(
+          null,
+          null,
+          null,
+          null,
+          null,
+          modifiedNodes,
+          modifiedPositions);
+    } else {
+      final removedNodes = new List();
+      final removedPositions = new List();
+      for (var i = start; i < a.length; i++) {
+        removedNodes.add(a[i]);
+        removedPositions.add(i);
+      }
+      return new ElementChildrenPatch(
+          removedNodes,
+          removedPositions,
+          null,
+          null,
+          null,
+          modifiedNodes.isEmpty ? null : modifiedNodes,
+          modifiedPositions.isEmpty ? null : modifiedPositions);
+    }
+  } else if (start == aLength) {
+    final insertedNodes = new List();
+    final insertedPositions = new List();
+    for (var i = start; i < b.length; i++) {
+      insertedNodes.add(b[i]);
+      insertedPositions.add(start);
+    }
+    return new ElementChildrenPatch(
+        null,
+        null,
+        null,
+        insertedNodes,
+        insertedPositions,
+        modifiedNodes.isEmpty ? null : modifiedNodes,
+        modifiedPositions.isEmpty ? null : modifiedPositions);
+  }
+
+  var aEnd = a.length;
+  var bEnd = b.length;
+  while (aEnd > start && bEnd > start) {
+    final aNode = a[aEnd - 1];
+    final bNode = b[bEnd - 1];
+
+    if (aNode.key != bNode.key) {
+      break;
+    }
+    final patch = aNode.diff(bNode);
+    if (patch != null) {
+      modifiedPositions.add(aEnd);
+      modifiedNodes.add(aNode);
+      changesCounter++;
+    }
+    aEnd--;
+    bEnd--;
+  }
+
+  if (aEnd == start) {
+    assert(bEnd != start);
+    final insertedNodes = new List();
+    final insertedPositions = new List();
+    for (var i = start; i < bEnd; i++) {
+      insertedNodes.add(b[i]);
+      insertedPositions.add(aEnd);
+    }
+    return new ElementChildrenPatch(
+        null,
+        null,
+        null,
+        insertedNodes,
+        insertedPositions,
+        modifiedNodes.isEmpty ? null : modifiedNodes,
+        modifiedPositions.isEmpty ? null : modifiedPositions);
+  } else if (bEnd == start) {
+    final removedNodes = new List();
+    final removedPositions = new List();
+    for (var i = start; i < aEnd; i++) {
+      removedNodes.add(a[i]);
+      removedPositions.add(i);
+    }
+    return new ElementChildrenPatch(
+        removedNodes,
+        removedPositions,
+        null,
+        null,
+        null,
+        modifiedNodes.isEmpty ? null : modifiedNodes,
+        modifiedPositions.isEmpty ? null : modifiedPositions);
+  } else {
+    aLength = aEnd - start;
+    bLength = bEnd - start;
+
+    final unchangedSourcePositions = new List<int>();
+    final unchangedTargetPositions = new List<int>();
+    final removedNodes = new List<Node>();
+    final removedPositions = new List<int>();
+    final insertedNodes = new List<Node>();
+    final insertedPositions = new List<int>();
+
+    final sources = new List<int>.filled(bLength, -1);
+
+    var moved = false;
+
+    // when both lists are small, the join operation is much faster with simple
+    // MxN list search instead of hashmap join
+    if (aLength * bLength <= 16) {
+      var lastTarget = 0;
+      var removeOffset = 0;
+
+      for (var i = 0; i < aLength; i++) {
+        final iOff = i + start;
+        final aNode = a[iOff];
+        var removed = true;
+
+        for (var j = 0; j < bLength; j++) {
+          final jOff = j + start;
+          final bNode = b[jOff];
+          if (aNode.key == bNode.key) {
+            sources[j] = i - removeOffset;
+
+            // check if items in wrong order
+            if (lastTarget > j) {
+              moved = true;
+            } else {
+              lastTarget = j;
+            }
+
+            unchangedSourcePositions.add(iOff);
+            unchangedTargetPositions.add(jOff);
+
+            removed = false;
+            break;
+          }
+        }
+
+        if (removed) {
+          removedNodes.add(aNode);
+          removedPositions.add(iOff);
+          removeOffset++;
+          changesCounter++;
+        }
+      }
+
+    } else {
+      final keyIndex = new HashMap<Object, int>();
+      var lastTarget = 0;
+      var removeOffset = 0;
+
+      // index nodes from list [b]
+      for (var i = 0; i < bLength; i++) {
+        final node = b[i + start];
+        keyIndex[node.key] = i;
+      }
+
+      // index nodes from list [a] and check if they're removed
+      for (var i = 0; i < aLength; i++) {
+        final iOff = i + start;
+        final sourceNode = a[iOff];
+        final j = keyIndex[sourceNode.key];
+        if (j != null) {
+          final jOff = j + start;
           sources[j] = i - removeOffset;
 
           // check if items in wrong order
@@ -304,148 +473,104 @@ ElementChildrenPatch _diffChildren2(List<Node> a, List<Node> b) {
             lastTarget = j;
           }
 
-          unchangedSourcePositions.add(i);
-          unchangedTargetPositions.add(j);
-
-          removed = false;
-          break;
-        }
-      }
-
-      if (removed) {
-        removedNodes.add(aNode);
-        removedPositions.add(i);
-        removeOffset++;
-        changesCounter++;
-      }
-    }
-
-  } else {
-    final keyIndex = new HashMap<Object, int>();
-    var lastTarget = 0;
-    var removeOffset = 0;
-
-    // index nodes from list [b]
-    for (var i = 0; i < b.length; i++) {
-      final node = b[i];
-      keyIndex[node.key] = i;
-    }
-
-    // index nodes from list [a] and check if they're removed
-    for (var i = 0; i < a.length; i++) {
-      final sourceNode = a[i];
-      final targetIndex = keyIndex[sourceNode.key];
-      if (targetIndex != null) {
-        final targetNode = b[targetIndex];
-
-        sources[targetIndex] = i - removeOffset;
-
-        // check if items in wrong order
-        if (lastTarget > targetIndex) {
-          moved = true;
+          unchangedSourcePositions.add(iOff);
+          unchangedTargetPositions.add(jOff);
         } else {
-          lastTarget = targetIndex;
+          removedNodes.add(sourceNode);
+          removedPositions.add(iOff);
+          removeOffset++;
+          changesCounter++;
         }
-
-        unchangedSourcePositions.add(i);
-        unchangedTargetPositions.add(targetIndex);
-      } else {
-        removedNodes.add(sourceNode);
-        removedPositions.add(i);
-        removeOffset++;
-        changesCounter++;
-      }
-    }
-  }
-
-  var movedPositions;
-  // new length without removed nodes
-  final newLength = a.length - removedPositions.length;
-
-  if (moved) {
-    // create new list without removed/inserted nodes
-    // and use source position ids instead of vnodes
-    final c = new List<int>.filled(newLength, 0);
-
-    // fill new lists and find all inserted/unchanged nodes
-    var insertedOffset = 0;
-    for (var i = 0; i < b.length; i++) {
-      final node = b[i];
-      if (sources[i] == -1) {
-        insertedNodes.add(node);
-        final pos = i - insertedOffset;
-        insertedPositions.add(pos >= newLength ? -1 : pos);
-        insertedOffset++;
-        changesCounter++;
-      } else {
-        c[i - insertedOffset] = sources[i];
       }
     }
 
-    final seq = _lis(c);
+    var movedPositions;
+    // new length without removed nodes
+    final newLength = aLength - removedPositions.length;
 
-    movedPositions = [];
-    var i = c.length - 1;
-    var j = seq.length - 1;
+    if (moved) {
+      // create new list without removed/inserted nodes
+      // and use source position ids instead of vnodes
+      final c = new List<int>.filled(newLength, 0);
 
-    while (i >= 0) {
-      if (j < 0 || i != seq[j]) {
-        var t;
-        if (i + 1 == c.length) {
-          t = -1;
+      // fill new lists and find all inserted/unchanged nodes
+      var insertedOffset = 0;
+      for (var i = 0; i < bLength; i++) {
+        final node = b[i + start];
+        if (sources[i] == -1) {
+          insertedNodes.add(node);
+          final pos = i - insertedOffset;
+          insertedPositions.add(pos >= newLength ? a.length : pos + start);
+          insertedOffset++;
+          changesCounter++;
         } else {
-          t = c[i + 1];
+          c[i - insertedOffset] = sources[i];
         }
-        movedPositions.add(c[i]);
-        movedPositions.add(t);
-      } else {
-        j--;
       }
-      i--;
+
+      final seq = _lis(c);
+
+      movedPositions = [];
+      var i = c.length - 1;
+      var j = seq.length - 1;
+
+      while (i >= 0) {
+        if (j < 0 || i != seq[j]) {
+          final ix = i + 1;
+          var t;
+          if (ix == c.length) {
+            t = ix + start;
+          } else {
+            t = c[ix] + start;
+          }
+          movedPositions.add(c[i] + start);
+          movedPositions.add(t);
+        } else {
+          j--;
+        }
+        i--;
+      }
+
+      changesCounter += movedPositions.length;
+    } else {
+      var insertedOffset = 0;
+      for (var i = 0; i < bLength; i++) {
+        if (sources[i] == -1) {
+          final node = b[i + start];
+          insertedNodes.add(node);
+          final pos = i - insertedOffset;
+          insertedPositions.add(pos + start);
+          changesCounter++;
+          insertedOffset++;
+        }
+      }
     }
 
-    changesCounter += movedPositions.length;
-  } else {
-    var insertedOffset = 0;
-    for (var i = 0; i < b.length; i++) {
-      final node = b[i];
-      if (sources[i] == -1) {
-        insertedNodes.add(node);
-        final pos = i - insertedOffset;
-        insertedPositions.add(pos >= newLength ? -1 : pos);
+    for (var i = 0; i < unchangedSourcePositions.length; i++) {
+      final source = unchangedSourcePositions[i];
+      final target = unchangedTargetPositions[i];
+      final node = a[source];
+      final patch = node.diff(b[target]);
+      if (patch != null) {
+        modifiedPositions.add(source);
+        modifiedNodes.add(patch);
         changesCounter++;
-        insertedOffset++;
       }
     }
-  }
 
-  final modifiedPositions = [];
-  final modifiedNodes = [];
-
-  for (var i = 0; i < unchangedSourcePositions.length; i++) {
-    final source = unchangedSourcePositions[i];
-    final target = unchangedTargetPositions[i];
-    final node = a[source];
-    final patch = node.diff(b[target]);
-    if (patch != null) {
-      modifiedPositions.add(source);
-      modifiedNodes.add(patch);
-      changesCounter++;
+    if (changesCounter == 0) {
+      return null;
     }
-  }
 
-  if (changesCounter == 0) {
-    return null;
+    return new ElementChildrenPatch(
+        removedNodes.isEmpty ? null : removedNodes,
+        removedPositions.isEmpty ? null : removedPositions,
+        movedPositions,
+        insertedNodes.isEmpty ? null : insertedNodes,
+        insertedPositions.isEmpty ? null : insertedPositions,
+        modifiedNodes.isEmpty ? null : modifiedNodes,
+        modifiedPositions.isEmpty ? null : modifiedPositions);
   }
-
-  return new ElementChildrenPatch(
-      removedNodes.isEmpty ? null : removedNodes,
-      removedPositions.isEmpty ? null : removedPositions,
-      movedPositions,
-      insertedNodes.isEmpty ? null : insertedNodes,
-      insertedPositions.isEmpty ? null : insertedPositions,
-      modifiedNodes.isEmpty ? null : modifiedNodes,
-      modifiedPositions.isEmpty ? null : modifiedPositions);
 }
 
 /// Algorithm that finds longest increasing subsequence.

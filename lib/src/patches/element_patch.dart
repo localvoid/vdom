@@ -179,7 +179,8 @@ void applyChildrenPatch(ElementChildrenPatch patch, html.Node node, [bool isAtta
   }
 
   if (movedPositions != null) {
-    final cached = movedPositions.length > 16 ? new List.from(children) : children;
+    final cached = movedPositions.length > 1 ? new List.from(children) : children;
+    final cachedLength = cached.length;
     final moveOperationsCount = movedPositions.length >> 1;
     final moveSources = new List(moveOperationsCount);
     final moveTargets = new List(moveOperationsCount);
@@ -189,18 +190,13 @@ void applyChildrenPatch(ElementChildrenPatch patch, html.Node node, [bool isAtta
       final source = movedPositions[offset];
       final target = movedPositions[offset + 1];
       moveSources[i] = cached[source];
-      moveTargets[i] = target != -1 ? cached[target] : -1;
+      moveTargets[i] = target < cachedLength ? cached[target] : null;
     }
 
     for (var i = 0; i < moveOperationsCount; i++) {
       final source = moveSources[i];
       final target = moveTargets[i];
-
-      if (target != -1) {
-        node.insertBefore(source, target);
-      } else {
-        node.append(source);
-      }
+      node.insertBefore(source, target);
     }
   }
 
@@ -214,12 +210,16 @@ void applyChildrenPatch(ElementChildrenPatch patch, html.Node node, [bool isAtta
         }
       }
     } else {
-      final cached = insertedPositions.length > 16 ? new List.from(children) : children;
+      final cachedLength = children.length;
+      final insertedPositionsCached = new List(insertedPositions.length);
+      for (var i = 0; i < insertedPositions.length; i++) {
+        final p = insertedPositions[i];
+        insertedPositionsCached[i] = p < cachedLength ? children[p] : null;
+      }
       for (var i = 0; i < insertedPositions.length; i++) {
         final newNode = insertedNodes[i];
-
-        final p = insertedPositions[i];
-        node.insertBefore(newNode.render(), p == -1 ? null : cached[p]);
+        final e = newNode.render();
+        node.insertBefore(e, insertedPositionsCached[i]);
         if (isAttached) {
           newNode.attached();
         }

@@ -50,27 +50,29 @@ class Element extends Node {
 
   /// Render [Element] and return [html.Element]
   html.Element render() {
-    var result = html.document.createElement(tag);
+    var element = html.document.createElement(tag);
+    mount(element);
+    return element;
+  }
 
+  void mount(html.Element element) {
     if (attributes != null) {
       attributes.forEach((key, value) {
-        result.setAttribute(key, value);
+        element.setAttribute(key, value);
       });
     }
     if (styles != null) {
       styles.forEach((key, value) {
-        result.style.setProperty(key, value);
+        element.style.setProperty(key, value);
       });
     }
     if (classes != null) {
-      result.classes.addAll(classes);
+      element.classes.addAll(classes);
     }
 
     for (var i = 0; i < children.length; i++) {
-      result.append(children[i].render());
+      element.append(children[i].render());
     }
-
-    return result;
   }
 
   void attached() {

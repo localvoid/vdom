@@ -5,9 +5,5 @@
 /// Virtual DOM diff/patch
 library vdom;
 
-import 'package:vdom/src/vdom.dart';
-
 export 'package:vdom/src/vdom.dart' show Node, Element, Text, NodePatch,
     ElementPatch, TextPatch, diffChildren, applyChildrenPatch;
-
-part 'package:vdom/src/api.dart';

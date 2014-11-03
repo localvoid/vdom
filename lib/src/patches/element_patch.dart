@@ -128,8 +128,12 @@ void _applyStylesPatch(MapPatch patch, html.Element node) {
 
 void _applyClassListPatch(UnorderedListPatch patch, html.Element node) {
   final classes = node.classes;
-  classes.removeAll(patch.removed);
-  classes.addAll(patch.inserted);
+  if (patch.removed != null) {
+    classes.removeAll(patch.removed);
+  }
+  if (patch.inserted != null) {
+    classes.addAll(patch.inserted);
+  }
 }
 
 void applyChildrenPatch(ElementChildrenPatch patch, html.Node node, [bool isAttached = false]) {

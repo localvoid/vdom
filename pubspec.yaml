@@ -1,11 +1,10 @@
 name: vdom
-version: 0.3.4+1
+version: 0.3.5
 author: Boris Kaul <localvoid@gmail.com>
 description: Virtual DOM diff/patch.
 homepage: https://github.com/localvoid/vdom
 environment:
   sdk: '>=1.6.0'
 dev_dependencies:
-  benchmark_harness: any
   browser: any
   unittest: any

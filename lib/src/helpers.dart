@@ -2,7 +2,7 @@
 // details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-part of vdom;
+part of vdom.helpers;
 
 Element a(Object key, [List<Node> children = null, Map<String,
     String> attributes = null, List<String> classes = null]) {
@@ -327,6 +327,11 @@ Element header(Object key, [List<Node> children = null, Map<String,
 Element footer(Object key, [List<Node> children = null, Map<String,
     String> attributes = null, List<String> classes = null]) {
   return new Element(key, 'footer', children, attributes, classes);
+}
+
+Element strong(Object key, [List<Node> children = null, Map<String,
+    String> attributes = null, List<String> classes = null]) {
+  return new Element(key, 'strong', children, attributes, classes);
 }
 
 Text t(Object key, String data) {

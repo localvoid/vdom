@@ -2,8 +2,15 @@
 // details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-/// Virtual DOM diff/patch
+/// Virtual DOM synchronization library
 library vdom;
 
-export 'package:vdom/src/vdom.dart' show Node, Element, Text, NodePatch,
-    ElementPatch, TextPatch, diffChildren, applyChildrenPatch;
+import 'dart:html' as html;
+import 'dart:collection';
+
+part 'package:vdom/src/set.dart';
+part 'package:vdom/src/map.dart';
+part 'package:vdom/src/style.dart';
+part 'package:vdom/src/node.dart';
+part 'package:vdom/src/text.dart';
+part 'package:vdom/src/element.dart';

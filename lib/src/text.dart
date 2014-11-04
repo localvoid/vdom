@@ -1,8 +1,8 @@
-// Copyright (c) 2014, the VDom project authors. Please see the AUTHORS file for
+// Copyright (c) 2014, the vsync project authors. Please see the AUTHORS file for
 // details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-part of vdom.internal;
+part of vdom;
 
 /// Virtual Text Node.
 class Text extends Node {
@@ -13,16 +13,18 @@ class Text extends Node {
   Text(Object key, this.data) : super(key);
 
   /// Run diff against [other] [Text]
-  TextPatch diff(Text other) {
-    if (identical(this, other) || data == other.data) {
-      return null;
+  void sync(Text other, [bool isAttached = false]) {
+    other.ref = ref;
+    if (data != other.data) {
+      (ref as html.Text).data = other.data;
     }
-    return new TextPatch(other.data);
   }
 
   /// Render [html.Text]
   html.Text render() {
-    return new html.Text(data);
+    final n = new html.Text(data);
+    ref = n;
+    return n;
   }
 
   String toString() => '$data';

@@ -32,15 +32,9 @@ class Element extends Node {
   void sync(Element other, [bool isAttached = false]) {
     other.ref = ref;
     html.Element r = ref;
-    if (attributes != null && other.attributes != null) {
-      syncMap(attributes, other.attributes, r.attributes);
-    }
-    if (styles != null && other.styles != null) {
-      syncStyle(styles, other.styles, r.style);
-    }
-    if (classes != null && other.classes != null) {
-      syncSet(classes, other.classes, r.classes);
-    }
+    syncMap(attributes, other.attributes, r.attributes);
+    syncStyle(styles, other.styles, r.style);
+    syncSet(classes, other.classes, r.classes);
     syncChildren(children, other.children, r, isAttached);
   }
 

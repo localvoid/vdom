@@ -13,7 +13,7 @@ class Text extends Node {
   Text(Object key, this.data) : super(key);
 
   /// Run diff against [other] [Text]
-  void sync(Text other, [bool isAttached = false]) {
+  void sync(Text other, bool isAttached) {
     other.ref = ref;
     if (data != other.data) {
       (ref as html.Text).data = other.data;
@@ -22,9 +22,21 @@ class Text extends Node {
 
   /// Render [html.Text]
   html.Text render() {
-    final n = new html.Text(data);
-    ref = n;
-    return n;
+    ref = new html.Text(data);
+    return ref;
+  }
+
+  /// Inject into container
+  void inject(html.Element container, bool isAttached) {
+    ref = new html.Text(data);
+    container.append(ref);
+  }
+
+  /// Inject into container before [nextRef] node
+  void injectBefore(html.Element container, html.Node nextRef,
+                    bool isAttached) {
+    ref = new html.Text(data);
+    container.insertBefore(ref, nextRef);
   }
 
   String toString() => '$data';

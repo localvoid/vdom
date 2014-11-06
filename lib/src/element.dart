@@ -29,23 +29,45 @@ class Element extends Node {
     assert(children != null);
   }
 
-  void sync(Element other, [bool isAttached = false]) {
+  void sync(Element other, bool isAttached) {
     other.ref = ref;
     html.Element r = ref;
-    syncMap(attributes, other.attributes, r.attributes);
-    syncStyle(styles, other.styles, r.style);
-    syncSet(classes, other.classes, r.classes);
+    if (attributes != null || other.attributes != null) {
+      syncMap(attributes, other.attributes, r.attributes);
+    }
+    if (styles != null || other.styles != null) {
+      syncStyle(styles, other.styles, r.style);
+    }
+    if (classes != null || other.classes != null) {
+      syncSet(classes, other.classes, r.classes);
+    }
     syncChildren(children, other.children, r, isAttached);
   }
 
   /// Render [Element] and return [html.Element]
   html.Element render() {
-    var element = html.document.createElement(tag);
-    mount(element);
-    return element;
+    ref = html.document.createElement(tag);
+    mount(ref, false);
+    return ref;
   }
 
-  void mount(html.Element element) {
+  /// Inject into container
+  void inject(html.Element container, bool isAttached) {
+    var element = html.document.createElement(tag);
+    container.append(element);
+    mount(element, isAttached);
+  }
+
+  /// Inject into container before [nextRef] node
+  void injectBefore(html.Element container, html.Node nextRef,
+                    bool isAttached) {
+    var element = html.document.createElement(tag);
+    container.insertBefore(element, nextRef);
+    mount(element, isAttached);
+  }
+
+  /// Mount on top of existing element
+  void mount(html.Element element, bool isAttached) {
     ref = element;
     if (attributes != null) {
       attributes.forEach((key, value) {
@@ -62,32 +84,34 @@ class Element extends Node {
     }
 
     for (var i = 0; i < children.length; i++) {
-      element.append(children[i].render());
+      children[i].inject(element, isAttached);
     }
   }
 
-  void attached() {
+  void propagateAttached() {
+    attached();
     for (var i = 0; i < children.length; i++) {
-      children[i].attached();
+      children[i].propagateAttached();
     }
   }
 
-  void detached() {
+  void propagateDetached() {
+    detached();
     for (var i = 0; i < children.length; i++) {
-      children[i].detached();
+      children[i].propagateDetached();
     }
   }
 
   String toString() => '<$tag key="$key">${children.join()}</$tag>';
 }
 
-void syncChildren(List<Node> a, List<Node> b, html.Element parent, [bool isAttached = false]) {
+void syncChildren(List<Node> a, List<Node> b, html.Element parent, bool isAttached) {
   if (a.isNotEmpty) {
     if (b.isEmpty) {
       // when [b] is empty, it means that all childrens from list [a] were
       // removed
       for (var i = 0; i < a.length; i++) {
-        a[i].dispose();
+        a[i].dispose(isAttached);
       }
     } else {
       if (a.length == 1 && b.length == 1) {
@@ -101,11 +125,8 @@ void syncChildren(List<Node> a, List<Node> b, html.Element parent, [bool isAttac
         if (aNode.key == bNode.key) {
           var modified = aNode.sync(bNode, isAttached);
         } else {
-          aNode.dispose();
-          parent.append(bNode.render());
-          if (isAttached) {
-            bNode.attached();
-          }
+          aNode.dispose(isAttached);
+          bNode.inject(parent, isAttached);
         }
       } else if (a.length == 1) {
         // fast path when [a] have 1 child
@@ -121,24 +142,18 @@ void syncChildren(List<Node> a, List<Node> b, html.Element parent, [bool isAttac
             unchangedPosition = i;
             break;
           } else {
-            parent.insertBefore(bNode.render(), aNode.ref);
-            if (isAttached) {
-              bNode.attached();
-            }
+            bNode.injectBefore(parent, aNode.ref, isAttached);
           }
         }
 
         if (unchangedPosition != -1) {
           for (var i = unchangedPosition + 1; i < b.length; i++) {
             final n = b[i];
-            parent.append(n.render());
-            if (isAttached) {
-              n.attached();
-            }
+            n.inject(parent, isAttached);
           }
           aNode.sync(b[unchangedPosition], isAttached);
         } else {
-          aNode.dispose();
+          aNode.dispose(isAttached);
         }
       } else if (b.length == 1) {
         // fast path when [b] have 1 child
@@ -154,21 +169,17 @@ void syncChildren(List<Node> a, List<Node> b, html.Element parent, [bool isAttac
             unchangedPosition = i;
             break;
           } else {
-            aNode.dispose();
+            aNode.dispose(isAttached);
           }
         }
 
         if (unchangedPosition != -1) {
           for (var i = unchangedPosition + 1; i < a.length; i++) {
-            a[i].dispose();
+            a[i].dispose(isAttached);
           }
           a[unchangedPosition].sync(bNode, isAttached);
         } else {
-          parent.append(bNode.render());
-          print(parent);
-          if (isAttached) {
-            bNode.attached();
-          }
+          bNode.inject(parent, isAttached);
         }
       } else {
         // both [a] and [b] have more than 1 child, so we should handle
@@ -181,10 +192,7 @@ void syncChildren(List<Node> a, List<Node> b, html.Element parent, [bool isAttac
     // all childrens from list [b] were inserted
     for (var i = 0; i < b.length; i++) {
       final n = b[i];
-      parent.append(n.render());
-      if (isAttached) {
-        n.attached();
-      }
+      n.inject(parent, isAttached);
     }
   }
 }
@@ -210,16 +218,13 @@ void _syncChildren2(List<Node> a, List<Node> b, html.Element parent, bool isAtta
   if (start == bLength) {
     if (start != aLength) {
       for (var i = start; i < a.length; i++) {
-        a[i].dispose();
+        a[i].dispose(isAttached);
       }
     }
   } else if (start == aLength) {
     for (var i = start; i < b.length; i++) {
       final n = b[i];
-      parent.append(n.render());
-      if (isAttached) {
-        n.attached();
-      }
+      n.inject(parent, isAttached);
     }
   } else {
     var aEnd = a.length - 1;
@@ -243,14 +248,11 @@ void _syncChildren2(List<Node> a, List<Node> b, html.Element parent, bool isAtta
       final aEndRef = a[aEnd].ref;
       for (var i = start; i < bEnd; i++) {
         final n = b[i];
-        parent.insertBefore(n.render(), aEndRef);
-        if (isAttached) {
-          n.attached();
-        }
+        n.injectBefore(parent, aEndRef, isAttached);
       }
     } else if (bEnd == start) {
       for (var i = start; i < aEnd; i++) {
-        a[i].dispose();
+        a[i].dispose(isAttached);
       }
     } else {
       aLength = aEnd - start;
@@ -291,7 +293,7 @@ void _syncChildren2(List<Node> a, List<Node> b, html.Element parent, bool isAtta
           }
 
           if (removed) {
-            aNode.dispose();
+            aNode.dispose(isAttached);
             removeOffset++;
           }
         }
@@ -322,7 +324,7 @@ void _syncChildren2(List<Node> a, List<Node> b, html.Element parent, bool isAtta
 
             aNode.sync(bNode, isAttached);
           } else {
-            aNode.dispose();
+            aNode.dispose(isAttached);
             removeOffset++;
           }
         }
@@ -338,10 +340,7 @@ void _syncChildren2(List<Node> a, List<Node> b, html.Element parent, bool isAtta
             final node = b[pos];
             final nextPos = pos + 1;
             final next = nextPos < b.length ? b[nextPos].ref : null;
-            parent.insertBefore(node.render(), next);
-            if (isAttached) {
-              node.attached();
-            }
+            node.injectBefore(parent, next, isAttached);
           } else {
             if (j < 0 || i != seq[j]) {
               final pos = i + start;
@@ -362,10 +361,7 @@ void _syncChildren2(List<Node> a, List<Node> b, html.Element parent, bool isAtta
             final node = b[pos];
             final nextPos = pos + 1;
             final next = nextPos < b.length ? b[nextPos].ref : null;
-            parent.insertBefore(node.render(), next);
-            if (isAttached) {
-              node.attached();
-            }
+            node.injectBefore(parent, next, isAttached);
           }
         }
       }

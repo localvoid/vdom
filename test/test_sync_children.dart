@@ -1,3 +1,4 @@
+import 'dart:html';
 import 'package:unittest/unittest.dart';
 import 'package:unittest/html_enhanced_config.dart';
 import 'package:vdom/vdom.dart' as v;
@@ -31,12 +32,14 @@ List<v.Element> gen(List items) {
 }
 
 void checkSync(v.Element a, v.Element b) {
-  final aHtmlNode = a.render();
-  final bHtmlNode = b.render();
-  final bHtml = bHtmlNode.innerHtml;
+  final aDiv = new DivElement();
+  final bDiv = new DivElement();
+  a.inject(aDiv, false);
+  b.inject(bDiv, false);
+  final bHtml = bDiv.innerHtml;
 
-  a.sync(b);
-  final aHtml = aHtmlNode.innerHtml;
+  a.sync(b, false);
+  final aHtml = aDiv.innerHtml;
 
   if (aHtml != bHtml) {
     throw new TestFailure('Expected: "$bHtml" Actual: "$aHtml"');

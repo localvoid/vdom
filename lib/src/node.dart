@@ -15,15 +15,24 @@ abstract class Node {
 
   Node(this.key);
 
-  void sync(Node other, [bool isAttached = false]);
+  void sync(Node other, bool isAttached);
 
   html.Node render();
 
-  void dispose() {
+  void inject(html.Element container, bool isAttached);
+  void injectBefore(html.Element container, html.Node nextRef,
+                    bool isAttached);
+
+  void dispose(bool isAttached) {
     ref.remove();
-    detached();
+    if (isAttached) {
+      detached();
+    }
   }
 
   void attached() {}
   void detached() {}
+
+  void propagateAttached() {}
+  void propagateDetached() {}
 }

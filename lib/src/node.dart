@@ -15,17 +15,17 @@ abstract class Node {
 
   Node(this.key);
 
-  void sync(Node other, bool isAttached);
+  void sync(Node other, Context context);
 
-  html.Node render();
+  html.Node render(Context context);
 
-  void inject(html.Element container, bool isAttached);
+  void inject(html.Element container, Context context);
   void injectBefore(html.Element container, html.Node nextRef,
-                    bool isAttached);
+                    Context context);
 
-  void dispose(bool isAttached) {
+  void dispose(Context context) {
     ref.remove();
-    if (isAttached) {
+    if (context.isAttached) {
       detached();
     }
   }

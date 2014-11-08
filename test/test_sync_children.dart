@@ -34,11 +34,11 @@ List<v.Element> gen(List items) {
 void checkSync(v.Element a, v.Element b) {
   final aDiv = new DivElement();
   final bDiv = new DivElement();
-  a.inject(aDiv, false);
-  b.inject(bDiv, false);
+  a.inject(aDiv, const v.Context(false));
+  b.inject(bDiv, const v.Context(false));
   final bHtml = bDiv.innerHtml;
 
-  a.sync(b, false);
+  a.sync(b, const v.Context(false));
   final aHtml = aDiv.innerHtml;
 
   if (aHtml != bHtml) {

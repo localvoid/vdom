@@ -13,5 +13,6 @@ part 'package:vdom/src/set.dart';
 part 'package:vdom/src/map.dart';
 part 'package:vdom/src/style.dart';
 part 'package:vdom/src/node.dart';
+part 'package:vdom/src/proxy.dart';
 part 'package:vdom/src/text.dart';
 part 'package:vdom/src/element.dart';

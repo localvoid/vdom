@@ -4,7 +4,7 @@
 
 part of vdom;
 
-void syncStyle(Map a, Map b, html.CssStyleDeclaration n) {
+void updateStyle(Map a, Map b, html.CssStyleDeclaration n) {
   if (identical(a, b)) {
     return null;
   }

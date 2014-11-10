@@ -4,7 +4,7 @@
 
 part of vdom;
 
-void syncSet(List a, List b, Set n) {
+void updateSet(List a, List b, Set n) {
   if (identical(a, b)) {
     return null;
   }

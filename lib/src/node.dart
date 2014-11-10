@@ -15,13 +15,18 @@ abstract class Node {
 
   Node(this.key);
 
-  void sync(Node other, Context context);
+  /// Create html Node
+  void create(Context context);
 
-  html.Node render(Context context);
+  /// Mount on top of existing Node
+  void mount(html.Node node, Context context) {
+    ref = node;
+  }
 
-  void inject(html.Element container, Context context);
-  void injectBefore(html.Element container, html.Node nextRef,
-                    Context context);
+  /// Render contents
+  void render(Context context) {}
+
+  void update(Node other, Context context);
 
   void dispose(Context context) {
     ref.remove();
@@ -33,6 +38,24 @@ abstract class Node {
   void attached() {}
   void detached() {}
 
-  void propagateAttached() {}
-  void propagateDetached() {}
+  void attach() {}
+  void detach() {}
+}
+
+void inject(Node n, html.Element parent, Context context) {
+  n.create(context);
+  parent.append(n.ref);
+  if (context.isAttached){
+    n.attached();
+  }
+  n.render(context);
+}
+
+void injectBefore(Node n, html.Element parent, html.Node nextRef, Context context) {
+  n.create(context);
+  parent.insertBefore(n.ref, nextRef);
+  if (context.isAttached){
+    n.attached();
+  }
+  n.render(context);
 }

@@ -4,7 +4,7 @@
 
 part of vdom;
 
-void syncMap(Map a, Map b, Map n) {
+void updateMap(Map a, Map b, Map n) {
   if (identical(a, b)) {
     return null;
   }

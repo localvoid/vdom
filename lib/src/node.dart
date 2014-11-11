@@ -42,7 +42,7 @@ abstract class Node {
   void detach() {}
 }
 
-void inject(Node n, html.Element parent, Context context) {
+void inject(Node n, html.Node parent, Context context) {
   n.create(context);
   parent.append(n.ref);
   if (context.isAttached){
@@ -51,7 +51,7 @@ void inject(Node n, html.Element parent, Context context) {
   n.render(context);
 }
 
-void injectBefore(Node n, html.Element parent, html.Node nextRef, Context context) {
+void injectBefore(Node n, html.Node parent, html.Node nextRef, Context context) {
   n.create(context);
   parent.insertBefore(n.ref, nextRef);
   if (context.isAttached){

@@ -23,18 +23,25 @@ Creates a root-level html node for this virtual Node. It is essential
 to render Nodes in two steps, so we can propagate attached calls at
 the same time as we render subtrees.
 
-#### `void mount(Context context)`
+Two-step rendering is also solves problem when you need to stop at any
+point in `render()` to wait for async operations. When we create
+root-level html node, we can just place it as a placeholder in the DOM
+and wait for any async operation to finish.
+
+#### `void mount(html.Node node, Context context)`
 
 Mount root-level node to the existing root-level html node. It doesn't
-mount subtrees, just root-level node.
+mount subtrees, just root-level node. It is used in Components as a
+micro-optimization.
 
 #### `void render(Context context)`
 
-Render attributes, styles, classes, children, etc.
+Render attributes, styles, classes, children, etc. "Second step" in ours
+two-step rendering model.
 
 #### `void update(Node other, Context context)`
 
-Update previous tree with the new one.
+Update previous node with the new one.
 
 ## Usage example
 
@@ -45,7 +52,7 @@ main() {
   final a = new v.Element(#uniqueKey, 'div', const []);
   a.create(const v.Context(false));
   document.body.append(a.ref);
-  a.attach();
+  a.attached();
   a.render(const v.Context(true));
 
   final b = new v.Element(#uniqueKey, 'div',

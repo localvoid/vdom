@@ -47,8 +47,14 @@ abstract class ElementBase extends Node {
   }
 }
 
+abstract class Container {
+  void insertBefore(Node node, html.Node nextRef, Context context);
+  void move(Node node, html.Node nextRef, Context context);
+  void removeChild(Node node, Context context);
+}
+
 /// Virtual Dom Element
-class Element extends ElementBase {
+class Element extends ElementBase implements Container {
   /// [Element] tag name
   final String tag;
 
@@ -70,7 +76,7 @@ class Element extends ElementBase {
 
   void update(Element other, Context context) {
     super.update(other, context);
-    updateChildren(children, other.children, ref, context);
+    updateChildren(children, other.children, this, context);
   }
 
   /// Mount on top of existing element
@@ -87,16 +93,28 @@ class Element extends ElementBase {
     }
   }
 
+  void insertBefore(Node node, html.Node nextRef, Context context) {
+    injectBefore(node, ref, nextRef, context);
+  }
+
+  void move(Node node, html.Node nextRef, Context context) {
+    ref.insertBefore(node.ref, nextRef);
+  }
+
+  void removeChild(Node node, Context context) {
+    node.dispose(context);
+  }
+
   String toString() => '<$tag key="$key">${children.join()}</$tag>';
 }
 
-void updateChildren(List<Node> a, List<Node> b, html.Element parent, Context context) {
+void updateChildren(List<Node> a, List<Node> b, Container parent, Context context) {
   if (a.isNotEmpty) {
     if (b.isEmpty) {
       // when [b] is empty, it means that all childrens from list [a] were
       // removed
       for (var i = 0; i < a.length; i++) {
-        a[i].dispose(context);
+        parent.removeChild(a[i], context);
       }
     } else {
       if (a.length == 1 && b.length == 1) {
@@ -110,8 +128,8 @@ void updateChildren(List<Node> a, List<Node> b, html.Element parent, Context con
         if (aNode.key == bNode.key) {
           var modified = aNode.update(bNode, context);
         } else {
-          aNode.dispose(context);
-          inject(bNode, parent, context);
+          parent.removeChild(aNode, context);
+          parent.insertBefore(bNode, null, context);
         }
       } else if (a.length == 1) {
         // fast path when [a] have 1 child
@@ -127,17 +145,17 @@ void updateChildren(List<Node> a, List<Node> b, html.Element parent, Context con
             unchangedPosition = i;
             break;
           } else {
-            injectBefore(bNode, parent, aNode.ref, context);
+            parent.insertBefore(bNode, aNode.ref, context);
           }
         }
 
         if (unchangedPosition != -1) {
           for (var i = unchangedPosition + 1; i < b.length; i++) {
-            inject(b[i], parent, context);
+            parent.insertBefore(b[i], null, context);
           }
           aNode.update(b[unchangedPosition], context);
         } else {
-          aNode.dispose(context);
+          parent.removeChild(aNode, context);
         }
       } else if (b.length == 1) {
         // fast path when [b] have 1 child
@@ -153,35 +171,35 @@ void updateChildren(List<Node> a, List<Node> b, html.Element parent, Context con
             unchangedPosition = i;
             break;
           } else {
-            aNode.dispose(context);
+            parent.removeChild(aNode, context);
           }
         }
 
         if (unchangedPosition != -1) {
           for (var i = unchangedPosition + 1; i < a.length; i++) {
-            a[i].dispose(context);
+            parent.removeChild(a[i], context);
           }
           a[unchangedPosition].update(bNode, context);
         } else {
-          inject(bNode, parent, context);
+          parent.insertBefore(bNode, null, context);
         }
       } else {
         // both [a] and [b] have more than 1 child, so we should handle
         // more complex situations with inserting/removing and repositioning
         // childrens
-        return _syncChildren2(a, b, parent, context);
+        return _updateChildren2(a, b, parent, context);
       }
     }
   } else if (b.length > 0) {
     // all childrens from list [b] were inserted
     for (var i = 0; i < b.length; i++) {
       final n = b[i];
-      inject(n, parent, context);
+      parent.insertBefore(n, null, context);
     }
   }
 }
 
-void _syncChildren2(List<Node> a, List<Node> b, html.Element parent, Context context) {
+void _updateChildren2(List<Node> a, List<Node> b, Container parent, Context context) {
   var aLength = a.length;
   var bLength = b.length;
 
@@ -202,13 +220,12 @@ void _syncChildren2(List<Node> a, List<Node> b, html.Element parent, Context con
   if (start == bLength) {
     if (start != aLength) {
       for (var i = start; i < a.length; i++) {
-        a[i].dispose(context);
+        parent.removeChild(a[i], context);
       }
     }
   } else if (start == aLength) {
     for (var i = start; i < b.length; i++) {
-      final n = b[i];
-      inject(n, parent, context);
+      parent.insertBefore(b[i], null, context);
     }
   } else {
     var aEnd = a.length - 1;
@@ -231,11 +248,11 @@ void _syncChildren2(List<Node> a, List<Node> b, html.Element parent, Context con
       assert(bEnd != start);
       final aEndRef = a[aEnd].ref;
       for (var i = start; i < bEnd; i++) {
-        injectBefore(b[i], parent, aEndRef, context);
+        parent.insertBefore(b[i], aEndRef, context);
       }
     } else if (bEnd == start) {
       for (var i = start; i < aEnd; i++) {
-        a[i].dispose(context);
+        parent.removeChild(a[i], context);
       }
     } else {
       aLength = aEnd - start;
@@ -276,7 +293,7 @@ void _syncChildren2(List<Node> a, List<Node> b, html.Element parent, Context con
           }
 
           if (removed) {
-            aNode.dispose(context);
+            parent.removeChild(aNode, context);
             removeOffset++;
           }
         }
@@ -307,7 +324,7 @@ void _syncChildren2(List<Node> a, List<Node> b, html.Element parent, Context con
 
             aNode.update(bNode, context);
           } else {
-            aNode.dispose(context);
+            parent.removeChild(aNode, context);
             removeOffset++;
           }
         }
@@ -323,14 +340,14 @@ void _syncChildren2(List<Node> a, List<Node> b, html.Element parent, Context con
             final node = b[pos];
             final nextPos = pos + 1;
             final next = nextPos < b.length ? b[nextPos].ref : null;
-            injectBefore(node, parent, next, context);
+            parent.insertBefore(node, next, context);
           } else {
             if (j < 0 || i != seq[j]) {
               final pos = i + start;
               final node = a[sources[i]];
               final nextPos = pos + 1;
               final next = nextPos < b.length ? b[nextPos].ref : null;
-              parent.insertBefore(node.ref, next);
+              parent.move(node, next, context);
             } else {
               j--;
             }
@@ -344,7 +361,7 @@ void _syncChildren2(List<Node> a, List<Node> b, html.Element parent, Context con
             final node = b[pos];
             final nextPos = pos + 1;
             final next = nextPos < b.length ? b[nextPos].ref : null;
-            injectBefore(node, parent, next, context);
+            parent.insertBefore(node, next, context);
           }
         }
       }
@@ -354,10 +371,8 @@ void _syncChildren2(List<Node> a, List<Node> b, html.Element parent, Context con
 
 /// Algorithm that finds longest increasing subsequence.
 List<int> _lis(List<int> a) {
-  final p = new List<int>.from(a);
-  final result = new List<int>();
-
-  result.add(0);
+  final p = new List<int>.from(a, growable: false);
+  final result = [0];
 
   for (var i = 0; i < a.length; i++) {
     if (a[i] == -1) {

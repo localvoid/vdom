@@ -2,28 +2,19 @@
 // details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-part of vdom.diff;
+part of vdom;
 
-class UnorderedListPatch {
-  final List removed;
-  final List inserted;
-
-  UnorderedListPatch(this.removed, this.inserted);
-}
-
-UnorderedListPatch unorderedListDiff(List a, List b) {
+void updateSet(List a, List b, Set n) {
   if (identical(a, b)) {
     return null;
   }
 
   if (a != null && a.length > 0) {
     if (b == null || b.length == 0) {
-      return new UnorderedListPatch(new List.from(a), null);
+      n.removeAll(a);
     } else {
       final aLength = a.length;
       final bLength = b.length;
-      final removedResult = new List();
-      final insertedResult = new List();
 
       if (aLength * bLength <= 16) {
         final visited = new List(bLength);
@@ -41,12 +32,12 @@ UnorderedListPatch unorderedListDiff(List a, List b) {
             }
           }
           if (removed) {
-            removedResult.add(aItem);
+            n.remove(aItem);
           }
         }
         for (var i = 0; i < bLength; i++) {
           if (visited[i] != true) {
-            insertedResult.add(b[i]);
+            n.add(b[i]);
           }
         }
       } else {
@@ -58,7 +49,7 @@ UnorderedListPatch unorderedListDiff(List a, List b) {
 
         for (var aItem in a) {
           if (!bIndex.containsKey(aItem)) {
-            removedResult.add(aItem);
+            n.remove(aItem);
           } else {
             bIndex[aItem] = true;
           }
@@ -66,22 +57,13 @@ UnorderedListPatch unorderedListDiff(List a, List b) {
 
         bIndex.forEach((k, v) {
           if (v == false) {
-            insertedResult.add(k);
+            n.add(k);
           }
         });
       }
-
-      if (removedResult.isEmpty && insertedResult.isEmpty) {
-        return null;
-      }
-
-      return new UnorderedListPatch(
-          removedResult.isEmpty ? null : removedResult,
-          insertedResult.isEmpty ? null : removedResult);
-
     }
   } else if (b != null && b.length > 0) {
-    return new UnorderedListPatch(null, new List.from(b));
+    n.addAll(b);
   }
   return null;
 }

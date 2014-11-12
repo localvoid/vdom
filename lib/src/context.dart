@@ -2,15 +2,11 @@
 // details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-part of vdom.diff;
+part of vdom;
 
-/// [TextPatch]
-class TextPatch extends NodePatch {
-  final String newData;
+class Context {
+  final bool _isAttached;
+  bool get isAttached => _isAttached;
 
-  TextPatch(this.newData);
-
-  void apply(html.Text node, Context context) {
-    node.data = newData;
-  }
+  const Context(this._isAttached);
 }

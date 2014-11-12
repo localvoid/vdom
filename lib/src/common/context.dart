@@ -1,4 +1,4 @@
-part of vdom;
+part of vdom.common;
 
 class Context {
   final bool _isAttached;

@@ -2,8 +2,9 @@
 // details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library vdom.helpers;
+part of vdom.diff;
 
-import 'package:vdom/vdom.dart';
-
-part 'package:vdom/src/sync/helpers.dart';
+abstract class NodePatch {
+  /// Apply patch to the [node]
+  void apply(html.Node node, Context context);
+}

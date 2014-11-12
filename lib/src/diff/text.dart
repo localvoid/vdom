@@ -1,24 +1,23 @@
-// Copyright (c) 2014, the vsync project authors. Please see the AUTHORS file for
+// Copyright (c) 2014, the VDom project authors. Please see the AUTHORS file for
 // details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-part of vdom;
+part of vdom.diff;
 
-/// Virtual Text Node
 class Text extends Node {
   String data;
 
   Text(Object key, this.data) : super(key);
 
-  void create(Context context) {
-    ref = new html.Text(data);
+  html.Text create(Context context) {
+    return new html.Text(data);
   }
 
-  void update(Text other, Context context) {
-    other.ref = ref;
+  TextPatch diff(Text other) {
     if (data != other.data) {
-      (ref as html.Text).data = other.data;
+      return new TextPatch(other.data);
     }
+    return null;
   }
 
   String toString() => '$data';

@@ -2,8 +2,15 @@
 // details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library vdom.helpers;
+part of vdom.diff;
 
-import 'package:vdom/vdom.dart';
+/// [TextPatch]
+class TextPatch extends NodePatch {
+  final String newData;
 
-part 'package:vdom/src/sync/helpers.dart';
+  TextPatch(this.newData);
+
+  void apply(html.Text node, Context context) {
+    node.data = newData;
+  }
+}

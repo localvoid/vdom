@@ -1,7 +1,7 @@
 import 'dart:html';
 import 'package:unittest/unittest.dart';
 import 'package:unittest/html_enhanced_config.dart';
-import 'package:vdom/vdom.dart' as v;
+import 'package:vdom/sync.dart' as v;
 
 void main() {
   useHtmlEnhancedConfiguration();

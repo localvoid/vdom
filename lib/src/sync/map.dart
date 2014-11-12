@@ -1,10 +1,10 @@
-// Copyright (c) 2014, the vsync project authors. Please see the AUTHORS file for
+// Copyright (c) 2014, the VDom project authors. Please see the AUTHORS file for
 // details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-part of vdom;
+part of vdom.sync;
 
-void updateStyle(Map a, Map b, html.CssStyleDeclaration n) {
+void updateMap(Map a, Map b, Map n) {
   if (identical(a, b)) {
     return null;
   }
@@ -12,31 +12,27 @@ void updateStyle(Map a, Map b, html.CssStyleDeclaration n) {
   if (a != null && a.length > 0) {
     if (b == null || b.length == 0) {
       // all keys removed
-      for (final i in a) {
-        n.removeProperty(i);
-      }
+      n.clear();
     } else {
       // find all modified and removed
       a.forEach((key, value) {
         final bValue = b[key];
         if (bValue == null) {
-          n.removeProperty(key);
+          n.remove(key);
         } else if (value != bValue) {
-          n.setProperty(key, value);
+          n[key] = value;
         }
       });
 
       // find all inserted
       b.forEach((key, value) {
         if (!a.containsKey(key)) {
-          n.setProperty(key, value);
+          n[key] = value;
         }
       });
     }
   } else if (b != null && b.length > 0) {
     // all keys inserted
-    b.forEach((key, value) {
-      n.setProperty(key, value);
-    });
+    n.addAll(b);
   }
 }

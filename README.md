@@ -6,27 +6,27 @@ Virtual DOM library for [Dart](https://www.dartlang.org/) inspired by
 Virtual DOM solves the problem of moving state from previous tree to
 the new one, so that you can always render DOM in a simple way like it
 doesn't have any previous state, and the algorithm behind it will do
-all the hard work and just move state from the previous tree to the
-new one.
+all the hard work and move state from the previous tree to the new
+one.
 
 As I see it, it is the most important idea behind the Virtual DOM. It
 is not the performance optimization to generate as little as possible
-DOM operations, or something else, it is just simple idea of
-moving state.
+DOM operations, or something else, it is a simple idea of moving
+state.
 
 Many people told me that Virtual DOM is not as important as
 Components, but I am not looking at Components as it is something
 special, there are many different ways to implement Components, I
-treat them just like any other state.
+treat them like any other state.
 
 For example, all `Node`'s in virtual dom have simple state that is
-just reference to their real html node. Component is just another Node
-that will render/update its subtree in a lazy way, nothing special
-about it. Some features like TransitionGroup's can be implemented in a
-different ways, for example we can just extend virtual Element and add
-additional state that will track all necessary information for
-transitions, and it won't be a "Component", it will be the same
-element with additional state and behavior.
+just reference to their real html node. And Components is just another
+Node that will render/update its subtree in a lazy way, nothing
+special about it. Some features like TransitionGroup's can be
+implemented in a different ways, for example we can extend virtual
+Element and add additional state that will track all necessary
+information for transitions, and it won't be a "Component", it will be
+the same element with additional state and behavior.
 
 ## API
 

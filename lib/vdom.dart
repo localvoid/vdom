@@ -15,4 +15,5 @@ part 'package:vdom/src/style.dart';
 part 'package:vdom/src/node.dart';
 part 'package:vdom/src/proxy.dart';
 part 'package:vdom/src/text.dart';
+part 'package:vdom/src/container.dart';
 part 'package:vdom/src/element.dart';

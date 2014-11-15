@@ -26,7 +26,7 @@ abstract class Node {
   /// Render contents
   void render(Context context) {}
 
-  void update(Node other, Context context);
+  void update(Node other, Context context) {}
 
   void dispose(Context context) {
     ref.remove();

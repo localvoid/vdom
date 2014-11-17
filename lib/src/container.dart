@@ -1,13 +1,23 @@
 part of vdom;
 
 abstract class Container {
-  void insertBefore(Node node, html.Node nextRef, Context context);
-  void move(Node node, html.Node nextRef, Context context);
-  void removeChild(Node node, Context context);
+  html.Node get container;
+
+  void insertBefore(Node node, html.Node nextRef, Context context) {
+    injectBefore(node, container, nextRef, context);
+  }
+
+  void move(Node node, html.Node nextRef, Context context) {
+    container.insertBefore(node.ref, nextRef);
+  }
+
+  void removeChild(Node node, Context context) {
+    node.dispose(context);
+  }
 
   void updateChildren(List<Node> a, List<Node> b, Context context) {
-    if (a.isNotEmpty) {
-      if (b.isEmpty) {
+    if (a != null && a.isNotEmpty) {
+      if (b == null || b.isEmpty) {
         // when [b] is empty, it means that all childrens from list [a] were
         // removed
         for (var i = 0; i < a.length; i++) {
@@ -88,7 +98,7 @@ abstract class Container {
           return _updateChildren2(a, b, context);
         }
       }
-    } else if (b.length > 0) {
+    } else if (b != null && b.length > 0) {
       // all childrens from list [b] were inserted
       for (var i = 0; i < b.length; i++) {
         final n = b[i];

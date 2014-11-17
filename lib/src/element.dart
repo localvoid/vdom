@@ -44,37 +44,31 @@ abstract class ElementBase extends Node {
   }
 }
 
-/// Virtual Dom Element
-class Element extends ElementBase with Container {
-  /// [Element] tag name
-  final String tag;
-
+abstract class ElementContainerBase extends ElementBase with Container {
   /// Element children
   List<Node> children;
 
-  /// Create a new [Element]
-  Element(Object key, this.tag, this.children,
-          {Map<String, String> attributes: null,
-           List<String> classes: null,
-           Map<String, String> styles: null})
-           : super(key, attributes, classes, styles) {
-    assert(children != null);
-  }
-
-  void create(Context context) {
-    ref = html.document.createElement(tag);
-  }
+  ElementContainerBase(Object key,
+      this.children,
+      Map<String, String> attributes,
+      List<String> classes,
+      Map<String, String> styles)
+      : super(key, attributes, classes, styles);
 
   void update(Element other, Context context) {
     super.update(other, context);
-    updateChildren(children, other.children, context);
+    if (children != null && other.children != null) {
+      updateChildren(children, other.children, context);
+    }
   }
 
   /// Mount on top of existing element
   void render(Context context) {
     super.render(context);
-    for (var i = 0; i < children.length; i++) {
-      inject(children[i], ref, context);
+    if (children != null) {
+      for (var i = 0; i < children.length; i++) {
+        insertBefore(children[i], null, context);
+      }
     }
   }
 
@@ -83,17 +77,26 @@ class Element extends ElementBase with Container {
       children[i].detached();
     }
   }
+}
 
-  void insertBefore(Node node, html.Node nextRef, Context context) {
-    injectBefore(node, ref, nextRef, context);
-  }
+/// Virtual Dom Element
+class Element extends ElementContainerBase {
+  /// [Element] tag name
+  final String tag;
 
-  void move(Node node, html.Node nextRef, Context context) {
-    ref.insertBefore(node.ref, nextRef);
-  }
+  html.Element get container => ref;
 
-  void removeChild(Node node, Context context) {
-    node.dispose(context);
+  /// Create a new [Element]
+  Element(Object key,
+      this.tag,
+      List<Node> children,
+      {Map<String, String> attributes: null,
+       List<String> classes: null,
+       Map<String, String> styles: null})
+      : super(key, children, attributes, classes, styles);
+
+  void create(Context context) {
+    ref = html.document.createElement(tag);
   }
 
   String toString() => '<$tag key="$key">${children.join()}</$tag>';

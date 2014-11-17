@@ -48,6 +48,8 @@ abstract class ElementContainerBase extends ElementBase with Container {
   /// Element children
   List<Node> children;
 
+  html.Element get container => ref;
+
   ElementContainerBase(Object key,
       this.children,
       Map<String, String> attributes,
@@ -85,8 +87,6 @@ abstract class ElementContainerBase extends ElementBase with Container {
 class Element extends ElementContainerBase {
   /// [Element] tag name
   final String tag;
-
-  html.Element get container => ref;
 
   /// Create a new [Element]
   Element(Object key,

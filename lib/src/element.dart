@@ -57,7 +57,7 @@ abstract class ElementContainerBase extends ElementBase with Container {
 
   void update(Element other, Context context) {
     super.update(other, context);
-    if (children != null && other.children != null) {
+    if (children != null || other.children != null) {
       updateChildren(children, other.children, context);
     }
   }
@@ -73,8 +73,10 @@ abstract class ElementContainerBase extends ElementBase with Container {
   }
 
   void detached() {
-    for (var i = 0; i < children.length; i++) {
-      children[i].detached();
+    if (children != null) {
+      for (var i = 0; i < children.length; i++) {
+        children[i].detached();
+      }
     }
   }
 }

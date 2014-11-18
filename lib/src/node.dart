@@ -9,25 +9,36 @@ abstract class Node {
   /// Key is used in matching algorithm to identify node positions in children
   /// lists.
   ///
-  /// Key should be unique among its siblings.
+  /// Key should be unique amongst its siblings.
   final Object key;
+
+  /// Reference to the actual html Node.
   html.Node ref;
 
+  /// [Node] constructor.
   Node(this.key);
 
-  /// Create html Node
+  /// Create root-level html Node.
+  ///
+  /// Do not add attributes, or styles to the created Node here.
+  /// Attributes, or styles should be added in the [render] method, because
+  /// [Node] can be mounted on top of existing html Node with [mount] method.
   void create(Context context);
 
-  /// Mount on top of existing Node
+  /// Mount on top of existing html Node.
   void mount(html.Node node, Context context) {
     ref = node;
   }
 
-  /// Render contents
+  /// Render attributes, styles, classes, children, etc.
   void render(Context context) {}
 
-  void update(Node other, Context context) {}
+  /// Update attributes, styles, clasess, children, etc.
+  void update(Node other, Context context) {
+    other.ref = ref;
+  }
 
+  /// Remove node
   void dispose(Context context) {
     ref.remove();
     if (context.isAttached) {
@@ -35,7 +46,12 @@ abstract class Node {
     }
   }
 
+  /// [Node] were inserted into the [Container] inside of the attached
+  /// [Context].
   void attached() {}
+
+  /// [Node] were removed from the [Container] inside of the attached
+  /// [Context].
   void detached() {}
 
   void attach() {}

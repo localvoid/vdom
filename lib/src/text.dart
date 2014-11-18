@@ -4,8 +4,9 @@
 
 part of vdom;
 
-/// Virtual Text Node
+/// [Text] Node
 class Text extends Node {
+  /// [Text] content
   String data;
 
   Text(Object key, this.data) : super(key);
@@ -15,7 +16,7 @@ class Text extends Node {
   }
 
   void update(Text other, Context context) {
-    other.ref = ref;
+    super.update(other, context);
     if (data != other.data) {
       (ref as html.Text).data = other.data;
     }

@@ -15,6 +15,12 @@ abstract class Container {
     node.dispose(context);
   }
 
+  void renderChildren(List<Node> children, Context context) {
+    for (var i = 0; i < children.length; i++) {
+      insertBefore(children[i], null, context);
+    }
+  }
+
   void updateChildren(List<Node> a, List<Node> b, Context context) {
     if (a != null && a.isNotEmpty) {
       if (b == null || b.isEmpty) {

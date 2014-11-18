@@ -30,7 +30,7 @@ abstract class ElementBase extends Node {
   }
 
   void update(ElementBase other, Context context) {
-    other.ref = ref;
+    super.update(other, context);
     html.Element e = ref;
     if (attributes != null || other.attributes != null) {
       updateMap(attributes, other.attributes, e.attributes);
@@ -57,7 +57,7 @@ abstract class ElementContainerBase extends ElementBase with Container {
       Map<String, String> styles)
       : super(key, attributes, classes, styles);
 
-  void update(Element other, Context context) {
+  void update(ElementContainerBase other, Context context) {
     super.update(other, context);
     if (children != null || other.children != null) {
       updateChildren(children, other.children, context);
@@ -68,9 +68,7 @@ abstract class ElementContainerBase extends ElementBase with Container {
   void render(Context context) {
     super.render(context);
     if (children != null) {
-      for (var i = 0; i < children.length; i++) {
-        insertBefore(children[i], null, context);
-      }
+      renderChildren(children, context);
     }
   }
 

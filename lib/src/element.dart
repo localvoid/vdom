@@ -4,7 +4,7 @@
 
 part of vdom;
 
-abstract class ElementBase extends Node {
+abstract class ElementBase<T extends html.Element> extends Node<T> {
   Map<String, String> attributes;
   List<String> classes;
   Map<String, String> styles;
@@ -13,38 +13,36 @@ abstract class ElementBase extends Node {
        : super(key);
 
   void render(Context context) {
-    final html.Element e = ref;
     if (attributes != null) {
       attributes.forEach((key, value) {
-        e.setAttribute(key, value);
+        ref.setAttribute(key, value);
       });
     }
     if (styles != null) {
       styles.forEach((key, value) {
-        e.style.setProperty(key, value);
+        ref.style.setProperty(key, value);
       });
     }
     if (classes != null) {
-      e.classes.addAll(classes);
+      ref.classes.addAll(classes);
     }
   }
 
   void update(ElementBase other, Context context) {
     super.update(other, context);
-    html.Element e = ref;
     if (attributes != null || other.attributes != null) {
-      updateMap(attributes, other.attributes, e.attributes);
+      updateMap(attributes, other.attributes, ref.attributes);
     }
     if (styles != null || other.styles != null) {
-      updateStyle(styles, other.styles, e.style);
+      updateStyle(styles, other.styles, ref.style);
     }
     if (classes != null || other.classes != null) {
-      updateSet(classes, other.classes, e.classes);
+      updateSet(classes, other.classes, ref.classes);
     }
   }
 }
 
-abstract class ElementContainerBase extends ElementBase with Container {
+abstract class ElementContainerBase<T extends html.Element> extends ElementBase<T> with Container<T> {
   /// Element children
   List<Node> children;
 
@@ -82,7 +80,7 @@ abstract class ElementContainerBase extends ElementBase with Container {
 }
 
 /// Virtual Dom Element
-class Element extends ElementContainerBase {
+class Element extends ElementContainerBase<html.Element> {
   /// [Element] tag name
   final String tag;
 

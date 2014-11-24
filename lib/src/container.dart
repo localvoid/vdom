@@ -1,7 +1,7 @@
 part of vdom;
 
-abstract class Container {
-  html.Node get container;
+abstract class Container<T extends html.Node> {
+  T get container;
 
   void insertBefore(Node node, html.Node nextRef, Context context) {
     injectBefore(node, container, nextRef, context);

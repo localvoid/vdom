@@ -5,7 +5,7 @@
 part of vdom;
 
 /// [Text] Node
-class Text extends Node {
+class Text extends Node<html.Text> {
   /// [Text] content
   String data;
 
@@ -18,7 +18,7 @@ class Text extends Node {
   void update(Text other, Context context) {
     super.update(other, context);
     if (data != other.data) {
-      (ref as html.Text).data = other.data;
+      ref.data = other.data;
     }
   }
 

@@ -4,8 +4,6 @@
 
 part of vdom.helpers;
 
-const empty = const [];
-
 Element a(Object key, List<Node> children, {
     Map<String, String> attributes: null,
     Map<String, String> styles: null,

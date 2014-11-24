@@ -5,7 +5,7 @@
 part of vdom;
 
 /// Abstract [Node] class
-abstract class Node {
+abstract class Node<T extends html.Node> {
   /// Key is used in matching algorithm to identify node positions in children
   /// lists.
   ///
@@ -13,7 +13,7 @@ abstract class Node {
   final Object key;
 
   /// Reference to the actual html Node.
-  html.Node ref;
+  T ref;
 
   /// [Node] constructor.
   Node(this.key);
@@ -26,7 +26,7 @@ abstract class Node {
   void create(Context context);
 
   /// Mount on top of existing html Node.
-  void mount(html.Node node, Context context) {
+  void mount(T node, Context context) {
     ref = node;
   }
 

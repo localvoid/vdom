@@ -4,12 +4,12 @@
 
 part of vdom;
 
-abstract class NodeProxy implements Node {
-  final Node node;
+abstract class NodeProxy<T extends html.Node, E extends Node> implements Node<T> {
+  final E node;
 
   Object get key => node.key;
-  html.Node get ref => node.ref;
-  set ref(html.Node newRef) {
+  T get ref => node.ref;
+  set ref(T newRef) {
     node.ref = newRef;
   }
 
@@ -19,7 +19,7 @@ abstract class NodeProxy implements Node {
     node.create(context);
   }
 
-  void mount(html.Node node, Context context) {
+  void mount(T node, Context context) {
     this.node.mount(node, context);
   }
 

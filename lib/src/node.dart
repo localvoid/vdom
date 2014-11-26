@@ -25,11 +25,6 @@ abstract class Node<T extends html.Node> {
   /// [Node] can be mounted on top of existing html Node with [mount] method.
   void create(Context context);
 
-  /// Mount on top of existing html Node.
-  void mount(T node, Context context) {
-    ref = node;
-  }
-
   /// Render attributes, styles, classes, children, etc.
   void render(Context context) {}
 

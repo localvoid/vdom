@@ -19,10 +19,6 @@ abstract class NodeProxy<T extends html.Node, E extends Node> implements Node<T>
     node.create(context);
   }
 
-  void mount(T node, Context context) {
-    this.node.mount(node, context);
-  }
-
   void render(Context context) {
     node.render(context);
   }

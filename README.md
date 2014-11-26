@@ -28,12 +28,6 @@ point in `render()` to wait for async operations. When we create
 root-level html node, we can just place it as a placeholder in the DOM
 and wait for any async operation to finish.
 
-#### `void mount(html.Node node, Context context)`
-
-Mount root-level node to the existing root-level html node. It doesn't
-mount subtrees, just root-level node. It is used in Components as a
-micro-optimization.
-
 #### `void render(Context context)`
 
 Render attributes, styles, classes, children, etc. "Second step" in ours

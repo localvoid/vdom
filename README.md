@@ -40,18 +40,34 @@ Update previous node with the new one.
 ## Usage example
 
 ```dart
+import 'dart:html';
+import 'dart:async';
 import 'package:vdom/vdom.dart' as v;
 
-main() {
-  final a = new v.Element(#uniqueKey, 'div', const []);
-  a.create(const v.Context(false));
-  document.body.append(a.ref);
-  a.attached();
-  a.render(const v.Context(true));
+int count = 0;
+v.Element root;
 
-  final b = new v.Element(#uniqueKey, 'div',
-      [new v.Text(#textKey, 'Text Content')]);
+void increment(){
+  count += 1;
+  rerender();
+}
 
-  a.update(b);
+void rerender() {
+  var next = render();
+  root.update(next, const v.Context(true));
+  root = next;
+}
+
+v.Element render(){
+  return new v.Element(#counter, 'div', [ new v.Text(#count, count.toString()) ]);
+}
+
+void main() {
+   root = render();
+   root.create(const v.Context(false));
+   document.body.append(root.ref);
+   root.attached();
+   root.render(const v.Context(true));
+   new Timer.periodic(new Duration(seconds: 1), (t){ increment(); });
 }
 ```

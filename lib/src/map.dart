@@ -20,7 +20,7 @@ void updateMap(Map a, Map b, Map n) {
         if (bValue == null) {
           n.remove(key);
         } else if (value != bValue) {
-          n[key] = value;
+          n[key] = bValue;
         }
       });
 

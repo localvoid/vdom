@@ -49,7 +49,7 @@ void checkSync(v.Element a, v.Element b) {
 void main() {
   useHtmlEnhancedConfiguration();
 
-  group('Sync children', () {
+  group('Update children', () {
     group('No modifications', () {
       test('No childrens', () {
         final a = e(0);

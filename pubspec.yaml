@@ -1,5 +1,5 @@
 name: vdom
-version: 0.6.0
+version: 0.6.1
 author: Boris Kaul <localvoid@gmail.com>
 description: Virtual DOM library.
 homepage: https://github.com/localvoid/vdom

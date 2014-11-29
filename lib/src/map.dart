@@ -12,7 +12,9 @@ void updateMap(Map a, Map b, Map n) {
   if (a != null && a.length > 0) {
     if (b == null || b.length == 0) {
       // all keys removed
-      n.clear();
+      for (final k in a.keys) {
+        n.remove(k);
+      }
     } else {
       // find all modified and removed
       a.forEach((key, value) {

@@ -12,7 +12,7 @@ void updateStyle(Map a, Map b, html.CssStyleDeclaration n) {
   if (a != null && a.length > 0) {
     if (b == null || b.length == 0) {
       // all keys removed
-      for (final i in a) {
+      for (final i in a.keys) {
         n.removeProperty(i);
       }
     } else {

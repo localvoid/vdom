@@ -53,19 +53,19 @@ void main() {
     group('No modifications', () {
       test('No childrens', () {
         final a = e(0);
-        final b = e(1);
+        final b = e(0);
         checkSync(a, b);
       });
 
       test('Same child', () {
         final a = e(0, gen([0]));
-        final b = e(1, gen([0]));
+        final b = e(0, gen([0]));
         checkSync(a, b);
       });
 
       test('Same children', () {
         final a = e(0, gen([0, 1, 2]));
-        final b = e(1, gen([0, 1, 2]));
+        final b = e(0, gen([0, 1, 2]));
         checkSync(a, b);
       });
     });
@@ -573,6 +573,32 @@ void main() {
           checkSync(a, b);
         });
       }
+    });
+
+    group('Null children', () {
+      test('Add item', () {
+        final a = e(0, null);
+        final b = e(0, gen([1]));
+        checkSync(a, b);
+      });
+
+      test('Add two items', () {
+        final a = e(0, null);
+        final b = e(0, gen([1, 2]));
+        checkSync(a, b);
+      });
+
+      test('Remove item', () {
+        final a = e(0, gen([1]));
+        final b = e(0, null);
+        checkSync(a, b);
+      });
+
+      test('Remove two items', () {
+        final a = e(0, gen([1, 2]));
+        final b = e(0, null);
+        checkSync(a, b);
+      });
     });
   });
 }

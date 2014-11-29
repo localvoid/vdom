@@ -136,5 +136,31 @@ void main() {
         expect(c.right, equals('10px'));
       });
     });
+
+    group('Updates', () {
+      test('{top: 10px} => {top: 100px}', () {
+        final a = {'top': '10px'};
+        final b = {'top': '100px'};
+        final c = new html.DivElement().style
+          ..zIndex = '10'
+          ..top = '10px';
+        v.updateStyle(a, b, c);
+        expect(c.zIndex, equals('10'));
+        expect(c.top, equals('100px'));
+      });
+
+      test('{top: 10px, left: 10px} => {top: 100px, left: 100px}', () {
+        final a = {'top': '10px', 'left': '10px'};
+        final b = {'top': '100px', 'left': '100px'};
+        final c = new html.DivElement().style
+          ..zIndex = '10'
+          ..top = '10px'
+          ..left = '10px';
+        v.updateStyle(a, b, c);
+        expect(c.zIndex, equals('10'));
+        expect(c.top, equals('100px'));
+        expect(c.left, equals('100px'));
+      });
+    });
   });
 }

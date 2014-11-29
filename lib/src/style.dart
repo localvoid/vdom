@@ -22,7 +22,7 @@ void updateStyle(Map a, Map b, html.CssStyleDeclaration n) {
         if (bValue == null) {
           n.removeProperty(key);
         } else if (value != bValue) {
-          n.setProperty(key, value);
+          n.setProperty(key, bValue);
         }
       });
 

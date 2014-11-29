@@ -117,5 +117,23 @@ void main() {
         expect(c, equals({0: 0, 5: 5, 6: 6}));
       });
     });
+
+    group('Updates', () {
+      test('{1: 1} => {1: 10}', () {
+        final a = {1: 1};
+        final b = {1: 10};
+        final c = {0: 0, 1: 1};
+        v.updateMap(a, b, c);
+        expect(c, equals({0: 0, 1: 10}));
+      });
+
+      test('{1: 1, 2: 2} => {1: 10, 2: 20}', () {
+        final a = {1: 1, 2: 2};
+        final b = {1: 10, 2: 20};
+        final c = {0: 0, 1: 1, 2: 2};
+        v.updateMap(a, b, c);
+        expect(c, equals({0: 0, 1: 10, 2: 20}));
+      });
+    });
   });
 }

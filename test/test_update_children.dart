@@ -11,7 +11,7 @@ v.Element e(Object key, [Object c = const []]) {
     children = c;
   }
 
-  return new v.Element(key, 'div', children);
+  return new v.Element(key, 'div')(children);
 }
 
 /// Generate list of VElements from simple integers.

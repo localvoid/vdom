@@ -35,7 +35,8 @@ two-step rendering model.
 
 #### `void update(Node other, Context context)`
 
-Update previous node with the new one.
+Apply changes to the DOM and transfer state from the previous virtual
+tree to the new one.
 
 ## Usage example
 
@@ -59,7 +60,7 @@ void rerender() {
 }
 
 v.Element render(){
-  return new v.Element(#counter, 'div', [ new v.Text(#count, count.toString()) ]);
+  return new v.Element(#counter, 'div')(count.toString());
 }
 
 void main() {

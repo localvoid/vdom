@@ -55,6 +55,17 @@ abstract class ElementContainerBase<T extends html.Element> extends ElementBase<
       Map<String, String> styles)
       : super(key, attributes, classes, styles);
 
+  ElementContainerBase<T> call(children) {
+    if (children is List) {
+      this.children = children;
+    } else if (children is String) {
+      this.children = [new Text(null, children)];
+    } else {
+      this.children = [children];
+    }
+    return this;
+  }
+
   void update(ElementContainerBase other, Context context) {
     super.update(other, context);
     if (children != null || other.children != null) {
@@ -87,10 +98,10 @@ class Element extends ElementContainerBase<html.Element> {
   /// Create a new [Element]
   Element(Object key,
       this.tag,
-      List<Node> children,
-      {Map<String, String> attributes: null,
-       List<String> classes: null,
-       Map<String, String> styles: null})
+      {List<Node> children,
+       Map<String, String> attributes,
+       List<String> classes,
+       Map<String, String> styles})
       : super(key, children, attributes, classes, styles);
 
   void create(Context context) {

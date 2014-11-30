@@ -4,211 +4,253 @@
 
 part of vdom.helpers;
 
-Element a(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'a', children,
+Element a(Object key,
+    {List<Node> children,
+     Map<String, String> attributes,
+     Map<String, String> styles,
+     List<String> classes}) {
+  return new Element(key, 'a',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element area(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'area', children,
+Element area(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'area',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element br(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'br', children,
+Element br(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'br',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element base(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'base', children,
+Element base(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'base',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element body(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'body', children,
+Element body(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'body',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element button(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'button', children,
+Element button(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'button',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element canvas(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'canvas', children,
+Element canvas(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'canvas',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element content(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'content', children,
+Element content(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'content',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element dl(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'dl', children,
+Element dl(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'dl',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element dt(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'dt', children,
+Element dt(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'dt',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element dd(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'dd', children,
+Element dd(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'dd',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element details(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'details', children,
+Element details(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'details',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element dialog(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'dialog', children,
+Element dialog(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'dialog',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element div(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'div', children,
+Element div(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'div',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element embed(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'embed', children,
+Element embed(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'embed',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element fieldset(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'fieldset', children,
+Element fieldset(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'fieldset',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element form(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'form', children,
+Element form(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'form',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element hr(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'hr', children,
+Element hr(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'hr',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element head(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'head', children,
+Element head(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'head',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element h1(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'h1', children,
+Element h1(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'h1',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element h2(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'h2', children,
+Element h2(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'h2',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
@@ -218,127 +260,152 @@ Element h3(Object key, List<Node> children, {
     Map<String, String> attributes: null,
     Map<String, String> styles: null,
     List<String> classes: null}) {
-  return new Element(key, 'h3', children,
+  return new Element(key, 'h3',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element h4(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'h4', children,
+Element h4(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'h4',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element h5(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'h5', children,
+Element h5(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'h5',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element h6(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'h6', children,
+Element h6(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'h6',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element iframe(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'iframe', children,
+Element iframe(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'iframe',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element img(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'img', children,
+Element img(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'img',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element input(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'input', children,
+Element input(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'input',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element keygen(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'keygen', children,
+Element keygen(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'keygen',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element li(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'li', children,
+Element li(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'li',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element label(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'label', children,
+Element label(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'label',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element legend(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'legend', children,
+Element legend(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'legend',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element link(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'link', children,
+Element link(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'link',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element map(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'map', children,
+Element map(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'map',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
@@ -348,318 +415,381 @@ Element media(Object key, List<Node> children, {
     Map<String, String> attributes: null,
     Map<String, String> styles: null,
     List<String> classes: null}) {
-  return new Element(key, 'media', children,
+  return new Element(key, 'media',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element menu(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'menu', children,
+Element menu(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'menu',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element meta(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'meta', children,
+Element meta(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'meta',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element meter(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'meter', children,
+Element meter(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'meter',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element mod(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'mod', children,
+Element mod(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'mod',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element ol(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'ol', children,
+Element ol(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'ol',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element object(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'object', children,
+Element object(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'object',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element optgroup(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'optgroup', children,
+Element optgroup(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'optgroup',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element option(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'option', children,
+Element option(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'option',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element output(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'output', children,
+Element output(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'output',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element p(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'p', children,
+Element p(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'p',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element param(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'param', children,
+Element param(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'param',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element picture(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'picture', children,
+Element picture(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'picture',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element pre(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'pre', children,
+Element pre(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'pre',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element progress(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'progress', children,
+Element progress(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'progress',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element quote(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'quote', children,
+Element quote(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'quote',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element select(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'select', children,
+Element select(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'select',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element source(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'source', children,
+Element source(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'source',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element span(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'span', children,
+Element span(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'span',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element caption(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'caption', children,
+Element caption(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'caption',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element td(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'td', children,
+Element td(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'td',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
 
-Element tr(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'tr', children,
+Element tr(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'tr',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element table(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'table', children,
+Element table(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'table',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element template(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'template', children,
+Element template(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'template',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element textarea(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'textarea', children,
+Element textarea(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'textarea',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element ul(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'ul', children,
+Element ul(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'ul',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element article(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'article', children,
+Element article(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'article',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element section(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'section', children,
+Element section(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'section',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element nav(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'nav', children,
+Element nav(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'nav',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element header(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'header', children,
+Element header(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'header',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element footer(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'footer', children,
+Element footer(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'footer',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);
 }
 
-Element strong(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
-  return new Element(key, 'strong', children,
+Element strong(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
+  return new Element(key, 'strong',
+      children: children,
       attributes: attributes,
       styles: styles,
       classes: classes);

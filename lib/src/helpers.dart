@@ -256,10 +256,11 @@ Element h2(Object key,
       classes: classes);
 }
 
-Element h3(Object key, List<Node> children, {
-    Map<String, String> attributes: null,
-    Map<String, String> styles: null,
-    List<String> classes: null}) {
+Element h3(Object key,
+    {List<Node> children,
+    Map<String, String> attributes,
+    Map<String, String> styles,
+    List<String> classes}) {
   return new Element(key, 'h3',
       children: children,
       attributes: attributes,

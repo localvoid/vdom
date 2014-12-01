@@ -60,7 +60,7 @@ void rerender() {
 }
 
 v.Element render(){
-  return new v.Element(#counter, 'div')(count.toString());
+  return new v.Element('div')(count.toString());
 }
 
 void main() {

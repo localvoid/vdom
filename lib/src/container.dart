@@ -69,9 +69,8 @@ abstract class Container<T extends html.Node> {
               removeChild(aNode, context);
             } else {
               while (i < b.length) {
-                final bNode = b[i];
-                assert(bNode.key == null);
-                insertBefore(bNode, null, context);
+                assert(b[i].key == null);
+                insertBefore(b[i], null, context);
                 i++;
               }
             }
@@ -122,9 +121,8 @@ abstract class Container<T extends html.Node> {
               insertBefore(bNode, null, context);
             } else {
               while (i < a.length) {
-                final aNode = a[i];
-                assert(aNode.key == null);
-                removeChild(aNode, context);
+                assert(a[i].key == null);
+                removeChild(a[i], context);
                 i++;
               }
             }

@@ -5,14 +5,18 @@
 part of vdom;
 
 abstract class ElementBase<T extends html.Element> extends Node<T> {
+  String id;
   Map<String, String> attributes;
   List<String> classes;
   Map<String, String> styles;
 
-  ElementBase(Object key, this.attributes, this.classes, this.styles)
+  ElementBase(Object key, this.id, this.attributes, this.classes, this.styles)
        : super(key);
 
   void render(Context context) {
+    if (id != null) {
+      ref.id = id;
+    }
     if (attributes != null) {
       attributes.forEach((key, value) {
         ref.setAttribute(key, value);
@@ -30,6 +34,11 @@ abstract class ElementBase<T extends html.Element> extends Node<T> {
 
   void update(ElementBase other, Context context) {
     super.update(other, context);
+    if (other.id == null) {
+      other.id = id;
+    } else if (id != other.id) {
+      ref.id = other.id;
+    }
     if (attributes != null || other.attributes != null) {
       updateMap(attributes, other.attributes, ref.attributes);
     }
@@ -50,16 +59,17 @@ abstract class ElementContainerBase<T extends html.Element> extends ElementBase<
 
   ElementContainerBase(Object key,
       this.children,
+      String id,
       Map<String, String> attributes,
       List<String> classes,
       Map<String, String> styles)
-      : super(key, attributes, classes, styles);
+      : super(key, id, attributes, classes, styles);
 
   ElementContainerBase<T> call(children) {
     if (children is List) {
       this.children = children;
     } else if (children is String) {
-      this.children = [new Text(null, children)];
+      this.children = [new Text(children)];
     } else {
       this.children = [children];
     }
@@ -99,10 +109,11 @@ class Element extends ElementContainerBase<html.Element> {
   Element(this.tag,
       {Object key,
        List<Node> children,
+       String id,
        Map<String, String> attributes,
        List<String> classes,
        Map<String, String> styles})
-      : super(key, children, attributes, classes, styles);
+      : super(key, children, id, attributes, classes, styles);
 
   void create(Context context) {
     ref = html.document.createElement(tag);

@@ -616,6 +616,18 @@ void main() {
         final b = v.div()([v.h5(), v.h3(), v.h3(), v.h3(), v.h1()]);
         checkSync(a, b);
       });
+
+      test('[h1][h3][h3][h3][h5] => [h5][h3][h3][h1]', () {
+        final a = v.div()([v.h1(), v.h3(), v.h3(), v.h3(), v.h5()]);
+        final b = v.div()([v.h5(), v.h3(), v.h3(), v.h1()]);
+        checkSync(a, b);
+      });
+
+      test('[h1][h3][h3][h5] => [h5][h3][h3][h3][h1]', () {
+        final a = v.div()([v.h1(), v.h3(), v.h3(), v.h5()]);
+        final b = v.div()([v.h5(), v.h3(), v.h3(), v.h3(), v.h1()]);
+        checkSync(a, b);
+      });
     });
   });
 }

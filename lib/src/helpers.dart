@@ -864,5 +864,5 @@ Element strong({Object key,
 }
 
 Text text(String data, {Object key}) {
-  return new Text(key, data);
+  return new Text(data, key: key);
 }

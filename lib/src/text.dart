@@ -9,7 +9,7 @@ class Text extends Node<html.Text> {
   /// [Text] content
   String data;
 
-  Text(Object key, this.data) : super(key);
+  Text(this.data, {Object key}) : super(key);
 
   void create(Context context) {
     ref = new html.Text(data);

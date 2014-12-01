@@ -1,7 +1,9 @@
 # 0.7.0
 
-- Changed interface of the `Element` constructor, children argument is
-  now named argument.
+- Changed interface of the `Element` constructor, `children` and `key`
+  arguments are now named arguments.
+- When `key` argument is `null`, it means that the key should be
+  implicit.
 - Added `ElementContainerBase call(List<Node> children)` method to the
   `ElementContainerBase`. Didn't notice any performance regressions in
   the VDom Benchmark. API is much better this way:

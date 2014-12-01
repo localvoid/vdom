@@ -2,12 +2,13 @@ import 'dart:html';
 import 'package:unittest/unittest.dart';
 import 'package:unittest/html_enhanced_config.dart';
 import 'package:vdom/vdom.dart' as v;
+import 'package:vdom/helpers.dart' as v;
 
 v.Element e(Object key, [Object c = null]) {
   if (c == null) {
-    return new v.Element('div', key: key);
+    return new v.Element('div');
   }
-  return new v.Element('div', key: key)(c);
+  return new v.Element('div')(c);
 }
 
 /// Generate list of VElements from simple integers.
@@ -593,6 +594,26 @@ void main() {
       test('Remove two items', () {
         final a = e(0, gen([1, 2]));
         final b = e(0, null);
+        checkSync(a, b);
+      });
+    });
+
+    group('Different Types', () {
+      test('[span][div] => [div][span]', () {
+        final a = v.div()([v.span(), v.div()]);
+        final b = v.div()([v.div(), v.span()]);
+        checkSync(a, b);
+      });
+
+      test('[h1][h2][h3][h4][h5] => [h5][h4][h3][h2][h1]', () {
+        final a = v.div()([v.h1(), v.h2(), v.h3(), v.h4(), v.h5()]);
+        final b = v.div()([v.h5(), v.h4(), v.h3(), v.h2(), v.h1()]);
+        checkSync(a, b);
+      });
+
+      test('[h1][h3][h3][h3][h5] => [h5][h3][h3][h3][h1]', () {
+        final a = v.div()([v.h1(), v.h3(), v.h3(), v.h3(), v.h5()]);
+        final b = v.div()([v.h5(), v.h3(), v.h3(), v.h3(), v.h1()]);
         checkSync(a, b);
       });
     });

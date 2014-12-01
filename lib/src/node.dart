@@ -51,6 +51,8 @@ abstract class Node<T extends html.Node> {
 
   void attach() {}
   void detach() {}
+
+  bool sameType(Node other) => runtimeType == other.runtimeType;
 }
 
 void inject(Node n, html.Node parent, Context context) {

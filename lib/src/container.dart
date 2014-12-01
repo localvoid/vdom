@@ -39,8 +39,9 @@ abstract class Container<T extends html.Node> {
           final aNode = a.first;
           final bNode = b.first;
 
-          if (aNode.key == bNode.key) {
-            var modified = aNode.update(bNode, context);
+          if ((aNode.key == null && aNode.sameType(bNode)) ||
+              aNode.key != null && aNode.key == bNode.key) {
+            aNode.update(bNode, context);
           } else {
             removeChild(aNode, context);
             insertBefore(bNode, null, context);
@@ -49,59 +50,116 @@ abstract class Container<T extends html.Node> {
           // fast path when [a] have 1 child
           final aNode = a.first;
 
-          // [a] child position
-          // if it is -1, then the child is removed
-          var unchangedPosition = -1;
+          // implicit keys
+          if (aNode.key == null) {
+            var i = 0;
+            while(i < b.length) {
+              final bNode = b[i];
+              assert(bNode.key == null);
 
-          for (var i = 0; i < b.length; i++) {
-            final bNode = b[i];
-            if (aNode.key == bNode.key) {
-              unchangedPosition = i;
-              break;
-            } else {
+              i++;
+              if (aNode.sameType(bNode)) {
+                aNode.update(bNode, context);
+                break;
+              }
               insertBefore(bNode, aNode.ref, context);
             }
-          }
 
-          if (unchangedPosition != -1) {
-            for (var i = unchangedPosition + 1; i < b.length; i++) {
-              insertBefore(b[i], null, context);
+            if (i == b.length) {
+              removeChild(aNode, context);
+            } else {
+              while (i < b.length) {
+                final bNode = b[i];
+                assert(bNode.key == null);
+                insertBefore(bNode, null, context);
+                i++;
+              }
             }
-            aNode.update(b[unchangedPosition], context);
           } else {
-            removeChild(aNode, context);
+            // [a] child position
+            // if it is -1, then the child is removed
+            var unchangedPosition = -1;
+
+            for (var i = 0; i < b.length; i++) {
+              final bNode = b[i];
+              if (aNode.key == bNode.key) {
+                unchangedPosition = i;
+                break;
+              } else {
+                insertBefore(bNode, aNode.ref, context);
+              }
+            }
+
+            if (unchangedPosition != -1) {
+              for (var i = unchangedPosition + 1; i < b.length; i++) {
+                insertBefore(b[i], null, context);
+              }
+              aNode.update(b[unchangedPosition], context);
+            } else {
+              removeChild(aNode, context);
+            }
           }
         } else if (b.length == 1) {
           // fast path when [b] have 1 child
           final bNode = b.first;
 
-          // [a] child position
-          // if it is -1, then the child is inserted
-          var unchangedPosition = -1;
+          // implicit keys
+          if (bNode.key == null) {
+            var i = 0;
+            while(i < a.length) {
+              final aNode = a[i];
+              assert(aNode.key == null);
 
-          for (var i = 0; i < a.length; i++) {
-            final aNode = a[i];
-            if (aNode.key == bNode.key) {
-              unchangedPosition = i;
-              break;
-            } else {
+              i++;
+              if (aNode.sameType(bNode)) {
+                aNode.update(bNode, context);
+                break;
+              }
               removeChild(aNode, context);
             }
-          }
 
-          if (unchangedPosition != -1) {
-            for (var i = unchangedPosition + 1; i < a.length; i++) {
-              removeChild(a[i], context);
+            if (i == a.length) {
+              insertBefore(bNode, null, context);
+            } else {
+              while (i < a.length) {
+                final aNode = a[i];
+                assert(aNode.key == null);
+                removeChild(aNode, context);
+                i++;
+              }
             }
-            a[unchangedPosition].update(bNode, context);
           } else {
-            insertBefore(bNode, null, context);
+            // [a] child position
+            // if it is -1, then the child is inserted
+            var unchangedPosition = -1;
+
+            for (var i = 0; i < a.length; i++) {
+              final aNode = a[i];
+              if (aNode.key == bNode.key) {
+                unchangedPosition = i;
+                break;
+              } else {
+                removeChild(aNode, context);
+              }
+            }
+
+            if (unchangedPosition != -1) {
+              for (var i = unchangedPosition + 1; i < a.length; i++) {
+                removeChild(a[i], context);
+              }
+              a[unchangedPosition].update(bNode, context);
+            } else {
+              insertBefore(bNode, null, context);
+            }
           }
         } else {
           // both [a] and [b] have more than 1 child, so we should handle
           // more complex situations with inserting/removing and repositioning
           // childrens
-          return _updateChildren2(a, b, context);
+          if (a.first.key == null) {
+            return _updateImplicitChildren(a, b, context);
+          }
+          return _updateExplicitChildren(a, b, context);
         }
       }
     } else if (b != null && b.length > 0) {
@@ -113,7 +171,99 @@ abstract class Container<T extends html.Node> {
     }
   }
 
-  void _updateChildren2(List<Node> a, List<Node> b, Context context) {
+  void _updateImplicitChildren(List<Node> a, List<Node> b, Context context) {
+    var aLength = a.length;
+    var bLength = b.length;
+
+    final minLength = aLength < bLength ? aLength : bLength;
+
+    var start = 0;
+    while (start < minLength) {
+      final aNode = a[start];
+      final bNode = b[start];
+      assert(aNode.key == null);
+      assert(bNode.key == null);
+      if (!aNode.sameType(bNode)) {
+        break;
+      }
+      aNode.update(bNode, context);
+      start++;
+    }
+
+    if (start == bLength) {
+      if (start != aLength) {
+        for (var i = start; i < a.length; i++) {
+          assert(a[i].key == null);
+          removeChild(a[i], context);
+        }
+      }
+    } else if (start == aLength) {
+      for (var i = start; i < b.length; i++) {
+        assert(b[i].key == null);
+        insertBefore(b[i], null, context);
+      }
+    } else {
+      var aEnd = a.length - 1;
+      var bEnd = b.length - 1;
+      while (aEnd >= start && bEnd >= start) {
+        final aNode = a[aEnd];
+        final bNode = b[bEnd];
+        assert(aNode.key == null);
+        assert(bNode.key == null);
+
+        if (!aNode.sameType(bNode)) {
+          break;
+        }
+        aNode.update(bNode, context);
+        aEnd--;
+        bEnd--;
+      }
+      aEnd++;
+      bEnd++;
+
+      if (aEnd == start) {
+        assert(bEnd != start);
+        final aEndRef = a[aEnd].ref;
+        for (var i = start; i < bEnd; i++) {
+          assert(b[i].key == null);
+          insertBefore(b[i], aEndRef, context);
+        }
+      } else if (bEnd == start) {
+        for (var i = start; i < aEnd; i++) {
+          assert(a[i].key == null);
+          removeChild(a[i], context);
+        }
+      } else {
+        var i = start;
+        while (i < aEnd && i < bEnd) {
+          final aNode = a[i];
+          final bNode = b[i];
+
+          if (aNode.sameType(bNode)) {
+            aNode.update(bNode, context);
+          } else {
+            insertBefore(bNode, aNode.ref, context);
+            removeChild(aNode, context);
+          }
+          i++;
+        }
+
+        while (i < aEnd) {
+          removeChild(a[i], context);
+          i++;
+        }
+
+        final aEndRef = aEnd == aLength ? null : a[aEnd].ref;
+        while (i < bEnd) {
+          insertBefore(b[i], aEndRef, context);
+          i++;
+        }
+      }
+    }
+  }
+
+  /// Update children with explicit keys
+  void _updateExplicitChildren(List<Node> a, List<Node> b, Context context) {
     var aLength = a.length;
     var bLength = b.length;
 

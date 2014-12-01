@@ -96,9 +96,9 @@ class Element extends ElementContainerBase<html.Element> {
   final String tag;
 
   /// Create a new [Element]
-  Element(Object key,
-      this.tag,
-      {List<Node> children,
+  Element(this.tag,
+      {Object key,
+       List<Node> children,
        Map<String, String> attributes,
        List<String> classes,
        Map<String, String> styles})
@@ -107,6 +107,8 @@ class Element extends ElementContainerBase<html.Element> {
   void create(Context context) {
     ref = html.document.createElement(tag);
   }
+
+  bool sameType(Node other) => super.sameType(other) && tag == (other as Element).tag;
 
   String toString() => '<$tag key="$key">${children.join()}</$tag>';
 }

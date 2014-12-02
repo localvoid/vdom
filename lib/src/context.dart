@@ -4,8 +4,11 @@
 
 part of vdom;
 
+/// [Context] object is used to propagate additional data in virtual tree.
 class Context {
   final bool _isAttached;
+
+  /// [Context] is attached to the html document.
   bool get isAttached => _isAttached;
 
   const Context(this._isAttached);

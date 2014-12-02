@@ -14,3 +14,8 @@ v.div(#root, styles: {'top': '10px'})([
   v.div(2)('two')
 ]);
 ```
+
+- Removed `inject` methods from the API.
+- Added named attribute `id` for Elements.
+- Disallow mixing childrens with implicit and explicit keys inside of the
+  `Container`.

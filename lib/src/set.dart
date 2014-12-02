@@ -4,6 +4,7 @@
 
 part of vdom;
 
+/// Find changes between Lists [a] and [b] and apply this changes to Set [n].
 void updateSet(List a, List b, Set n) {
   if (identical(a, b)) {
     return null;

@@ -4,6 +4,7 @@
 
 part of vdom;
 
+/// Find changes between maps [a] and [b] and apply this changes to CssStyleDeclaration [n].
 void updateStyle(Map a, Map b, html.CssStyleDeclaration n) {
   if (identical(a, b)) {
     return null;

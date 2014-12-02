@@ -69,6 +69,6 @@ void main() {
    document.body.append(root.ref);
    root.attached();
    root.render(const v.Context(true));
-   new Timer.periodic(new Duration(seconds: 1), (t){ increment(); });
+   new Timer.periodic(const Duration(seconds: 1), (t){ increment(); });
 }
 ```

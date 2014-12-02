@@ -1,26 +1,68 @@
 part of vdom;
 
+/// [Container] mixin used to extend [Node]s with the ability to render
+/// and update children.
+///
+/// ```dart
+/// class MyNode extends Node with Container {
+///   html.DivElement myElement;
+///   List<Node> children;
+///
+///   html.Node get container => myElement;
+///
+///   MyNode(Object key, this.children) : super(key);
+///
+///   void create(Context context) {
+///     myElement = new DivElement();
+///
+///     ref = new DivElement()
+///       ..append(myElement);
+///   }
+///
+///   void render(Context context) {
+///     renderChildren(children, context);
+///   }
+///
+///   void update(MyNode other, Context context) {
+///     super.update(other, context);
+///     other.myElement = myElement;
+///     updateChildren(children, other.children, context);
+///   }
+/// }
+/// ```
 abstract class Container<T extends html.Node> {
+  /// Container for children.
   T get container;
 
+  /// Insert child before [nextRef]. If [nextRef] is `null`, append it to the
+  /// end.
   void insertBefore(Node node, html.Node nextRef, Context context) {
-    injectBefore(node, container, nextRef, context);
+    node.create(context);
+    container.insertBefore(node.ref, nextRef);
+    if (context.isAttached){
+      node.attached();
+    }
+    node.render(context);
   }
 
+  /// Move child
   void move(Node node, html.Node nextRef, Context context) {
     container.insertBefore(node.ref, nextRef);
   }
 
+  /// Remove child
   void removeChild(Node node, Context context) {
     node.dispose(context);
   }
 
+  /// Render [children] into [container] node.
   void renderChildren(List<Node> children, Context context) {
     for (var i = 0; i < children.length; i++) {
       insertBefore(children[i], null, context);
     }
   }
 
+  /// Update children list inside of [container] node.
   void updateChildren(List<Node> a, List<Node> b, Context context) {
     if (a != null && a.isNotEmpty) {
       if (b == null || b.isEmpty) {
@@ -169,6 +211,7 @@ abstract class Container<T extends html.Node> {
     }
   }
 
+  /// Update children with implicit keys
   void _updateImplicitChildren(List<Node> a, List<Node> b, Context context) {
     var aLength = a.length;
     var bLength = b.length;
@@ -327,6 +370,11 @@ abstract class Container<T extends html.Node> {
 
         // when both lists are small, the join operation is much
         // faster with simple MxN list search instead of hashmap join
+        //
+        // TODO: it is probably bad heuristic because items with the small
+        // number of nodes in most cases will use String keys, and maybe it
+        // will just makes everything worse. It will behave badly in situations
+        // when `operator==` for key is slow.
         if (aLength * bLength <= 16) {
           var lastTarget = 0;
 
@@ -393,6 +441,13 @@ abstract class Container<T extends html.Node> {
         }
 
         if (moved) {
+          // if it is detected that one of the nodes is in the wrong place
+          // we will find minimum number of moves using slightly modified
+          // LIS algorithm.
+          //
+          // moves and inserts are apllied in one step, when `sources[i]` is
+          // equal to -1, it means that node with the same key doesn't exist
+          // in list `a` and we are performing insert operation.
           final seq = _lis(sources);
           var j = seq.length - 1;
 
@@ -432,7 +487,13 @@ abstract class Container<T extends html.Node> {
   }
 }
 
-/// Algorithm that finds longest increasing subsequence.
+/// Algorithm that finds longest increasing subsequence. With one little
+/// modification that it ignores items with -1 value, they're representing
+/// items that doesn't exist in the old list.
+///
+/// It is used to find minimum number of move operations in children list.
+///
+/// http://en.wikipedia.org/wiki/Longest_increasing_subsequence
 List<int> _lis(List<int> a) {
   final p = new List<int>.from(a, growable: false);
   final result = [0];

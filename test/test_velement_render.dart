@@ -3,6 +3,15 @@ import 'package:unittest/unittest.dart';
 import 'package:unittest/html_enhanced_config.dart';
 import 'package:vdom/vdom.dart' as v;
 
+void inject(v.Node n, Node parent, v.Context context) {
+  n.create(context);
+  parent.append(n.ref);
+  if (context.isAttached){
+    n.attached();
+  }
+  n.render(context);
+}
+
 void main() {
   useHtmlEnhancedConfiguration();
 
@@ -10,14 +19,14 @@ void main() {
     test('Create empty div', () {
       final frag = new DivElement();
       final n = new v.Element('div');
-      v.inject(n, frag, const v.Context(false));
+      inject(n, frag, const v.Context(false));
       expect(frag.innerHtml, equals('<div></div>'));
     });
 
     test('Create empty span', () {
       final frag = new DivElement();
       final n = new v.Element('span');
-      v.inject(n, frag, const v.Context(false));
+      inject(n, frag, const v.Context(false));
       expect(frag.innerHtml, equals('<span></span>'));
     });
   });
@@ -27,7 +36,7 @@ void main() {
       final n = new v.Element('div', attributes: {
         'id': 'test-id'
       });
-      v.inject(n, frag, const v.Context(false));
+      inject(n, frag, const v.Context(false));
       expect(frag.innerHtml, equals('<div id="test-id"></div>'));
     });
 
@@ -37,7 +46,7 @@ void main() {
         'id': 'test-id',
         'data-test': 'test-data'
       });
-      v.inject(n, frag, const v.Context(false));
+      inject(n, frag, const v.Context(false));
       expect(
           frag.innerHtml,
           equals('<div id="test-id" data-test="test-data"></div>'));
@@ -50,7 +59,7 @@ void main() {
       final n = new v.Element('div', styles: {
         'top': '10px'
       });
-      v.inject(n, frag, const v.Context(false));
+      inject(n, frag, const v.Context(false));
       expect(frag.innerHtml, equals('<div style="top: 10px;"></div>'));
     });
 
@@ -60,7 +69,7 @@ void main() {
         'top': '10px',
         'left': '20px'
       });
-      v.inject(n, frag, const v.Context(false));
+      inject(n, frag, const v.Context(false));
       expect(
           frag.innerHtml,
           equals('<div style="top: 10px; left: 20px;"></div>'));
@@ -71,7 +80,7 @@ void main() {
     test('Create div with 1 class', () {
       final frag = new DivElement();
       final n = new v.Element('div', classes: ['button']);
-      v.inject(n, frag, const v.Context(false));
+      inject(n, frag, const v.Context(false));
       expect(frag.innerHtml, equals('<div class="button"></div>'));
     });
 
@@ -79,7 +88,7 @@ void main() {
       final frag = new DivElement();
       final n =
           new v.Element('div', classes: ['button', 'button.important']);
-      v.inject(n, frag, const v.Context(false));
+      inject(n, frag, const v.Context(false));
       expect(
           frag.innerHtml,
           equals('<div class="button button.important"></div>'));
@@ -90,7 +99,7 @@ void main() {
     test('Create div with 1 child', () {
       final frag = new DivElement();
       final n = new v.Element('div')([new v.Element('span')]);
-      v.inject(n, frag, const v.Context(false));
+      inject(n, frag, const v.Context(false));
       expect(frag.innerHtml, equals('<div><span></span></div>'));
     });
 
@@ -101,7 +110,7 @@ void main() {
             new v.Element('span'),
             new v.Element('span')
           ]);
-      v.inject(n, frag, const v.Context(false));
+      inject(n, frag, const v.Context(false));
       expect(frag.innerHtml, equals('<div><span></span><span></span></div>'));
     });
   });

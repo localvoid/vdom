@@ -49,26 +49,30 @@ abstract class Node<T extends html.Node> {
   /// [Context].
   void detached() {}
 
-  void attach() {}
-  void detach() {}
+  /// [attach] method should be called when [Node] is attached to the attached
+  /// [Context] after it is rendered.
+  ///
+  /// ```dart
+  /// var n = new Node();
+  /// n.create();
+  /// n.render();
+  /// document.body.append(n.ref);
+  /// n.attach();
+  /// ```
+  ///
+  /// If [Node] is attached before render method is executed, it is better
+  /// to call [attached] method directly.
+  ///
+  /// ```dart
+  /// var n = new Node();
+  /// n.create();
+  /// document.body.append(n.ref);
+  /// n.attached();
+  /// n.render();
+  /// ```
+  void attach() { attached(); }
 
+  /// Check if [other] [Node] has the same type and it can be updated,
+  /// it is used when children list is using implicit keys.
   bool sameType(Node other) => runtimeType == other.runtimeType;
-}
-
-void inject(Node n, html.Node parent, Context context) {
-  n.create(context);
-  parent.append(n.ref);
-  if (context.isAttached){
-    n.attached();
-  }
-  n.render(context);
-}
-
-void injectBefore(Node n, html.Node parent, html.Node nextRef, Context context) {
-  n.create(context);
-  parent.insertBefore(n.ref, nextRef);
-  if (context.isAttached){
-    n.attached();
-  }
-  n.render(context);
 }

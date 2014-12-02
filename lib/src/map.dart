@@ -4,6 +4,7 @@
 
 part of vdom;
 
+/// Find changes between maps [a] and [b] and apply this changes to map [n].
 void updateMap(Map a, Map b, Map n) {
   if (identical(a, b)) {
     return null;

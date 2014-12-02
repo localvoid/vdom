@@ -5,12 +5,14 @@
 part of vdom.helpers;
 
 Element a({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('a',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -18,12 +20,14 @@ Element a({Object key,
 }
 
 Element area({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('area',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -31,12 +35,14 @@ Element area({Object key,
 }
 
 Element br({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('br',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -44,12 +50,14 @@ Element br({Object key,
 }
 
 Element base({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('base',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -57,12 +65,14 @@ Element base({Object key,
 }
 
 Element body({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('body',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -70,12 +80,14 @@ Element body({Object key,
 }
 
 Element button({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('button',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -83,12 +95,14 @@ Element button({Object key,
 }
 
 Element canvas({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('canvas',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -96,12 +110,14 @@ Element canvas({Object key,
 }
 
 Element content({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('content',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -109,12 +125,14 @@ Element content({Object key,
 }
 
 Element dl({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('dl',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -122,12 +140,14 @@ Element dl({Object key,
 }
 
 Element dt({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('dt',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -135,12 +155,14 @@ Element dt({Object key,
 }
 
 Element dd({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('dd',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -148,12 +170,14 @@ Element dd({Object key,
 }
 
 Element details({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('details',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -161,12 +185,14 @@ Element details({Object key,
 }
 
 Element dialog({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('dialog',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -174,12 +200,14 @@ Element dialog({Object key,
 }
 
 Element div({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('div',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -187,12 +215,14 @@ Element div({Object key,
 }
 
 Element embed({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('embed',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -200,12 +230,14 @@ Element embed({Object key,
 }
 
 Element fieldset({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('fieldset',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -213,12 +245,14 @@ Element fieldset({Object key,
 }
 
 Element form({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('form',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -226,12 +260,14 @@ Element form({Object key,
 }
 
 Element hr({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('hr',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -239,12 +275,14 @@ Element hr({Object key,
 }
 
 Element head({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('head',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -252,12 +290,14 @@ Element head({Object key,
 }
 
 Element h1({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('h1',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -265,12 +305,14 @@ Element h1({Object key,
 }
 
 Element h2({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('h2',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -278,12 +320,14 @@ Element h2({Object key,
 }
 
 Element h3({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('h3',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -291,12 +335,14 @@ Element h3({Object key,
 }
 
 Element h4({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('h4',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -304,12 +350,14 @@ Element h4({Object key,
 }
 
 Element h5({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('h5',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -317,12 +365,14 @@ Element h5({Object key,
 }
 
 Element h6({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('h6',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -330,12 +380,14 @@ Element h6({Object key,
 }
 
 Element iframe({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('iframe',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -343,12 +395,14 @@ Element iframe({Object key,
 }
 
 Element img({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('img',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -356,12 +410,14 @@ Element img({Object key,
 }
 
 Element input({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('input',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -369,12 +425,14 @@ Element input({Object key,
 }
 
 Element keygen({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('keygen',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -382,12 +440,14 @@ Element keygen({Object key,
 }
 
 Element li({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('li',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -395,12 +455,14 @@ Element li({Object key,
 }
 
 Element label({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('label',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -408,12 +470,14 @@ Element label({Object key,
 }
 
 Element legend({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('legend',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -421,12 +485,14 @@ Element legend({Object key,
 }
 
 Element link({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('link',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -434,12 +500,14 @@ Element link({Object key,
 }
 
 Element map({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('map',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -447,12 +515,14 @@ Element map({Object key,
 }
 
 Element media({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('media',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -460,12 +530,14 @@ Element media({Object key,
 }
 
 Element menu({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('menu',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -473,12 +545,14 @@ Element menu({Object key,
 }
 
 Element meta({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('meta',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -486,12 +560,14 @@ Element meta({Object key,
 }
 
 Element meter({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('meter',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -499,12 +575,14 @@ Element meter({Object key,
 }
 
 Element mod({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('mod',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -512,12 +590,14 @@ Element mod({Object key,
 }
 
 Element ol({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('ol',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -525,12 +605,14 @@ Element ol({Object key,
 }
 
 Element object({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('object',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -538,12 +620,14 @@ Element object({Object key,
 }
 
 Element optgroup({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('optgroup',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -551,12 +635,14 @@ Element optgroup({Object key,
 }
 
 Element option({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('option',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -564,12 +650,14 @@ Element option({Object key,
 }
 
 Element output({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('output',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -577,12 +665,14 @@ Element output({Object key,
 }
 
 Element p({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('p',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -590,12 +680,14 @@ Element p({Object key,
 }
 
 Element param({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('param',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -603,12 +695,14 @@ Element param({Object key,
 }
 
 Element picture({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('picture',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -616,12 +710,14 @@ Element picture({Object key,
 }
 
 Element pre({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('pre',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -629,12 +725,14 @@ Element pre({Object key,
 }
 
 Element progress({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('progress',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -642,12 +740,14 @@ Element progress({Object key,
 }
 
 Element quote({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('quote',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -655,12 +755,14 @@ Element quote({Object key,
 }
 
 Element select({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('select',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -668,12 +770,14 @@ Element select({Object key,
 }
 
 Element source({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('source',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -681,12 +785,14 @@ Element source({Object key,
 }
 
 Element span({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('span',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -694,12 +800,14 @@ Element span({Object key,
 }
 
 Element caption({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('caption',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -707,12 +815,14 @@ Element caption({Object key,
 }
 
 Element td({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('td',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -721,12 +831,14 @@ Element td({Object key,
 
 
 Element tr({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('tr',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -734,12 +846,14 @@ Element tr({Object key,
 }
 
 Element table({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('table',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -747,12 +861,14 @@ Element table({Object key,
 }
 
 Element template({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('template',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -760,12 +876,14 @@ Element template({Object key,
 }
 
 Element textarea({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('textarea',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -773,12 +891,14 @@ Element textarea({Object key,
 }
 
 Element ul({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('ul',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -786,12 +906,14 @@ Element ul({Object key,
 }
 
 Element article({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('article',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -799,12 +921,14 @@ Element article({Object key,
 }
 
 Element section({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('section',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -812,12 +936,14 @@ Element section({Object key,
 }
 
 Element nav({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('nav',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -825,12 +951,14 @@ Element nav({Object key,
 }
 
 Element header({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('header',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -838,12 +966,14 @@ Element header({Object key,
 }
 
 Element footer({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('footer',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,
@@ -851,12 +981,14 @@ Element footer({Object key,
 }
 
 Element strong({Object key,
+     String id,
      List<Node> children,
      Map<String, String> attributes,
      Map<String, String> styles,
      List<String> classes}) {
   return new Element('strong',
       key: key,
+      id: id,
       children: children,
       attributes: attributes,
       styles: styles,

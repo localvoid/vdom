@@ -193,9 +193,9 @@ abstract class Container<T extends html.Node> {
             }
           }
         } else {
-          // both [a] and [b] have more than 1 child, so we should handle
+          // both [a] and [b] have more then 1 child, so we should handle
           // more complex situations with inserting/removing and repositioning
-          // childrens
+          // childrens.
           if (a.first.key == null) {
             return _updateImplicitChildren(a, b, context);
           }
@@ -447,7 +447,11 @@ abstract class Container<T extends html.Node> {
           //
           // moves and inserts are apllied in one step, when `sources[i]` is
           // equal to -1, it means that node with the same key doesn't exist
-          // in list `a` and we are performing insert operation.
+          // in list `a`, so we should make insert operation.
+          //
+          // all modifications are performed from right to left, so we
+          // can use insertBefore method and use reference to the html element
+          // from the next virtual node.
           final seq = _lis(sources);
           var j = seq.length - 1;
 

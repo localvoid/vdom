@@ -66,8 +66,8 @@ v.Element render(){
 void main() {
    root = render();
    root.create(const v.Context(false));
-   document.body.append(root.ref);
    root.init();
+   document.body.append(root.ref);
    root.attached();
    root.render(const v.Context(true));
    new Timer.periodic(const Duration(seconds: 1), (t){ increment(); });

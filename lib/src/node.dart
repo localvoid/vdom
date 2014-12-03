@@ -5,6 +5,10 @@
 part of vdom;
 
 /// Abstract [Node] class
+///
+/// Lifecycle:
+/// - create() -> init() -> attached() -> render() -> update() -> detached()
+/// - mount() -> init() -> attached() -> update() -> detached()
 abstract class Node<T extends html.Node> {
   /// Key is used in matching algorithm to identify node positions in children
   /// lists.
@@ -19,19 +23,19 @@ abstract class Node<T extends html.Node> {
   Node(this.key);
 
   /// Create root-level html Node.
-  ///
-  /// Do not add attributes, or styles to the created Node here.
-  /// Attributes, or styles should be added in the [render] method, because
-  /// [Node] can be mounted on top of existing html Node with [mount] method.
   void create(Context context);
+
+  /// Mount on top of existing html Node
+  void mount(T node, Context context) { this.ref = node; }
+
+  /// Initialize node
+  void init() {}
 
   /// Render attributes, styles, classes, children, etc.
   void render(Context context) {}
 
   /// Update attributes, styles, clasess, children, etc.
-  void update(Node other, Context context) {
-    other.ref = ref;
-  }
+  void update(Node other, Context context) { other.ref = ref; }
 
   /// Remove node
   void dispose(Context context) {

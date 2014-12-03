@@ -4,6 +4,8 @@
 
 part of vdom;
 
+/// Base class for Nodes with [id], [attributes], [classes] and
+/// [styles] properties.
 abstract class ElementBase<T extends html.Element> extends Node<T> {
   String id;
   Map<String, String> attributes;
@@ -51,6 +53,7 @@ abstract class ElementBase<T extends html.Element> extends Node<T> {
   }
 }
 
+/// Base class for Container Elements
 abstract class ElementContainerBase<T extends html.Element> extends ElementBase<T> with Container<T> {
   /// Element children
   List<Node> children;
@@ -76,6 +79,19 @@ abstract class ElementContainerBase<T extends html.Element> extends ElementBase<
     return this;
   }
 
+  void mount(html.Element node, Context context) {
+    super.mount(node, context);
+    for (var i = 0; i < node.childNodes.length; i++) {
+      children[i].mount(node.childNodes[i], context);
+    }
+  }
+
+  void init() {
+    for (var i = 0; i < children.length; i++) {
+      children[i].init();
+    }
+  }
+
   void update(ElementContainerBase other, Context context) {
     super.update(other, context);
     if (children != null || other.children != null) {
@@ -83,7 +99,6 @@ abstract class ElementContainerBase<T extends html.Element> extends ElementBase<
     }
   }
 
-  /// Mount on top of existing element
   void render(Context context) {
     super.render(context);
     if (children != null) {

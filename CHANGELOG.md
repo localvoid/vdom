@@ -19,3 +19,6 @@ v.div(#root, styles: {'top': '10px'})([
 - Added named attribute `id` for Elements.
 - Disallow mixing childrens with implicit and explicit keys inside of the
   `Container`.
+- Changed lifecycle to support server-side rendering. New methods:
+  `mount` and `init`.
+- Added prefix 'V' to all Node classes.

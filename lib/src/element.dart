@@ -86,12 +86,6 @@ abstract class VElementContainerBase<T extends html.Element> extends VElementBas
     }
   }
 
-  void init() {
-    for (var i = 0; i < children.length; i++) {
-      children[i].init();
-    }
-  }
-
   void update(VElementContainerBase other, VContext context) {
     super.update(other, context);
     if (children != null || other.children != null) {

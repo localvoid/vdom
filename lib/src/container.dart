@@ -38,6 +38,7 @@ abstract class VContainer<T extends html.Node> {
   /// end.
   void insertBefore(VNode node, html.Node nextRef, VContext context) {
     node.create(context);
+    node.init();
     container.insertBefore(node.ref, nextRef);
     if (context.isAttached){
       node.attached();

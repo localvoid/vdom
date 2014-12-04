@@ -4,7 +4,7 @@
 
 part of vdom;
 
-/// [Container] mixin used to extend [Node]s with the ability to render
+/// [VContainer] mixin used to extend [VNode]s with the ability to render
 /// and update children.
 ///
 /// ```dart
@@ -34,13 +34,13 @@ part of vdom;
 ///   }
 /// }
 /// ```
-abstract class Container<T extends html.Node> {
+abstract class VContainer<T extends html.Node> {
   /// Container for children.
   T get container;
 
   /// Insert child before [nextRef]. If [nextRef] is `null`, append it to the
   /// end.
-  void insertBefore(Node node, html.Node nextRef, Context context) {
+  void insertBefore(VNode node, html.Node nextRef, Context context) {
     node.create(context);
     node.init();
     container.insertBefore(node.ref, nextRef);
@@ -51,24 +51,24 @@ abstract class Container<T extends html.Node> {
   }
 
   /// Move child
-  void move(Node node, html.Node nextRef, Context context) {
+  void move(VNode node, html.Node nextRef, Context context) {
     container.insertBefore(node.ref, nextRef);
   }
 
   /// Remove child
-  void removeChild(Node node, Context context) {
+  void removeChild(VNode node, Context context) {
     node.dispose(context);
   }
 
   /// Render [children] into [container] node.
-  void renderChildren(List<Node> children, Context context) {
+  void renderChildren(List<VNode> children, Context context) {
     for (var i = 0; i < children.length; i++) {
       insertBefore(children[i], null, context);
     }
   }
 
   /// Update children list inside of [container] node.
-  void updateChildren(List<Node> a, List<Node> b, Context context) {
+  void updateChildren(List<VNode> a, List<VNode> b, Context context) {
     if (a != null && a.isNotEmpty) {
       if (b == null || b.isEmpty) {
         // when [b] is empty, it means that all childrens from list [a] were
@@ -217,7 +217,7 @@ abstract class Container<T extends html.Node> {
   }
 
   /// Update children with implicit keys
-  void _updateImplicitChildren(List<Node> a, List<Node> b, Context context) {
+  void _updateImplicitChildren(List<VNode> a, List<VNode> b, Context context) {
     var aLength = a.length;
     var bLength = b.length;
 
@@ -309,7 +309,7 @@ abstract class Container<T extends html.Node> {
   }
 
   /// Update children with explicit keys
-  void _updateExplicitChildren(List<Node> a, List<Node> b, Context context) {
+  void _updateExplicitChildren(List<VNode> a, List<VNode> b, Context context) {
     var aLength = a.length;
     var bLength = b.length;
 

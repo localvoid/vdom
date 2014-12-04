@@ -3,7 +3,7 @@ import 'package:unittest/unittest.dart';
 import 'package:unittest/html_enhanced_config.dart';
 import 'package:vdom/vdom.dart' as v;
 
-void inject(v.Node n, Node parent, v.Context context) {
+void inject(v.VNode n, Node parent, v.Context context) {
   n.create(context);
   parent.append(n.ref);
   if (context.isAttached){

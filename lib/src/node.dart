@@ -4,12 +4,12 @@
 
 part of vdom;
 
-/// Abstract [Node] class
+/// Abstract [VNode] class
 ///
 /// Lifecycle:
 /// - create() -> init() -> attached() -> render() -> update() -> detached()
 /// - mount() -> init() -> attached() -> update() -> detached()
-abstract class Node<T extends html.Node> {
+abstract class VNode<T extends html.Node> {
   /// Key is used in matching algorithm to identify node positions in children
   /// lists.
   ///
@@ -19,8 +19,8 @@ abstract class Node<T extends html.Node> {
   /// Reference to the actual html Node.
   T ref;
 
-  /// [Node] constructor.
-  Node(this.key);
+  /// [VNode] constructor.
+  VNode(this.key);
 
   /// Create root-level html Node.
   void create(Context context);
@@ -35,7 +35,7 @@ abstract class Node<T extends html.Node> {
   void render(Context context) {}
 
   /// Update attributes, styles, clasess, children, etc.
-  void update(Node other, Context context) { other.ref = ref; }
+  void update(VNode other, Context context) { other.ref = ref; }
 
   /// Remove node
   void dispose(Context context) {
@@ -45,15 +45,15 @@ abstract class Node<T extends html.Node> {
     }
   }
 
-  /// [Node] were inserted into the [Container] inside of the attached
+  /// [VNode] were inserted into the [VContainer] inside of the attached
   /// [Context].
   void attached() {}
 
-  /// [Node] were removed from the [Container] inside of the attached
+  /// [VNode] were removed from the [VContainer] inside of the attached
   /// [Context].
   void detached() {}
 
-  /// [attach] method should be called when [Node] is attached to the attached
+  /// [attach] method should be called when [VNode] is attached to the attached
   /// [Context] after it is rendered.
   ///
   /// ```dart
@@ -64,7 +64,7 @@ abstract class Node<T extends html.Node> {
   /// n.attach();
   /// ```
   ///
-  /// If [Node] is attached before render method is executed, it is better
+  /// If [VNode] is attached before render method is executed, it is better
   /// to call [attached] method directly.
   ///
   /// ```dart
@@ -76,7 +76,7 @@ abstract class Node<T extends html.Node> {
   /// ```
   void attach() { attached(); }
 
-  /// Check if [other] [Node] has the same type and it can be updated,
+  /// Check if [other] [VNode] has the same type and it can be updated,
   /// it is used when children list is using implicit keys.
-  bool sameType(Node other) => runtimeType == other.runtimeType;
+  bool sameType(VNode other) => runtimeType == other.runtimeType;
 }

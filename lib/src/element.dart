@@ -6,13 +6,13 @@ part of vdom;
 
 /// Base class for Nodes with [id], [attributes], [classes] and
 /// [styles] properties.
-abstract class ElementBase<T extends html.Element> extends Node<T> {
+abstract class VElementBase<T extends html.Element> extends VNode<T> {
   String id;
   Map<String, String> attributes;
   List<String> classes;
   Map<String, String> styles;
 
-  ElementBase(Object key, this.id, this.attributes, this.classes, this.styles)
+  VElementBase(Object key, this.id, this.attributes, this.classes, this.styles)
        : super(key);
 
   void render(Context context) {
@@ -34,7 +34,7 @@ abstract class ElementBase<T extends html.Element> extends Node<T> {
     }
   }
 
-  void update(ElementBase other, Context context) {
+  void update(VElementBase other, Context context) {
     super.update(other, context);
     if (other.id == null) {
       other.id = id;
@@ -54,9 +54,9 @@ abstract class ElementBase<T extends html.Element> extends Node<T> {
 }
 
 /// Base class for Container Elements
-abstract class VElementContainerBase<T extends html.Element> extends ElementBase<T> with Container<T> {
+abstract class VElementContainerBase<T extends html.Element> extends VElementBase<T> with VContainer<T> {
   /// Element children
-  List<Node> children;
+  List<VNode> children;
 
   html.Element get container => ref;
 
@@ -72,7 +72,7 @@ abstract class VElementContainerBase<T extends html.Element> extends ElementBase
     if (children is List) {
       this.children = children;
     } else if (children is String) {
-      this.children = [new Text(children)];
+      this.children = [new VText(children)];
     } else {
       this.children = [children];
     }
@@ -117,7 +117,7 @@ class VElement extends VElementContainerBase<html.Element> {
   /// Create a new [VElement]
   VElement(this.tag,
       {Object key,
-       List<Node> children,
+       List<VNode> children,
        String id,
        Map<String, String> attributes,
        List<String> classes,
@@ -128,7 +128,7 @@ class VElement extends VElementContainerBase<html.Element> {
     ref = html.document.createElement(tag);
   }
 
-  bool sameType(Node other) => super.sameType(other) && tag == (other as VElement).tag;
+  bool sameType(VNode other) => super.sameType(other) && tag == (other as VElement).tag;
 
   String toString() => '<$tag key="$key">${children.join()}</$tag>';
 }

@@ -4,7 +4,7 @@
 
 part of vdom;
 
-abstract class NodeProxy<T extends html.Node, E extends Node> implements Node<T> {
+abstract class VNodeProxy<T extends html.Node, E extends VNode> implements VNode<T> {
   final E node;
 
   Object get key => node.key;
@@ -13,7 +13,7 @@ abstract class NodeProxy<T extends html.Node, E extends Node> implements Node<T>
     node.ref = newRef;
   }
 
-  NodeProxy(this.node);
+  VNodeProxy(this.node);
 
   void create(Context context) {
     node.create(context);
@@ -23,7 +23,7 @@ abstract class NodeProxy<T extends html.Node, E extends Node> implements Node<T>
     node.render(context);
   }
 
-  void update(Node other, Context context) {
+  void update(VNode other, Context context) {
     node.update(other, context);
   }
 

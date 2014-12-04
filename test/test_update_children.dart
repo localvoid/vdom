@@ -3,7 +3,7 @@ import 'package:unittest/unittest.dart';
 import 'package:unittest/html_enhanced_config.dart';
 import 'package:vdom/vdom.dart' as v;
 
-void injectBefore(v.VNode n, Node parent, Node nextRef, v.VContext context) {
+void injectBefore(v.Node n, Node parent, Node nextRef, v.Context context) {
   n.create(context);
   parent.insertBefore(n.ref, nextRef);
   if (context.isAttached){
@@ -39,11 +39,11 @@ List<v.VElement> gen(List items) {
 void checkSync(v.VElement a, v.VElement b) {
   final aDiv = new DivElement();
   final bDiv = new DivElement();
-  injectBefore(a, aDiv, null, const v.VContext(false));
-  injectBefore(b, bDiv, null, const v.VContext(false));
+  injectBefore(a, aDiv, null, const v.Context(false));
+  injectBefore(b, bDiv, null, const v.Context(false));
   final bHtml = bDiv.innerHtml;
 
-  a.update(b, const v.VContext(false));
+  a.update(b, const v.Context(false));
   final aHtml = aDiv.innerHtml;
 
   if (aHtml != bHtml) {

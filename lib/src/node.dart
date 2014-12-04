@@ -4,12 +4,12 @@
 
 part of vdom;
 
-/// Abstract [VNode] class
+/// Abstract [Node] class
 ///
 /// Lifecycle:
 /// - create() -> init() -> attached() -> render() -> update() -> detached()
 /// - mount() -> init() -> attached() -> update() -> detached()
-abstract class VNode<T extends html.Node> {
+abstract class Node<T extends html.Node> {
   /// Key is used in matching algorithm to identify node positions in children
   /// lists.
   ///
@@ -19,42 +19,42 @@ abstract class VNode<T extends html.Node> {
   /// Reference to the actual html Node.
   T ref;
 
-  /// [VNode] constructor.
-  VNode(this.key);
+  /// [Node] constructor.
+  Node(this.key);
 
   /// Create root-level html Node.
-  void create(VContext context);
+  void create(Context context);
 
   /// Mount on top of existing html Node
-  void mount(T node, VContext context) { this.ref = node; }
+  void mount(T node, Context context) { this.ref = node; }
 
   /// Initialize node
   void init() {}
 
   /// Render attributes, styles, classes, children, etc.
-  void render(VContext context) {}
+  void render(Context context) {}
 
   /// Update attributes, styles, clasess, children, etc.
-  void update(VNode other, VContext context) { other.ref = ref; }
+  void update(Node other, Context context) { other.ref = ref; }
 
   /// Remove node
-  void dispose(VContext context) {
+  void dispose(Context context) {
     ref.remove();
     if (context.isAttached) {
       detached();
     }
   }
 
-  /// [VNode] were inserted into the [VContainer] inside of the attached
-  /// [VContext].
+  /// [Node] were inserted into the [Container] inside of the attached
+  /// [Context].
   void attached() {}
 
-  /// [VNode] were removed from the [VContainer] inside of the attached
-  /// [VContext].
+  /// [Node] were removed from the [Container] inside of the attached
+  /// [Context].
   void detached() {}
 
-  /// [attach] method should be called when [VNode] is attached to the attached
-  /// [VContext] after it is rendered.
+  /// [attach] method should be called when [Node] is attached to the attached
+  /// [Context] after it is rendered.
   ///
   /// ```dart
   /// var n = new Node();
@@ -64,7 +64,7 @@ abstract class VNode<T extends html.Node> {
   /// n.attach();
   /// ```
   ///
-  /// If [VNode] is attached before render method is executed, it is better
+  /// If [Node] is attached before render method is executed, it is better
   /// to call [attached] method directly.
   ///
   /// ```dart
@@ -76,7 +76,7 @@ abstract class VNode<T extends html.Node> {
   /// ```
   void attach() { attached(); }
 
-  /// Check if [other] [VNode] has the same type and it can be updated,
+  /// Check if [other] [Node] has the same type and it can be updated,
   /// it is used when children list is using implicit keys.
-  bool sameType(VNode other) => runtimeType == other.runtimeType;
+  bool sameType(Node other) => runtimeType == other.runtimeType;
 }

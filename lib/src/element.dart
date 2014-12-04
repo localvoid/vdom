@@ -6,16 +6,16 @@ part of vdom;
 
 /// Base class for Nodes with [id], [attributes], [classes] and
 /// [styles] properties.
-abstract class VElementBase<T extends html.Element> extends VNode<T> {
+abstract class ElementBase<T extends html.Element> extends Node<T> {
   String id;
   Map<String, String> attributes;
   List<String> classes;
   Map<String, String> styles;
 
-  VElementBase(Object key, this.id, this.attributes, this.classes, this.styles)
+  ElementBase(Object key, this.id, this.attributes, this.classes, this.styles)
        : super(key);
 
-  void render(VContext context) {
+  void render(Context context) {
     if (id != null) {
       ref.id = id;
     }
@@ -34,7 +34,7 @@ abstract class VElementBase<T extends html.Element> extends VNode<T> {
     }
   }
 
-  void update(VElementBase other, VContext context) {
+  void update(ElementBase other, Context context) {
     super.update(other, context);
     if (other.id == null) {
       other.id = id;
@@ -54,9 +54,9 @@ abstract class VElementBase<T extends html.Element> extends VNode<T> {
 }
 
 /// Base class for Container Elements
-abstract class VElementContainerBase<T extends html.Element> extends VElementBase<T> with VContainer<T> {
+abstract class VElementContainerBase<T extends html.Element> extends ElementBase<T> with Container<T> {
   /// Element children
-  List<VNode> children;
+  List<Node> children;
 
   html.Element get container => ref;
 
@@ -72,28 +72,28 @@ abstract class VElementContainerBase<T extends html.Element> extends VElementBas
     if (children is List) {
       this.children = children;
     } else if (children is String) {
-      this.children = [new VText(children)];
+      this.children = [new Text(children)];
     } else {
       this.children = [children];
     }
     return this;
   }
 
-  void mount(html.Element node, VContext context) {
+  void mount(html.Element node, Context context) {
     super.mount(node, context);
     for (var i = 0; i < node.childNodes.length; i++) {
       children[i].mount(node.childNodes[i], context);
     }
   }
 
-  void update(VElementContainerBase other, VContext context) {
+  void update(VElementContainerBase other, Context context) {
     super.update(other, context);
     if (children != null || other.children != null) {
       updateChildren(children, other.children, context);
     }
   }
 
-  void render(VContext context) {
+  void render(Context context) {
     super.render(context);
     if (children != null) {
       renderChildren(children, context);
@@ -117,18 +117,18 @@ class VElement extends VElementContainerBase<html.Element> {
   /// Create a new [VElement]
   VElement(this.tag,
       {Object key,
-       List<VNode> children,
+       List<Node> children,
        String id,
        Map<String, String> attributes,
        List<String> classes,
        Map<String, String> styles})
       : super(key, children, id, attributes, classes, styles);
 
-  void create(VContext context) {
+  void create(Context context) {
     ref = html.document.createElement(tag);
   }
 
-  bool sameType(VNode other) => super.sameType(other) && tag == (other as VElement).tag;
+  bool sameType(Node other) => super.sameType(other) && tag == (other as VElement).tag;
 
   String toString() => '<$tag key="$key">${children.join()}</$tag>';
 }

@@ -43,10 +43,10 @@ tree to the new one.
 ```dart
 import 'dart:html';
 import 'dart:async';
-import 'package:vdom/vdom.dart' as v;
+import 'package:vdom/vdom.dart';
 
 int count = 0;
-v.Element root;
+VElement root;
 
 void increment(){
   count += 1;
@@ -55,21 +55,21 @@ void increment(){
 
 void rerender() {
   var next = render();
-  root.update(next, const v.Context(true));
+  root.update(next, const VContext(true));
   root = next;
 }
 
 v.Element render(){
-  return new v.Element('div')(count.toString());
+  return new VElement('div')(count.toString());
 }
 
 void main() {
    root = render();
-   root.create(const v.Context(false));
+   root.create(const VContext(false));
    root.init();
    document.body.append(root.ref);
    root.attached();
-   root.render(const v.Context(true));
+   root.render(const VContext(true));
    new Timer.periodic(const Duration(seconds: 1), (t){ increment(); });
 }
 ```

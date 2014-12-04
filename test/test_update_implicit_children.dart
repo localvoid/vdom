@@ -2,9 +2,8 @@ import 'dart:html';
 import 'package:unittest/unittest.dart';
 import 'package:unittest/html_enhanced_config.dart';
 import 'package:vdom/vdom.dart' as v;
-import 'package:vdom/helpers.dart' as v;
 
-void injectBefore(v.Node n, Node parent, Node nextRef, v.Context context) {
+void injectBefore(v.VNode n, Node parent, Node nextRef, v.VContext context) {
   n.create(context);
   parent.insertBefore(n.ref, nextRef);
   if (context.isAttached){
@@ -13,19 +12,21 @@ void injectBefore(v.Node n, Node parent, Node nextRef, v.Context context) {
   n.render(context);
 }
 
-v.Element e(Object key, [Object c = null]) {
+v.VElement e(Object key, [Object c = null]) {
   if (c == null) {
-    return new v.Element('div');
+    return new v.VElement('div');
   }
-  return new v.Element('div')(c);
+  return new v.VElement('div')(c);
 }
+
+ve(tag) => new v.VElement(tag);
 
 /// Generate list of VElements from simple integers.
 ///
 /// For example, list `[0, 1, [2, [0, 1, 2]], 3]` will create
 /// list with 4 VElements and the 2nd element will have key `2` and 3 childrens
 /// of its own.
-List<v.Element> gen(List items) {
+List<v.VElement> gen(List items) {
   final result = [];
   for (var i in items) {
     if (i is List) {
@@ -37,14 +38,14 @@ List<v.Element> gen(List items) {
   return result;
 }
 
-void checkSync(v.Element a, v.Element b) {
+void checkSync(v.VElement a, v.VElement b) {
   final aDiv = new DivElement();
   final bDiv = new DivElement();
-  injectBefore(a, aDiv, null, const v.Context(false));
-  injectBefore(b, bDiv, null, const v.Context(false));
+  injectBefore(a, aDiv, null, const v.VContext(false));
+  injectBefore(b, bDiv, null, const v.VContext(false));
   final bHtml = bDiv.innerHtml;
 
-  a.update(b, const v.Context(false));
+  a.update(b, const v.VContext(false));
   final aHtml = aDiv.innerHtml;
 
   if (aHtml != bHtml) {
@@ -609,32 +610,32 @@ void main() {
 
     group('Different Types', () {
       test('[span][div] => [div][span]', () {
-        final a = v.div()([v.span(), v.div()]);
-        final b = v.div()([v.div(), v.span()]);
+        final a = ve('div')([ve('span'), ve('div')]);
+        final b = ve('div')([ve('div'), ve('span')]);
         checkSync(a, b);
       });
 
       test('[h1][h2][h3][h4][h5] => [h5][h4][h3][h2][h1]', () {
-        final a = v.div()([v.h1(), v.h2(), v.h3(), v.h4(), v.h5()]);
-        final b = v.div()([v.h5(), v.h4(), v.h3(), v.h2(), v.h1()]);
+        final a = ve('div')([ve('h1'), ve('h2'), ve('h3'), ve('h4'), ve('h5')]);
+        final b = ve('div')([ve('h5'), ve('h4'), ve('h3'), ve('h2'), ve('h1')]);
         checkSync(a, b);
       });
 
       test('[h1][h3][h3][h3][h5] => [h5][h3][h3][h3][h1]', () {
-        final a = v.div()([v.h1(), v.h3(), v.h3(), v.h3(), v.h5()]);
-        final b = v.div()([v.h5(), v.h3(), v.h3(), v.h3(), v.h1()]);
+        final a = ve('div')([ve('h1'), ve('h3'), ve('h3'), ve('h3'), ve('h5')]);
+        final b = ve('div')([ve('h5'), ve('h3'), ve('h3'), ve('h3'), ve('h1')]);
         checkSync(a, b);
       });
 
       test('[h1][h3][h3][h3][h5] => [h5][h3][h3][h1]', () {
-        final a = v.div()([v.h1(), v.h3(), v.h3(), v.h3(), v.h5()]);
-        final b = v.div()([v.h5(), v.h3(), v.h3(), v.h1()]);
+        final a = ve('div')([ve('h1'), ve('h3'), ve('h3'), ve('h3'), ve('h5')]);
+        final b = ve('div')([ve('h5'), ve('h3'), ve('h3'), ve('h1')]);
         checkSync(a, b);
       });
 
       test('[h1][h3][h3][h5] => [h5][h3][h3][h3][h1]', () {
-        final a = v.div()([v.h1(), v.h3(), v.h3(), v.h5()]);
-        final b = v.div()([v.h5(), v.h3(), v.h3(), v.h3(), v.h1()]);
+        final a = ve('div')([ve('h1'), ve('h3'), ve('h3'), ve('h5')]);
+        final b = ve('div')([ve('h5'), ve('h3'), ve('h3'), ve('h3'), ve('h1')]);
         checkSync(a, b);
       });
     });

@@ -4,18 +4,18 @@
 
 part of vdom;
 
-/// [Text] Node
-class Text extends Node<html.Text> {
-  /// [Text] content
+/// [VText] Node
+class VText extends VNode<html.Text> {
+  /// [VText] content
   String data;
 
-  Text(this.data, {Object key}) : super(key);
+  VText(this.data, {Object key}) : super(key);
 
-  void create(Context context) {
+  void create(VContext context) {
     ref = new html.Text(data);
   }
 
-  void update(Text other, Context context) {
+  void update(VText other, VContext context) {
     super.update(other, context);
     if (data != other.data) {
       ref.data = other.data;

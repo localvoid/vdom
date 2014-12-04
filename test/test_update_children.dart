@@ -3,7 +3,7 @@ import 'package:unittest/unittest.dart';
 import 'package:unittest/html_enhanced_config.dart';
 import 'package:vdom/vdom.dart' as v;
 
-void injectBefore(v.Node n, Node parent, Node nextRef, v.Context context) {
+void injectBefore(v.VNode n, Node parent, Node nextRef, v.VContext context) {
   n.create(context);
   parent.insertBefore(n.ref, nextRef);
   if (context.isAttached){
@@ -12,11 +12,11 @@ void injectBefore(v.Node n, Node parent, Node nextRef, v.Context context) {
   n.render(context);
 }
 
-v.Element e(Object key, [Object c = null]) {
+v.VElement e(Object key, [Object c = null]) {
   if (c == null) {
-    return new v.Element('div', key: key);
+    return new v.VElement('div', key: key);
   }
-  return new v.Element('div', key: key)(c);
+  return new v.VElement('div', key: key)(c);
 }
 
 /// Generate list of VElements from simple integers.
@@ -24,7 +24,7 @@ v.Element e(Object key, [Object c = null]) {
 /// For example, list `[0, 1, [2, [0, 1, 2]], 3]` will create
 /// list with 4 VElements and the 2nd element will have key `2` and 3 childrens
 /// of its own.
-List<v.Element> gen(List items) {
+List<v.VElement> gen(List items) {
   final result = [];
   for (var i in items) {
     if (i is List) {
@@ -36,14 +36,14 @@ List<v.Element> gen(List items) {
   return result;
 }
 
-void checkSync(v.Element a, v.Element b) {
+void checkSync(v.VElement a, v.VElement b) {
   final aDiv = new DivElement();
   final bDiv = new DivElement();
-  injectBefore(a, aDiv, null, const v.Context(false));
-  injectBefore(b, bDiv, null, const v.Context(false));
+  injectBefore(a, aDiv, null, const v.VContext(false));
+  injectBefore(b, bDiv, null, const v.VContext(false));
   final bHtml = bDiv.innerHtml;
 
-  a.update(b, const v.Context(false));
+  a.update(b, const v.VContext(false));
   final aHtml = aDiv.innerHtml;
 
   if (aHtml != bHtml) {

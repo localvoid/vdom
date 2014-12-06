@@ -71,6 +71,8 @@ abstract class VElementContainerBase<T extends html.Element> extends VElementBas
   VElementContainerBase<T> call(children) {
     if (children is List) {
       this.children = children;
+    } else if (children is Iterable) {
+      this.children = children.toList();
     } else if (children is String) {
       this.children = [new VText(children)];
     } else {

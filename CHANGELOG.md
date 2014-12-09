@@ -1,3 +1,12 @@
+# 0.8.0
+
+- Removed `ElementContainerBase`, container behavior moved into
+  `ElementBase`.
+
+# 0.7.1
+
+- Add support for Iterables in `call(children)` method.
+
 # 0.7.0
 
 - Changed interface of the `Element` constructor, `children` and `key`

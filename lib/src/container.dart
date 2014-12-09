@@ -63,16 +63,18 @@ abstract class VContainer<T extends html.Node> {
   /// Render [children] into [container] node.
   void renderChildren(List<VNode> children, Context context) {
     assert(() {
-      final key = children[0].key;
-      for (var i = 0; i < children.length; i++) {
-        if ((key == null && children[i].key != null) ||
-            (key != null && children[i].key == null)) {
-          throw new AssertionFailure(
-              'All children inside of the Virtual DOM Node should have '
-              'either explicit, or implicit keys.\n'
-              'Child at position 0 has key $key\n'
-              'Child at position $i has key ${children[i].key}\n'
-              'Children: $children');
+      if (children.isNotEmpty) {
+        final key = children[0].key;
+        for (var i = 0; i < children.length; i++) {
+          if ((key == null && children[i].key != null) ||
+              (key != null && children[i].key == null)) {
+            throw new AssertionFailure(
+                'All children inside of the Virtual DOM Node should have '
+                'either explicit, or implicit keys.\n'
+                'Child at position 0 has key $key\n'
+                'Child at position $i has key ${children[i].key}\n'
+                'Children: $children');
+          }
         }
       }
       return true;

@@ -8,6 +8,8 @@ library vdom;
 import 'dart:html' as html;
 import 'dart:collection';
 
+import 'package:vdom/src/utils.dart';
+
 part 'package:vdom/src/context.dart';
 part 'package:vdom/src/set.dart';
 part 'package:vdom/src/map.dart';

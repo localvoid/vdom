@@ -65,7 +65,7 @@ abstract class VContainer<T extends html.Node> {
     assert(() {
       if (children.isNotEmpty) {
         final key = children[0].key;
-        for (var i = 0; i < children.length; i++) {
+        for (var i = 1; i < children.length; i++) {
           if ((key == null && children[i].key != null) ||
               (key != null && children[i].key == null)) {
             throw new AssertionFailure(
@@ -91,23 +91,6 @@ abstract class VContainer<T extends html.Node> {
       if (b == null || b.isEmpty) {
         // when [b] is empty, it means that all childrens from list [a] were
         // removed
-        assert(() {
-          final key = a[0].key;
-          for (var i = 0; i < a.length; i++) {
-            if ((key == null && a[i].key != null) ||
-                (key != null && a[i].key == null)) {
-              throw new AssertionFailure(
-                  'All children inside of the Virtual DOM Node should have '
-                  'either explicit, or implicit keys.\n'
-                  'Child at position old:0 has key $key\n'
-                  'Child at position old:$i has key ${a[i].key}\n'
-                  'Old children: $a\n'
-                  'New children: $b');
-            }
-          }
-          return true;
-        }());
-
         for (var i = 0; i < a.length; i++) {
           removeChild(a[i], context);
         }
@@ -299,6 +282,23 @@ abstract class VContainer<T extends html.Node> {
           // both [a] and [b] have more then 1 child, so we should handle
           // more complex situations with inserting/removing and repositioning
           // childrens.
+          assert(() {
+            final aKey = a[0].key;
+            for (var i = 0; i < b.length; i++) {
+              if ((aKey == null && b[i].key != null) ||
+                  (aKey != null && b[i].key == null)) {
+                throw new AssertionFailure(
+                    'All children inside of the Virtual DOM Node should have '
+                    'either explicit, or implicit keys.\n'
+                    'Child at position old:0 has key $aKey\n'
+                    'Child at position new:$i has key ${b[i].key}\n'
+                    'Old children: $a\n'
+                    'New children: $b');
+              }
+            }
+            return true;
+          }());
+
           if (a.first.key == null) {
             return _updateImplicitChildren(a, b, context);
           }
@@ -335,31 +335,6 @@ abstract class VContainer<T extends html.Node> {
   void _updateImplicitChildren(List<VNode> a, List<VNode> b, Context context) {
     var aLength = a.length;
     var bLength = b.length;
-    assert(() {
-      for (var i = 0; i < a.length; i++) {
-        if (a[i].key != null) {
-          throw new AssertionFailure(
-              'All children inside of the Virtual DOM Node should have '
-              'either explicit, or implicit keys.\n'
-              'Child at position old:0 has implicit key\n'
-              'Child at position old:$i has explicit key $a[i]\n'
-              'Old children: $a\n'
-              'New children: $b');
-        }
-      }
-      for (var i = 0; i < b.length; i++) {
-        if (b[i].key != null) {
-          throw new AssertionFailure(
-              'All children inside of the Virtual DOM Node should have '
-              'either explicit, or implicit keys.\n'
-              'Child at position old:0 has implicit key\n'
-              'Child at position new:$i has explicit key $b[i]\n'
-              'Old children: $a\n'
-              'New children: $b');
-        }
-      }
-      return true;
-    }());
 
     final minLength = aLength < bLength ? aLength : bLength;
 
@@ -444,31 +419,6 @@ abstract class VContainer<T extends html.Node> {
   void _updateExplicitChildren(List<VNode> a, List<VNode> b, Context context) {
     var aLength = a.length;
     var bLength = b.length;
-    assert(() {
-      for (var i = 0; i < a.length; i++) {
-        if (a[i].key == null) {
-          throw new AssertionFailure(
-              'All children inside of the Virtual DOM Node should have '
-              'either explicit, or implicit keys.\n'
-              'Child at position old:0 has explicit key ${a[0]}\n'
-              'Child at position old:$i has implicit key\n'
-              'Old children: $a\n'
-              'New children: $b');
-        }
-      }
-      for (var i = 0; i < b.length; i++) {
-        if (b[i].key == null) {
-          throw new AssertionFailure(
-              'All children inside of the Virtual DOM Node should have '
-              'either explicit, or implicit keys.\n'
-              'Child at position old:0 has explicit key ${a[0]}\n'
-              'Child at position new:$i has implicit key\n'
-              'Old children: $a\n'
-              'New children: $b');
-        }
-      }
-      return true;
-    }());
 
     final minLength = aLength < bLength ? aLength : bLength;
 

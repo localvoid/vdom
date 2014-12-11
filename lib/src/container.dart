@@ -60,6 +60,14 @@ abstract class VContainer<T extends html.Node> {
     node.dispose(context);
   }
 
+  /// Mount children inside of [node] element
+  void mountChildren(List<VNode> children, html.Element node, Context context) {
+    // TODO: check performance for childNodes iteration
+    for (var i = 0; i < node.childNodes.length; i++) {
+      children[i].mount(node.childNodes[i], context);
+    }
+  }
+
   /// Render [children] into [container] node.
   void renderChildren(List<VNode> children, Context context) {
     assert(() {

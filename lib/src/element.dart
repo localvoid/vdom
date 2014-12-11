@@ -32,10 +32,7 @@ abstract class VElementBase<T extends html.Element> extends VNode<T> with VConta
   void mount(html.Element node, Context context) {
     super.mount(node, context);
     if (children != null) {
-      // TODO: check performance for childNodes iteration
-      for (var i = 0; i < node.childNodes.length; i++) {
-        children[i].mount(node.childNodes[i], context);
-      }
+      mountChildren(children, node, context);
     }
   }
 

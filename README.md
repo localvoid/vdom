@@ -3,19 +3,36 @@
 Virtual DOM library for [Dart](https://www.dartlang.org/) inspired by
 [ReactJS Reconciliation](http://facebook.github.io/react/docs/reconciliation.html).
 
+This library is not intended for use by web-application developers, it
+is a low-level library for high-level libraries like
+[Liquid](http://github.com/localvoid/liquid/).
+
+Virtual DOM libraries can be designed in many ways depending on the
+problems it is trying to solve, the primary use case for this library
+is performing updates to stateful trees.
+
+In this library, Virtual DOM hierarchy does not represent one-to-one
+real DOM hierarchy. Several Virtual DOM Nodes can refer to the same
+real DOM node and have control over different properties.
+
+There are no "onEvent" callback-style event listeners and they won't
+be added in the future. If you want to add this style of events to
+your high-level library, you can just extend `Element` class and add
+support for callback-style events. In the Liquid library the preferred
+way to add events is to use event delegation or passing
+[Streams](https://api.dartlang.org/apidocs/channels/stable/dartdoc-viewer/dart:async.Stream)
+between Components.
+
 ## API
 
-### `Context`
+### Context
 
 Context is an object that is used to pass specific details to the
 subtree.
 
 Default Context is a simple object with `isAttached` property.
 
-In the Liquid library, `Component` class implements this interface,
-and is used to establish ownership relationships.
-
-### `Node`
+### Node
 
 #### `void create(Context context)`
 
@@ -30,7 +47,7 @@ and wait for any async operation to finish.
 
 #### `void render(Context context)`
 
-Render attributes, styles, classes, children, etc. "Second step" in ours
+Render attributes, styles, classes, children, etc. "Second step" in
 two-step rendering model.
 
 #### `void update(Node other, Context context)`

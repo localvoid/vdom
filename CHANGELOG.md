@@ -2,6 +2,10 @@
 
 - Removed `ElementContainerBase`, container behavior moved into
   `ElementBase`.
+- Added runtime checking for implicit/explicit keys.
+- Added new attribute "type" for Elements, it is rendered as an
+  immutable class and used to detect similar elements when keys are
+  implicit.
 
 # 0.7.1
 

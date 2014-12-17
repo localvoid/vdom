@@ -7,13 +7,14 @@ part of vdom;
 abstract class VElementBase<T extends html.Element> extends VNode<T> with VContainer<T> {
   List<VNode> children;
   String id;
+  String type;
   Map<String, String> attributes;
   List<String> classes;
   Map<String, String> styles;
 
   html.Element get container => ref;
 
-  VElementBase(Object key, this.children, this.id, this.attributes,
+  VElementBase(Object key, this.children, this.id, this.type, this.attributes,
       this.classes, this.styles) : super(key);
 
   VElementBase<T> call(children) {
@@ -39,6 +40,9 @@ abstract class VElementBase<T extends html.Element> extends VNode<T> with VConta
   void render(Context context) {
     if (id != null) {
       ref.id = id;
+    }
+    if (type != null) {
+      ref.classes.add(type);
     }
     if (attributes != null) {
       attributes.forEach((key, value) {
@@ -86,6 +90,10 @@ abstract class VElementBase<T extends html.Element> extends VNode<T> with VConta
       }
     }
   }
+
+  bool sameType(VNode other) =>
+      super.sameType(other) && type == (other as VElementBase).type;
+
 }
 
 /// Virtual Dom Element
@@ -98,16 +106,18 @@ class VElement extends VElementBase<html.Element> {
       {Object key,
        List<VNode> children,
        String id,
+       String type,
        Map<String, String> attributes,
        List<String> classes,
        Map<String, String> styles})
-      : super(key, children, id, attributes, classes, styles);
+      : super(key, children, id, type, attributes, classes, styles);
 
   void create(Context context) {
     ref = html.document.createElement(tag);
   }
 
-  bool sameType(VNode other) => super.sameType(other) && tag == (other as VElement).tag;
+  bool sameType(VNode other) =>
+      super.sameType(other) && tag == (other as VElement).tag;
 
   String toString() => '<$tag key="$key">${children.join()}</$tag>';
 }

@@ -1,6 +1,6 @@
 import 'package:unittest/unittest.dart';
 import 'package:unittest/html_enhanced_config.dart';
-import 'package:vdom/vdom.dart' as v;
+import 'package:vdom/src/utils/set.dart';
 
 void main() {
   useHtmlEnhancedConfiguration();
@@ -11,7 +11,7 @@ void main() {
         final a = null;
         final b = null;
         final c = new Set.from([10]);
-        v.updateSet(a, b, c);
+        updateSet(a, b, c);
         expect(c, equals(new Set.from([10])));
       });
 
@@ -19,7 +19,7 @@ void main() {
         final a = null;
         final b = [];
         final c = new Set.from([10]);
-        v.updateSet(a, b, c);
+        updateSet(a, b, c);
         expect(c, equals(new Set.from([10])));
       });
 
@@ -27,7 +27,7 @@ void main() {
         final a = [];
         final b = null;
         final c = new Set.from([10]);
-        v.updateSet(a, b, c);
+        updateSet(a, b, c);
         expect(c, equals(new Set.from([10])));
       });
 
@@ -35,7 +35,7 @@ void main() {
         final a = [];
         final b = [];
         final c = new Set.from([10]);
-        v.updateSet(a, b, c);
+        updateSet(a, b, c);
         expect(c, equals(new Set.from([10])));
       });
     });
@@ -45,7 +45,7 @@ void main() {
         final a = null;
         final b = [1];
         final c = new Set.from([10]);
-        v.updateSet(a, b, c);
+        updateSet(a, b, c);
         expect(c, equals(new Set.from([10, 1])));
       });
 
@@ -53,7 +53,7 @@ void main() {
         final a = [];
         final b = [1];
         final c = new Set.from([10]);
-        v.updateSet(a, b, c);
+        updateSet(a, b, c);
         expect(c, equals(new Set.from([10, 1])));
       });
 
@@ -61,7 +61,7 @@ void main() {
         final a = [];
         final b = [1, 2];
         final c = new Set.from([10]);
-        v.updateSet(a, b, c);
+        updateSet(a, b, c);
         expect(c, equals(new Set.from([10, 1, 2])));
       });
     });
@@ -71,7 +71,7 @@ void main() {
         final a = [1];
         final b = null;
         final c = new Set.from([10, 1]);
-        v.updateSet(a, b, c);
+        updateSet(a, b, c);
         expect(c, equals(new Set.from([10])));
       });
 
@@ -79,7 +79,7 @@ void main() {
         final a = [1];
         final b = [];
         final c = new Set.from([10, 1]);
-        v.updateSet(a, b, c);
+        updateSet(a, b, c);
         expect(c, equals(new Set.from([10])));
       });
 
@@ -87,7 +87,7 @@ void main() {
         final a = [1, 2];
         final b = [];
         final c = new Set.from([10, 1, 2]);
-        v.updateSet(a, b, c);
+        updateSet(a, b, c);
         expect(c, equals(new Set.from([10])));
       });
     });
@@ -97,7 +97,7 @@ void main() {
         final a = [1];
         final b = [20];
         final c = new Set.from([10, 1]);
-        v.updateSet(a, b, c);
+        updateSet(a, b, c);
         expect(c, equals(new Set.from([10, 20])));
       });
 
@@ -105,7 +105,7 @@ void main() {
         final a = [1, 2];
         final b = [20, 21];
         final c = new Set.from([10, 1, 2]);
-        v.updateSet(a, b, c);
+        updateSet(a, b, c);
         expect(c, equals(new Set.from([10, 20, 21])));
       });
 
@@ -113,7 +113,7 @@ void main() {
         final a = [1, 2, 3, 4, 5];
         final b = [20, 21, 22, 23, 24];
         final c = new Set.from([10, 1, 2, 3, 4, 5]);
-        v.updateSet(a, b, c);
+        updateSet(a, b, c);
         expect(c, equals(new Set.from([10, 20, 21, 22, 23, 24])));
       });
     });

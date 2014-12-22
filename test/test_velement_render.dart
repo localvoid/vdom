@@ -18,14 +18,14 @@ void main() {
   group('Basic', () {
     test('Create empty div', () {
       final frag = new DivElement();
-      final n = new v.VElement('div');
+      final n = new v.VHtmlGenericElement('div');
       inject(n, frag, const v.Context(false));
       expect(frag.innerHtml, equals('<div></div>'));
     });
 
     test('Create empty span', () {
       final frag = new DivElement();
-      final n = new v.VElement('span');
+      final n = new v.VHtmlGenericElement('span');
       inject(n, frag, const v.Context(false));
       expect(frag.innerHtml, equals('<span></span>'));
     });
@@ -33,7 +33,7 @@ void main() {
   group('Attributes', () {
     test('Create div with 1 attribute', () {
       final frag = new DivElement();
-      final n = new v.VElement('div', attributes: {
+      final n = new v.VHtmlGenericElement('div', attributes: {
         'id': 'test-id'
       });
       inject(n, frag, const v.Context(false));
@@ -42,7 +42,7 @@ void main() {
 
     test('Create div with 2 attributes', () {
       final frag = new DivElement();
-      final n = new v.VElement('div', attributes: {
+      final n = new v.VHtmlGenericElement('div', attributes: {
         'id': 'test-id',
         'data-test': 'test-data'
       });
@@ -56,7 +56,7 @@ void main() {
   group('Styles', () {
     test('Create div with 1 style', () {
       final frag = new DivElement();
-      final n = new v.VElement('div', styles: {
+      final n = new v.VHtmlGenericElement('div', styles: {
         'top': '10px'
       });
       inject(n, frag, const v.Context(false));
@@ -65,7 +65,7 @@ void main() {
 
     test('Create div with 2 styles', () {
       final frag = new DivElement();
-      final n = new v.VElement('div', styles: {
+      final n = new v.VHtmlGenericElement('div', styles: {
         'top': '10px',
         'left': '20px'
       });
@@ -79,7 +79,7 @@ void main() {
   group('Classes', () {
     test('Create div with 1 class', () {
       final frag = new DivElement();
-      final n = new v.VElement('div', classes: ['button']);
+      final n = new v.VHtmlGenericElement('div', classes: ['button']);
       inject(n, frag, const v.Context(false));
       expect(frag.innerHtml, equals('<div class="button"></div>'));
     });
@@ -87,7 +87,7 @@ void main() {
     test('Create div with 2 classes', () {
       final frag = new DivElement();
       final n =
-          new v.VElement('div', classes: ['button', 'button.important']);
+          new v.VHtmlGenericElement('div', classes: ['button', 'button.important']);
       inject(n, frag, const v.Context(false));
       expect(
           frag.innerHtml,
@@ -98,7 +98,7 @@ void main() {
   group('Children', () {
     test('Create div with 1 child', () {
       final frag = new DivElement();
-      final n = new v.VElement('div')([new v.VElement('span')]);
+      final n = new v.VHtmlGenericElement('div')([new v.VHtmlGenericElement('span')]);
       inject(n, frag, const v.Context(false));
       expect(frag.innerHtml, equals('<div><span></span></div>'));
     });
@@ -106,9 +106,9 @@ void main() {
     test('Create div with 2 children', () {
       final frag = new DivElement();
       final n =
-          new v.VElement('div')([
-            new v.VElement('span'),
-            new v.VElement('span')
+          new v.VHtmlGenericElement('div')([
+            new v.VHtmlGenericElement('span'),
+            new v.VHtmlGenericElement('span')
           ]);
       inject(n, frag, const v.Context(false));
       expect(frag.innerHtml, equals('<div><span></span><span></span></div>'));

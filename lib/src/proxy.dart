@@ -2,9 +2,13 @@
 // details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-part of vdom;
+library vdom.proxy;
 
-abstract class VNodeProxy<T extends html.Node, E extends VNode> implements VNode<T> {
+import 'dart:html' as html;
+import 'context.dart';
+import 'node.dart';
+
+abstract class VProxy<T extends html.Node, E extends VNode> implements VNode<T> {
   final E node;
 
   Object get key => node.key;
@@ -13,7 +17,7 @@ abstract class VNodeProxy<T extends html.Node, E extends VNode> implements VNode
     node.ref = newRef;
   }
 
-  VNodeProxy(this.node);
+  VProxy(this.node);
 
   void create(Context context) {
     node.create(context);

@@ -12,21 +12,21 @@ void injectBefore(v.VNode n, Node parent, Node nextRef, v.Context context) {
   n.render(context);
 }
 
-v.VElement e(Object key, [Object c = null]) {
+v.VHtmlGenericElement e(Object key, [Object c = null]) {
   if (c == null) {
-    return new v.VElement('div');
+    return new v.VHtmlGenericElement('div');
   }
-  return new v.VElement('div')(c);
+  return new v.VHtmlGenericElement('div')(c);
 }
 
-ve(tag) => new v.VElement(tag);
+ve(tag) => new v.VHtmlGenericElement(tag);
 
 /// Generate list of VElements from simple integers.
 ///
 /// For example, list `[0, 1, [2, [0, 1, 2]], 3]` will create
 /// list with 4 VElements and the 2nd element will have key `2` and 3 childrens
 /// of its own.
-List<v.VElement> gen(List items) {
+List<v.VHtmlGenericElement> gen(List items) {
   final result = [];
   for (var i in items) {
     if (i is List) {
@@ -38,7 +38,7 @@ List<v.VElement> gen(List items) {
   return result;
 }
 
-void checkSync(v.VElement a, v.VElement b) {
+void checkSync(v.VHtmlGenericElement a, v.VHtmlGenericElement b) {
   final aDiv = new DivElement();
   final bDiv = new DivElement();
   injectBefore(a, aDiv, null, const v.Context(false));

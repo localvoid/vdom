@@ -2,7 +2,9 @@
 // details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-part of vdom;
+library vdom.utils.set;
+
+import 'dart:collection';
 
 /// Find changes between Lists [a] and [b] and apply this changes to Set [n].
 void updateSet(List a, List b, Set n) {

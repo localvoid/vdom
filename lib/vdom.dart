@@ -2,20 +2,14 @@
 // details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-/// Virtual DOM synchronization library
+/// Virtual DOM library
 library vdom;
 
-import 'dart:html' as html;
-import 'dart:collection';
+export 'src/context.dart';
+export 'src/node.dart';
+export 'src/proxy.dart';
+export 'src/element.dart';
+export 'src/text.dart';
 
-import 'package:vdom/src/utils.dart';
-
-part 'package:vdom/src/context.dart';
-part 'package:vdom/src/set.dart';
-part 'package:vdom/src/map.dart';
-part 'package:vdom/src/style.dart';
-part 'package:vdom/src/node.dart';
-part 'package:vdom/src/proxy.dart';
-part 'package:vdom/src/text.dart';
-part 'package:vdom/src/container.dart';
-part 'package:vdom/src/element.dart';
+export 'src/html.dart';
+export 'src/svg.dart';

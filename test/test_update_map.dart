@@ -1,6 +1,6 @@
 import 'package:unittest/unittest.dart';
 import 'package:unittest/html_enhanced_config.dart';
-import 'package:vdom/vdom.dart' as v;
+import 'package:vdom/src/utils/map.dart';
 
 void main() {
   useHtmlEnhancedConfiguration();
@@ -11,7 +11,7 @@ void main() {
         final a = null;
         final b = null;
         final c = {0: 0};
-        v.updateMap(a, b, c);
+        updateMap(a, b, c);
         expect(c, equals({0: 0}));
       });
 
@@ -19,7 +19,7 @@ void main() {
         final a = null;
         final b = {};
         final c = {0: 0};
-        v.updateMap(a, b, c);
+        updateMap(a, b, c);
         expect(c, equals({0: 0}));
       });
 
@@ -27,7 +27,7 @@ void main() {
         final a = {};
         final b = null;
         final c = {0: 0};
-        v.updateMap(a, b, c);
+        updateMap(a, b, c);
         expect(c, equals({0: 0}));
       });
 
@@ -35,7 +35,7 @@ void main() {
         final a = {};
         final b = {};
         final c = {0: 0};
-        v.updateMap(a, b, c);
+        updateMap(a, b, c);
         expect(c, equals({0: 0}));
       });
     });
@@ -45,7 +45,7 @@ void main() {
         final a = null;
         final b = {1: 1};
         final c = {0: 0};
-        v.updateMap(a, b, c);
+        updateMap(a, b, c);
         expect(c, equals({0: 0, 1: 1}));
       });
 
@@ -53,7 +53,7 @@ void main() {
         final a = {};
         final b = {1: 1};
         final c = {0: 0};
-        v.updateMap(a, b, c);
+        updateMap(a, b, c);
         expect(c, equals({0: 0, 1: 1}));
       });
 
@@ -61,7 +61,7 @@ void main() {
         final a = {};
         final b = {1: 1, 2: 2};
         final c = {0: 0};
-        v.updateMap(a, b, c);
+        updateMap(a, b, c);
         expect(c, equals({0: 0, 1: 1, 2: 2}));
       });
 
@@ -69,7 +69,7 @@ void main() {
         final a = {};
         final b = {1: 1, 2: 2, 3: 3};
         final c = {0: 0};
-        v.updateMap(a, b, c);
+        updateMap(a, b, c);
         expect(c, equals({0: 0, 1: 1, 2: 2, 3: 3}));
       });
     });
@@ -79,7 +79,7 @@ void main() {
         final a = {1: 1};
         final b = null;
         final c = {0: 0, 1: 1};
-        v.updateMap(a, b, c);
+        updateMap(a, b, c);
         expect(c, equals({0: 0}));
       });
 
@@ -87,7 +87,7 @@ void main() {
         final a = {1: 1};
         final b = {};
         final c = {0: 0, 1: 1};
-        v.updateMap(a, b, c);
+        updateMap(a, b, c);
         expect(c, equals({0: 0}));
       });
 
@@ -95,7 +95,7 @@ void main() {
         final a = {1: 1, 2: 2};
         final b = {};
         final c = {0: 0, 1: 1, 2: 2};
-        v.updateMap(a, b, c);
+        updateMap(a, b, c);
         expect(c, equals({0: 0}));
       });
     });
@@ -105,7 +105,7 @@ void main() {
         final a = {1: 1};
         final b = {5: 5};
         final c = {0: 0, 1: 1};
-        v.updateMap(a, b, c);
+        updateMap(a, b, c);
         expect(c, equals({0: 0, 5: 5}));
       });
 
@@ -113,7 +113,7 @@ void main() {
         final a = {1: 1, 2: 2};
         final b = {5: 5, 6: 6};
         final c = {0: 0, 1: 1, 2: 2};
-        v.updateMap(a, b, c);
+        updateMap(a, b, c);
         expect(c, equals({0: 0, 5: 5, 6: 6}));
       });
     });
@@ -123,7 +123,7 @@ void main() {
         final a = {1: 1};
         final b = {1: 10};
         final c = {0: 0, 1: 1};
-        v.updateMap(a, b, c);
+        updateMap(a, b, c);
         expect(c, equals({0: 0, 1: 10}));
       });
 
@@ -131,7 +131,7 @@ void main() {
         final a = {1: 1, 2: 2};
         final b = {1: 10, 2: 20};
         final c = {0: 0, 1: 1, 2: 2};
-        v.updateMap(a, b, c);
+        updateMap(a, b, c);
         expect(c, equals({0: 0, 1: 10, 2: 20}));
       });
     });

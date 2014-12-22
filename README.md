@@ -16,12 +16,7 @@ real DOM hierarchy. Several Virtual DOM Nodes can refer to the same
 real DOM node and have control over different properties.
 
 There are no "onEvent" callback-style event listeners and they won't
-be added in the future. If you want to add this style of events to
-your high-level library, you can just extend `Element` class and add
-support for callback-style events. In the Liquid library the preferred
-way to add events is to use event delegation or passing
-[Streams](https://api.dartlang.org/apidocs/channels/stable/dartdoc-viewer/dart:async.Stream)
-between Components.
+be added in the future.
 
 ## API
 
@@ -77,7 +72,7 @@ void rerender() {
 }
 
 v.Element render(){
-  return new VElement('div')(count.toString());
+  return new VHtmlGenericElement('div')(count.toString());
 }
 
 void main() {

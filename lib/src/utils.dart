@@ -4,23 +4,7 @@
 
 library vdom.utils;
 
-class AssertionFailure {
-  final String message;
-
-  const AssertionFailure(this.message);
-
-  String toString() => message;
-}
-
-bool invariant(condition, [message]) {
-  if (condition is Function){
-    condition = condition();
-  }
-  if (!condition) {
-    if (message is Function) {
-      message = message();
-    }
-    throw new AssertionFailure(message);
-  }
-  return true;
-}
+export 'utils/errors.dart';
+export 'utils/map.dart';
+export 'utils/set.dart';
+export 'utils/style.dart';

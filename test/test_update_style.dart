@@ -1,7 +1,7 @@
 import 'dart:html' as html;
 import 'package:unittest/unittest.dart';
 import 'package:unittest/html_enhanced_config.dart';
-import 'package:vdom/vdom.dart' as v;
+import 'package:vdom/src/utils/style.dart';
 
 void main() {
   useHtmlEnhancedConfiguration();
@@ -12,7 +12,7 @@ void main() {
         final a = null;
         final b = null;
         final c = new html.DivElement().style..zIndex = '10';
-        v.updateStyle(a, b, c);
+        updateStyle(a, b, c);
         expect(c.zIndex, equals('10'));
       });
 
@@ -20,7 +20,7 @@ void main() {
         final a = null;
         final b = {};
         final c = new html.DivElement().style..zIndex = '10';
-        v.updateStyle(a, b, c);
+        updateStyle(a, b, c);
         expect(c.zIndex, equals('10'));
       });
 
@@ -28,7 +28,7 @@ void main() {
         final a = {};
         final b = {};
         final c = new html.DivElement().style..zIndex = '10';
-        v.updateStyle(a, b, c);
+        updateStyle(a, b, c);
         expect(c.zIndex, equals('10'));
       });
 
@@ -36,7 +36,7 @@ void main() {
         final a = {};
         final b = null;
         final c = new html.DivElement().style..zIndex = '10';
-        v.updateStyle(a, b, c);
+        updateStyle(a, b, c);
         expect(c.zIndex, equals('10'));
       });
     });
@@ -46,7 +46,7 @@ void main() {
         final a = null;
         final b = {'top': '10px'};
         final c = new html.DivElement().style..zIndex = '10';
-        v.updateStyle(a, b, c);
+        updateStyle(a, b, c);
         expect(c.zIndex, equals('10'));
         expect(c.top, equals('10px'));
       });
@@ -55,7 +55,7 @@ void main() {
         final a = null;
         final b = {'top': '10px'};
         final c = new html.DivElement().style..zIndex = '10';
-        v.updateStyle(a, b, c);
+        updateStyle(a, b, c);
         expect(c.zIndex, equals('10'));
         expect(c.top, equals('10px'));
       });
@@ -64,7 +64,7 @@ void main() {
         final a = null;
         final b = {'top': '10px', 'left': '10px'};
         final c = new html.DivElement().style..zIndex = '10';
-        v.updateStyle(a, b, c);
+        updateStyle(a, b, c);
         expect(c.zIndex, equals('10'));
         expect(c.top, equals('10px'));
         expect(c.left, equals('10px'));
@@ -78,7 +78,7 @@ void main() {
         final c = new html.DivElement().style
           ..zIndex = '10'
           ..top = '10px';
-        v.updateStyle(a, b, c);
+        updateStyle(a, b, c);
         expect(c.zIndex, equals('10'));
         expect(c.top, equals(''));
       });
@@ -89,7 +89,7 @@ void main() {
         final c = new html.DivElement().style
           ..zIndex = '10'
           ..top = '10px';
-        v.updateStyle(a, b, c);
+        updateStyle(a, b, c);
         expect(c.zIndex, equals('10'));
         expect(c.top, equals(''));
       });
@@ -101,7 +101,7 @@ void main() {
           ..zIndex = '10'
           ..top = '10px'
           ..left = '10px';
-        v.updateStyle(a, b, c);
+        updateStyle(a, b, c);
         expect(c.zIndex, equals('10'));
         expect(c.top, equals(''));
         expect(c.left, equals(''));
@@ -115,7 +115,7 @@ void main() {
         final c = new html.DivElement().style
           ..zIndex = '10'
           ..top = '10px';
-        v.updateStyle(a, b, c);
+        updateStyle(a, b, c);
         expect(c.zIndex, equals('10'));
         expect(c.top, equals(''));
         expect(c.bottom, equals('10px'));
@@ -128,7 +128,7 @@ void main() {
           ..zIndex = '10'
           ..top = '10px'
           ..left = '10px';
-        v.updateStyle(a, b, c);
+        updateStyle(a, b, c);
         expect(c.zIndex, equals('10'));
         expect(c.top, equals(''));
         expect(c.left, equals(''));
@@ -144,7 +144,7 @@ void main() {
         final c = new html.DivElement().style
           ..zIndex = '10'
           ..top = '10px';
-        v.updateStyle(a, b, c);
+        updateStyle(a, b, c);
         expect(c.zIndex, equals('10'));
         expect(c.top, equals('100px'));
       });
@@ -156,7 +156,7 @@ void main() {
           ..zIndex = '10'
           ..top = '10px'
           ..left = '10px';
-        v.updateStyle(a, b, c);
+        updateStyle(a, b, c);
         expect(c.zIndex, equals('10'));
         expect(c.top, equals('100px'));
         expect(c.left, equals('100px'));

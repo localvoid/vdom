@@ -2,9 +2,18 @@
 // details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-part of vdom;
+library vdom.element;
 
-abstract class VElementBase<T extends html.Element> extends VNode<T> with VContainer<T> {
+import 'dart:html' as html;
+import 'context.dart';
+import 'node.dart';
+import 'utils/container.dart';
+import 'text.dart';
+import 'utils/map.dart';
+import 'utils/set.dart';
+import 'utils/style.dart';
+
+abstract class VElement<T extends html.Element> extends VNode<T> with VContainer<T> {
   List<VNode> children;
   String id;
   String type;
@@ -14,10 +23,17 @@ abstract class VElementBase<T extends html.Element> extends VNode<T> with VConta
 
   html.Element get container => ref;
 
-  VElementBase(Object key, this.children, this.id, this.type, this.attributes,
-      this.classes, this.styles) : super(key);
+  VElement(
+      {Object key,
+       this.children,
+       this.id,
+       this.type,
+       this.attributes,
+       this.classes,
+       this.styles})
+       : super(key);
 
-  VElementBase<T> call(children) {
+  VElement<T> call(children) {
     if (children is List) {
       this.children = children;
     } else if (children is Iterable) {
@@ -41,43 +57,52 @@ abstract class VElementBase<T extends html.Element> extends VNode<T> with VConta
     if (id != null) {
       ref.id = id;
     }
+
     if (type != null) {
       ref.classes.add(type);
     }
+
     if (attributes != null) {
-      attributes.forEach((key, value) {
-        ref.setAttribute(key, value);
+      attributes.forEach((k, v) {
+        ref.setAttribute(k, v);
       });
     }
+
     if (styles != null) {
       styles.forEach((key, value) {
         ref.style.setProperty(key, value);
       });
     }
+
     if (classes != null) {
       ref.classes.addAll(classes);
     }
+
     if (children != null) {
       renderChildren(children, context);
     }
   }
 
-  void update(VElementBase other, Context context) {
+  void update(VElement other, Context context) {
     super.update(other, context);
+
     if (other.id == null) {
       other.id = id;
     } else if (id != other.id) {
       ref.id = other.id;
     }
+
     if (attributes != null || other.attributes != null) {
       updateMap(attributes, other.attributes, ref.attributes);
     }
+
     if (styles != null || other.styles != null) {
       updateStyle(styles, other.styles, ref.style);
     }
     if (classes != null || other.classes != null) {
       updateSet(classes, other.classes, ref.classes);
     }
+
     if (children != null || other.children != null) {
       updateChildren(children, other.children, context);
     }
@@ -92,32 +117,5 @@ abstract class VElementBase<T extends html.Element> extends VNode<T> with VConta
   }
 
   bool sameType(VNode other) =>
-      super.sameType(other) && type == (other as VElementBase).type;
-
-}
-
-/// Virtual Dom Element
-class VElement extends VElementBase<html.Element> {
-  /// [VElement] tag name
-  final String tag;
-
-  /// Create a new [VElement]
-  VElement(this.tag,
-      {Object key,
-       List<VNode> children,
-       String id,
-       String type,
-       Map<String, String> attributes,
-       List<String> classes,
-       Map<String, String> styles})
-      : super(key, children, id, type, attributes, classes, styles);
-
-  void create(Context context) {
-    ref = html.document.createElement(tag);
-  }
-
-  bool sameType(VNode other) =>
-      super.sameType(other) && tag == (other as VElement).tag;
-
-  String toString() => '<$tag key="$key">${children.join()}</$tag>';
+      super.sameType(other) && type == (other as VElement).type;
 }

@@ -2,7 +2,7 @@
 // details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-part of vdom;
+library vdom.utils.map;
 
 /// Find changes between maps [a] and [b] and apply this changes to map [n].
 void updateMap(Map a, Map b, Map n) {

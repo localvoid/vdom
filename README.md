@@ -67,21 +67,19 @@ void increment(){
 
 void rerender() {
   var next = render();
-  root.update(next, const VContext(true));
+  root.update(next, const Context(true));
   root = next;
 }
 
-v.Element render(){
-  return new VHtmlGenericElement('div')(count.toString());
-}
+VHtmlGenericElement render() => new VHtmlGenericElement('div')(count.toString());
 
 void main() {
    root = render();
-   root.create(const VContext(false));
+   root.create(const Context(false));
    root.init();
    document.body.append(root.ref);
    root.attached();
-   root.render(const VContext(true));
+   root.render(const Context(true));
    new Timer.periodic(const Duration(seconds: 1), (t){ increment(); });
 }
 ```

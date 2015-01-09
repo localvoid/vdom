@@ -1,11 +1,13 @@
 # 0.8.0
 
-- Removed `ElementContainerBase`, container behavior moved into
-  `ElementBase`.
 - Added runtime checking for implicit/explicit keys.
 - Added new attribute "type" for Elements, it is rendered as an
   immutable class and used to detect similar elements when keys are
   implicit.
+- Added basic Html elements.
+- Added basic SVG elements.
+- Reorganized class hierarchy.
+- VContainer renamed to Container.
 
 # 0.7.1
 

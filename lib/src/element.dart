@@ -13,7 +13,7 @@ import 'utils/map.dart';
 import 'utils/set.dart';
 import 'utils/style.dart';
 
-abstract class VElement<T extends html.Element> extends VNode<T> with VContainer<T> {
+abstract class VElement<T extends html.Element> extends VNode<T> with Container<T> {
   List<VNode> children;
   String id;
   String type;

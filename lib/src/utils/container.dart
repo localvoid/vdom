@@ -10,7 +10,7 @@ import '../context.dart';
 import '../node.dart';
 import '../utils.dart';
 
-/// [VContainer] mixin used to extend [VNode]s with the ability to render
+/// [Container] mixin used to extend [VNode]s with the ability to render
 /// and update children.
 ///
 /// ```dart
@@ -40,7 +40,7 @@ import '../utils.dart';
 ///   }
 /// }
 /// ```
-abstract class VContainer<T extends html.Node> {
+abstract class Container<T extends html.Node> {
   /// Container for children.
   T get container;
 

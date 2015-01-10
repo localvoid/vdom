@@ -8,7 +8,7 @@ import 'dart:html' as html;
 import '../../../context.dart';
 import '../../element.dart';
 
-/// Virtual DOM Text Input Element
+/// Base class for Input Elements with [value] property.
 abstract class VValueInputBase extends VHtmlElement<html.InputElement> {
   final String _value;
   final bool disabled;

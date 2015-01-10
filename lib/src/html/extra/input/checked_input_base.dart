@@ -8,7 +8,7 @@ import 'dart:html' as html;
 import '../../../context.dart';
 import '../../element.dart';
 
-/// Virtual DOM CheckBox Element
+/// Base class for Input Elements with [checked] property.
 abstract class VCheckedInputBase extends VHtmlElement<html.InputElement> {
   final bool _checked;
   final bool disabled;

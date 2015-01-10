@@ -7,7 +7,7 @@ library vdom.html.extra.text_input_base;
 import '../../../context.dart';
 import 'value_input_base.dart';
 
-/// Virtual DOM Text Input Element
+/// Base class for Input Elements that contains text value
 abstract class VTextInputBase extends VValueInputBase {
   final String placeholder;
   final int maxLength;

@@ -9,7 +9,7 @@ import '../context.dart';
 import '../node.dart';
 import 'element.dart';
 
-/// Virtual DOM Abbr Element.
+/// Virtual Html Element `<abbr>`
 class VAbbr extends VHtmlElement<html.Element> {
   final String title;
 

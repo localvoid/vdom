@@ -9,7 +9,7 @@ import '../context.dart';
 import '../node.dart';
 import 'element.dart';
 
-/// Virtual DOM Map Element.
+/// Virtual Html Element `<map>`
 class VMap extends VHtmlElement<html.MapElement> {
   final String name;
 

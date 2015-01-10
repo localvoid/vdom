@@ -9,7 +9,7 @@ import '../context.dart';
 import '../node.dart';
 import 'element.dart';
 
-/// Virtual DOM Area Element.
+/// Virtual Html Element `<area>`
 class VArea extends VHtmlElement<html.AreaElement> {
   final String shape;
   final String coords;

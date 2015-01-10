@@ -8,7 +8,7 @@ import 'dart:html' as html;
 import '../../../context.dart';
 import 'checked_input_base.dart';
 
-/// Virtual DOM CheckBox Element
+/// Virtual Html Element `<input type="checkbox">`
 class VCheckBox extends VCheckedInputBase {
   VCheckBox({
     Object key,

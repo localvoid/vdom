@@ -9,12 +9,11 @@ import '../context.dart';
 import '../node.dart';
 import 'element.dart';
 
-/// Virtual Dom Element
+/// Generic Virtual Html Element
 class VHtmlGenericElement extends VHtmlElement<html.Element> {
-  /// [VHtmlGenericElement] tag name
+  /// tag name
   final String tag;
 
-  /// Create a new [VHtmlGenericElement]
   VHtmlGenericElement(this.tag,
       {Object key,
        List<VNode> children,

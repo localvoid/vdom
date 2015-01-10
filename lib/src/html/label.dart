@@ -9,7 +9,7 @@ import '../context.dart';
 import '../node.dart';
 import 'element.dart';
 
-/// Virtual DOM Label Element
+/// Virtual Html Element `<label>`
 class VLabel extends VHtmlElement<html.LabelElement> {
   final String htmlFor;
 

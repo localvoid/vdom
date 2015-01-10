@@ -9,7 +9,7 @@ import '../../context.dart';
 import '../../node.dart';
 import '../element.dart';
 
-/// Virtual DOM Anchor Element helper for links.
+/// Virtual Html Element `<a>`
 class VLink extends VHtmlElement<html.AnchorElement> {
   final String href;
   final String title;

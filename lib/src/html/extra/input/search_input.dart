@@ -8,7 +8,7 @@ import 'dart:html' as html;
 import '../../../context.dart';
 import 'text_input_base.dart';
 
-/// Virtual DOM Text Input Element
+/// Virtual Html Element `<input type="search">`
 class VSearchInput extends VTextInputBase {
   VSearchInput({
     Object key,

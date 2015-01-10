@@ -8,7 +8,7 @@ import 'dart:html' as html;
 import '../../context.dart';
 import '../element.dart';
 
-/// Virtual DOM Text Area Element
+/// Virtual Html Element `<textarea>`
 class VTextArea extends VHtmlElement<html.TextAreaElement> {
   final String _value;
   final String placeholder;

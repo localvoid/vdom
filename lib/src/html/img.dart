@@ -9,7 +9,7 @@ import '../context.dart';
 import '../node.dart';
 import 'element.dart';
 
-/// Virtual DOM Image Element helper for images.
+/// Virtual Html Element `<img>`
 class VImg extends VHtmlElement<html.ImageElement> {
   final String src;
   final String alt;

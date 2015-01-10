@@ -8,7 +8,7 @@ import 'dart:html' as html;
 import '../../../context.dart';
 import 'value_input_base.dart';
 
-/// Virtual DOM Text Input Element
+/// Virtual Html Element `<input type="month">`
 class VMonthInput extends VValueInputBase {
   VMonthInput({
     Object key,
@@ -31,5 +31,5 @@ class VMonthInput extends VValueInputBase {
         classes: classes,
         styles: styles);
 
-  void create(Context context) { ref = new html.InputElement(type: 'datetime'); }
+  void create(Context context) { ref = new html.InputElement(type: 'month'); }
 }

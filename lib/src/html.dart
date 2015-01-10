@@ -9,9 +9,12 @@ export 'html/generic.dart';
 
 export 'html/abbr.dart';
 export 'html/area.dart';
+export 'html/div.dart';
 export 'html/img.dart';
 export 'html/label.dart';
 export 'html/map.dart';
+export 'html/span.dart';
+export 'html/video.dart';
 
 export 'html/extra/input/check_box.dart';
 export 'html/extra/input/color_input.dart';
@@ -28,6 +31,7 @@ export 'html/extra/input/search_input.dart';
 export 'html/extra/input/slider.dart';
 export 'html/extra/input/tel_input.dart';
 export 'html/extra/input/text_input.dart';
+export 'html/extra/input/time_input.dart';
 export 'html/extra/input/url_input.dart';
 export 'html/extra/input/week_input.dart';
 export 'html/extra/link.dart';

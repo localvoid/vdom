@@ -2,63 +2,56 @@
 // details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library vdom.html.extra.text_input;
+library vdom.html.extra.text_input_base;
 
-import 'dart:html' as html;
-import '../../context.dart';
-import '../element.dart';
+import '../../../context.dart';
+import 'value_input_base.dart';
 
 /// Virtual DOM Text Input Element
-class VTextInput extends VHtmlElement<html.InputElement> {
-  final String _value;
+abstract class VTextInputBase extends VValueInputBase {
   final String placeholder;
-  final bool autofocus;
+  final int maxLength;
 
-  String get value => ref.value;
-
-  VTextInput({
+  VTextInputBase({
     Object key,
     String value,
+    bool disabled,
     this.placeholder,
-    this.autofocus,
+    this.maxLength,
+    bool autofocus,
     String id,
     String type,
     Map<String, String> attributes,
     List<String> classes,
     Map<String, String> styles})
-    : _value = value,
-      super(
+    : super(
         key: key,
-        children: null,
+        value: value,
+        disabled: disabled,
+        autofocus: autofocus,
         id: id,
         type: type,
         attributes: attributes,
         classes: classes,
         styles: styles);
 
-  void create(Context context) { ref = new html.InputElement(type: 'text'); }
-
   void render(Context context) {
     super.render(context);
-    if (_value != null) {
-      ref.value = _value;
-    }
     if (placeholder != null) {
       ref.placeholder = placeholder;
     }
-    if (autofocus != null) {
-      ref.autofocus = autofocus;
+    if (maxLength != null) {
+      ref.maxLength = maxLength;
     }
   }
 
-  void update(VTextInput other, Context context) {
+  void update(VTextInputBase other, Context context) {
     super.update(other, context);
-    if (other._value != null && ref.value != other._value) {
-      ref.value = other._value;
-    }
     if (other.placeholder != placeholder) {
       ref.placeholder = other.placeholder;
     }
-    // no need to update autofocus when element is already created.
+    if (other.maxLength != maxLength) {
+      ref.maxLength = other.maxLength;
+    }
   }
 }

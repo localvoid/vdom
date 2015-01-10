@@ -1,3 +1,7 @@
+# 0.8.1
+
+- Added new Html Elements.
+
 # 0.8.0
 
 - Added runtime checking for implicit/explicit keys.

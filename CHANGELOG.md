@@ -1,3 +1,7 @@
+# 0.8.2
+
+- Improved performance in children diff algorithm with explicit keys.
+
 # 0.8.1
 
 - Added new Html Elements.

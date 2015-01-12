@@ -620,7 +620,7 @@ abstract class Container<T extends html.Node> {
             }
           }
         }
-      } else {
+      } else if (aLength - removeOffset != bLength) {
         for (var i = bLength - 1; i >= 0; i--) {
           if (sources[i] == -1) {
             final pos = i + bStart;

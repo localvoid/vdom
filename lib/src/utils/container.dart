@@ -345,212 +345,198 @@ abstract class Container<T extends html.Node> {
     }
   }
 
-  /// Update children with implicit keys
   void _updateImplicitChildren(List<VNode> a, List<VNode> b, Context context) {
-    var aLength = a.length;
-    var bLength = b.length;
+    int aStart = 0;
+    int bStart = 0;
+    int aEnd = a.length - 1;
+    int bEnd = b.length - 1;
 
-    final minLength = aLength < bLength ? aLength : bLength;
+    // prefix
+    while (aStart <= aEnd && bStart <= bEnd) {
+      final aNode = a[aStart];
+      final bNode = b[bStart];
 
-    var start = 0;
-    while (start < minLength) {
-      final aNode = a[start];
-      final bNode = b[start];
       if (!aNode.sameType(bNode)) {
         break;
       }
+
+      aStart++;
+      bStart++;
+
       aNode.update(bNode, context);
-      start++;
     }
 
-    if (start == bLength) {
-      if (start != aLength) {
-        for (var i = start; i < a.length; i++) {
-          removeChild(a[i], context);
-        }
+    // suffix
+    while (aStart <= aEnd && bStart <= bEnd) {
+      final aNode = a[aEnd];
+      final bNode = b[bEnd];
+
+      if (!aNode.sameType(bNode)) {
+        break;
       }
-    } else if (start == aLength) {
-      for (var i = start; i < b.length; i++) {
-        assert(b[i].key == null);
-        insertBefore(b[i], null, context);
+
+      aEnd--;
+      bEnd--;
+
+      aNode.update(bNode, context);
+    }
+
+    if (aStart > aEnd) {
+      final nextPos = bEnd + 1;
+      final next = nextPos < b.length ? b[nextPos].ref : null;
+      while (bStart <= bEnd) {
+        insertBefore(b[bStart++], next, context);
+      }
+    } else if (bStart > bEnd) {
+      while (aStart <= aEnd) {
+        removeChild(a[aStart++], context);
       }
     } else {
-      var aEnd = a.length - 1;
-      var bEnd = b.length - 1;
-      while (aEnd >= start && bEnd >= start) {
-        final aNode = a[aEnd];
-        final bNode = b[bEnd];
-        if (!aNode.sameType(bNode)) {
-          break;
+      while (aStart <= aEnd && bStart <= bEnd) {
+        final aNode = a[aStart++];
+        final bNode = b[bStart++];
+        if (aNode.sameType(bNode)) {
+          aNode.update(bNode, context);
+        } else {
+          insertBefore(bNode, aNode.ref, context);
+          removeChild(aNode, context);
         }
-
-        aNode.update(bNode, context);
-        aEnd--;
-        bEnd--;
       }
-      aEnd++;
-      bEnd++;
+      while (aStart <= aEnd) {
+        removeChild(a[aStart++], context);
+      }
 
-      if (aEnd == start) {
-        assert(bEnd != start);
-        final aEndRef = a[aEnd].ref;
-        for (var i = start; i < bEnd; i++) {
-          insertBefore(b[i], aEndRef, context);
-        }
-      } else if (bEnd == start) {
-        for (var i = start; i < aEnd; i++) {
-          removeChild(a[i], context);
-        }
-      } else {
-        var i = start;
-        while (i < aEnd && i < bEnd) {
-          final aNode = a[i];
-          final bNode = b[i];
-          if (aNode.sameType(bNode)) {
-            aNode.update(bNode, context);
-          } else {
-            insertBefore(bNode, aNode.ref, context);
-            removeChild(aNode, context);
-          }
-          i++;
-        }
+      final nextPos = bEnd + 1;
+      final next = nextPos < b.length ? b[nextPos].ref : null;
 
-        while (i < aEnd) {
-          removeChild(a[i], context);
-          i++;
-        }
-
-        final aEndRef = aEnd == aLength ? null : a[aEnd].ref;
-        while (i < bEnd) {
-          insertBefore(b[i], aEndRef, context);
-          i++;
-        }
+      while (bStart <= bEnd) {
+        insertBefore(b[bStart++], next, context);
       }
     }
   }
 
-  /// Update children with explicit keys
   void _updateExplicitChildren(List<VNode> a, List<VNode> b, Context context) {
-    var aLength = a.length;
-    var bLength = b.length;
+    int aStart = 0;
+    int bStart = 0;
+    int aEnd = a.length - 1;
+    int bEnd = b.length - 1;
 
-    final minLength = aLength < bLength ? aLength : bLength;
+    var aStartNode = a[aStart];
+    var bStartNode = b[bStart];
+    var aEndNode = a[aEnd];
+    var bEndNode = b[bEnd];
 
-    var start = 0;
+    bool stop = false;
 
-    while (start < minLength) {
-      final aNode = a[start];
-      final bNode = b[start];
-      if (aNode.key != bNode.key) {
-        break;
-      }
-      aNode.update(bNode, context);
-      start++;
-    }
+    outer: do {
+      stop = true;
 
-    if (start == bLength) {
-      if (start != aLength) {
-        for (var i = start; i < a.length; i++) {
-          removeChild(a[i], context);
+      // prefix
+      while (aStartNode.key == bStartNode.key) {
+        aStartNode.update(bStartNode, context);
+
+        aStart++;
+        bStart++;
+        if (aStart > aEnd || bStart > bEnd) {
+          break outer;
         }
-      }
-    } else if (start == aLength) {
-      for (var i = start; i < b.length; i++) {
-        insertBefore(b[i], null, context);
-      }
-    } else {
-      var aEnd = a.length - 1;
-      var bEnd = b.length - 1;
-      while (aEnd >= start && bEnd >= start) {
-        final aNode = a[aEnd];
-        final bNode = b[bEnd];
 
-        if (aNode.key != bNode.key) {
-          break;
-        }
-        aNode.update(bNode, context);
+        aStartNode = a[aStart];
+        bStartNode = b[bStart];
+
+        stop = false;
+      }
+
+      // suffix
+      while (aEndNode.key == bEndNode.key) {
+        aEndNode.update(bEndNode, context);
+
         aEnd--;
         bEnd--;
+        if (aStart > aEnd || bStart > bEnd) {
+          break outer;
+        }
+
+        aEndNode = a[aEnd];
+        bEndNode = b[bEnd];
+
+        stop = false;
       }
-      aEnd++;
-      bEnd++;
 
-      if (aEnd == start) {
-        assert(bEnd != start);
-        final aEndRef = a[aEnd].ref;
-        for (var i = start; i < bEnd; i++) {
-          insertBefore(b[i], aEndRef, context);
+      while (aStartNode.key == bEndNode.key) {
+        aStartNode.update(bEndNode, context);
+
+        final nextPos = bEnd + 1;
+        final next = nextPos < b.length ? b[nextPos].ref : null;
+        move(bEndNode, next, context);
+
+        aStart++;
+        bEnd--;
+        if (aStart > aEnd || bStart > bEnd) {
+          break outer;
         }
-      } else if (bEnd == start) {
-        for (var i = start; i < aEnd; i++) {
-          removeChild(a[i], context);
+
+        aStartNode = a[aStart];
+        bEndNode = b[bEnd];
+
+        stop = false;
+      }
+
+      while (aEndNode.key == bStartNode.key) {
+        aEndNode.update(bStartNode, context);
+
+        move(aEndNode, a[aStart].ref, context);
+
+        aEnd--;
+        bStart++;
+        if (aStart > aEnd || bStart > bEnd) {
+          break outer;
         }
-      } else {
-        aLength = aEnd - start;
-        bLength = bEnd - start;
 
-        final sources = new List<int>.filled(bLength, -1);
+        aEndNode = a[aEnd];
+        bStartNode = b[bStart];
 
-        var moved = false;
-        var removeOffset = 0;
+        stop = false;
+      }
+    } while (!stop && aStart <= aEnd && bStart <= bEnd);
 
-        // when both lists are small, the join operation is much
-        // faster with simple MxN list search instead of hashmap join
-        //
-        // TODO: it is probably bad heuristic because items with the small
-        // number of nodes in most cases will use String keys, and maybe it
-        // will just makes everything worse. It will behave badly in situations
-        // when `operator==` for key is slow.
-        if (aLength * bLength <= 16) {
-          var lastTarget = 0;
+    if (aStart > aEnd) {
+      final nextPos = bEnd + 1;
+      final next = nextPos < b.length ? b[nextPos].ref : null;
+      while (bStart <= bEnd) {
+        insertBefore(b[bStart++], next, context);
+      }
+    } else if (bStart > bEnd) {
+      while (aStart <= aEnd) {
+        removeChild(a[aStart++], context);
+      }
+    } else {
+      final aLength = aEnd - aStart + 1;
+      final bLength = bEnd - bStart + 1;
 
-          for (var i = 0; i < aLength; i++) {
-            final iOff = i + start;
-            final aNode = a[iOff];
-            var removed = true;
+      final sources = new List<int>.filled(bLength, -1);
 
-            for (var j = 0; j < bLength; j++) {
-              final jOff = j + start;
-              final bNode = b[jOff];
-              if (aNode.key == bNode.key) {
-                sources[j] = iOff;
+      var moved = false;
+      var removeOffset = 0;
 
-                if (lastTarget > j) {
-                  moved = true;
-                } else {
-                  lastTarget = j;
-                }
+      // when both lists are small, the join operation is much
+      // faster with simple MxN list search instead of hashmap join
+      //
+      // TODO: it is probably bad heuristic because items with the small
+      // number of nodes in most cases will use String keys, and maybe it
+      // will just makes everything worse. It will behave badly in situations
+      // when `operator==` for key is slow.
+      if (aLength * bLength <= 16) {
+        var lastTarget = 0;
 
-                aNode.update(bNode, context);
+        for (var i = aStart; i <= aEnd; i++) {
+          bool removed = true;
+          final aNode = a[i];
 
-                removed = false;
-                break;
-              }
-            }
-
-            if (removed) {
-              removeChild(aNode, context);
-              removeOffset++;
-            }
-          }
-
-        } else {
-          final keyIndex = new HashMap<Object, int>();
-          var lastTarget = 0;
-
-          for (var i = 0; i < bLength; i++) {
-            final node = b[i + start];
-            keyIndex[node.key] = i;
-          }
-
-          for (var i = 0; i < aLength; i++) {
-            final iOff = i + start;
-            final aNode = a[iOff];
-            final j = keyIndex[aNode.key];
-            if (j != null) {
-              final jOff = j + start;
-              final bNode = b[jOff];
-              sources[j] = iOff;
+          for (var j = bStart; j <= bEnd; j++) {
+            final bNode = b[j];
+            if (aNode.key == bNode.key) {
+              sources[j - bStart] = i;
 
               if (lastTarget > j) {
                 moved = true;
@@ -559,57 +545,89 @@ abstract class Container<T extends html.Node> {
               }
 
               aNode.update(bNode, context);
+
+              removed = false;
+              break;
+            }
+          }
+
+          if (removed) {
+            removeChild(aNode, context);
+            removeOffset++;
+          }
+        }
+      } else {
+        final keyIndex = new HashMap<Object, int>();
+        var lastTarget = 0;
+
+        for (var i = bStart; i <= bEnd; i++) {
+          final node = b[i];
+          keyIndex[node.key] = i;
+        }
+
+        for (var i = aStart; i <= aEnd; i++) {
+          final aNode = a[i];
+          final j = keyIndex[aNode.key];
+          if (j != null) {
+            final bNode = b[j];
+            sources[j - bStart] = i;
+
+            if (lastTarget > j) {
+              moved = true;
             } else {
-              removeChild(aNode, context);
-              removeOffset++;
+              lastTarget = j;
+            }
+
+            aNode.update(bNode, context);
+          } else {
+            removeChild(aNode, context);
+            removeOffset++;
+          }
+        }
+      }
+
+      if (moved) {
+        // if it is detected that one of the nodes is in the wrong place
+        // we will find minimum number of moves using slightly modified
+        // LIS algorithm.
+        //
+        // moves and inserts are apllied in one step, when `sources[i]` is
+        // equal to -1, it means that node with the same key doesn't exist
+        // in list `a`, so we should make insert operation.
+        //
+        // all modifications are performed from right to left, so we
+        // can use insertBefore method and use reference to the html element
+        // from the next virtual node.
+        final seq = _lis(sources);
+        var j = seq.length - 1;
+
+        for (var i = bLength - 1; i >= 0; i--) {
+          if (sources[i] == -1) {
+            final pos = i + bStart;
+            final node = b[pos];
+            final nextPos = pos + 1;
+            final next = nextPos < b.length ? b[nextPos].ref : null;
+            insertBefore(node, next, context);
+          } else {
+            if (j < 0 || i != seq[j]) {
+              final pos = i + bStart;
+              final node = a[sources[i]];
+              final nextPos = pos + 1;
+              final next = nextPos < b.length ? b[nextPos].ref : null;
+              move(node, next, context);
+            } else {
+              j--;
             }
           }
         }
-
-        if (moved) {
-          // if it is detected that one of the nodes is in the wrong place
-          // we will find minimum number of moves using slightly modified
-          // LIS algorithm.
-          //
-          // moves and inserts are apllied in one step, when `sources[i]` is
-          // equal to -1, it means that node with the same key doesn't exist
-          // in list `a`, so we should make insert operation.
-          //
-          // all modifications are performed from right to left, so we
-          // can use insertBefore method and use reference to the html element
-          // from the next virtual node.
-          final seq = _lis(sources);
-          var j = seq.length - 1;
-
-          for (var i = bLength - 1; i >= 0; i--) {
-            if (sources[i] == -1) {
-              final pos = i + start;
-              final node = b[pos];
-              final nextPos = pos + 1;
-              final next = nextPos < b.length ? b[nextPos].ref : null;
-              insertBefore(node, next, context);
-            } else {
-              if (j < 0 || i != seq[j]) {
-                final pos = i + start;
-                final node = a[sources[i]];
-                final nextPos = pos + 1;
-                final next = nextPos < b.length ? b[nextPos].ref : null;
-                move(node, next, context);
-              } else {
-                j--;
-              }
-            }
-          }
-
-        } else if (aLength - removeOffset != bLength) {
-          for (var i = bLength - 1; i >= 0; i--) {
-            if (sources[i] == -1) {
-              final pos = i + start;
-              final node = b[pos];
-              final nextPos = pos + 1;
-              final next = nextPos < b.length ? b[nextPos].ref : null;
-              insertBefore(node, next, context);
-            }
+      } else {
+        for (var i = bLength - 1; i >= 0; i--) {
+          if (sources[i] == -1) {
+            final pos = i + bStart;
+            final node = b[pos];
+            final nextPos = pos + 1;
+            final next = nextPos < b.length ? b[nextPos].ref : null;
+            insertBefore(node, next, context);
           }
         }
       }

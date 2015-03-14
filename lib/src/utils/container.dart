@@ -156,22 +156,22 @@ abstract class Container<T extends html.Node> {
             }());
 
             var i = 0;
+            var updated = false;
             while(i < b.length) {
-              final bNode = b[i];
-              i++;
+              final bNode = b[i++];
               if (aNode.sameType(bNode)) {
                 aNode.update(bNode, context);
+                updated = true;
                 break;
               }
               insertBefore(bNode, aNode.ref, context);
             }
 
-            if (i == b.length) {
+            if (!updated) {
               removeChild(aNode, context);
             } else {
               while (i < b.length) {
-                insertBefore(b[i], null, context);
-                i++;
+                insertBefore(b[i++], null, context);
               }
             }
           } else {
@@ -234,23 +234,22 @@ abstract class Container<T extends html.Node> {
             }());
 
             var i = 0;
+            var updated = false;
             while(i < a.length) {
-              final aNode = a[i];
-              i++;
+              final aNode = a[i++];
               if (aNode.sameType(bNode)) {
                 aNode.update(bNode, context);
+                updated = true;
                 break;
               }
               removeChild(aNode, context);
             }
 
-            if (i == a.length) {
+            if (!updated) {
               insertBefore(bNode, null, context);
             } else {
               while (i < a.length) {
-                assert(a[i].key == null);
-                removeChild(a[i], context);
-                i++;
+                removeChild(a[i++], context);
               }
             }
           } else {

@@ -609,9 +609,39 @@ void main() {
     });
 
     group('Different Types', () {
+      test('[span] => [div]', () {
+        final a = ve('div')([ve('span')]);
+        final b = ve('div')([ve('div')]);
+        checkSync(a, b);
+      });
+
       test('[span][div] => [div][span]', () {
         final a = ve('div')([ve('span'), ve('div')]);
         final b = ve('div')([ve('div'), ve('span')]);
+        checkSync(a, b);
+      });
+
+      test('[div] => [span][div]', () {
+        final a = ve('div')([ve('div')]);
+        final b = ve('div')([ve('span'), ve('div')]);
+        checkSync(a, b);
+      });
+
+      test('[div] => [div][span]', () {
+        final a = ve('div')([ve('div')]);
+        final b = ve('div')([ve('div'), ve('span')]);
+        checkSync(a, b);
+      });
+
+      test('[div][span] => [div]', () {
+        final a = ve('div')([ve('div'), ve('span')]);
+        final b = ve('div')([ve('div')]);
+        checkSync(a, b);
+      });
+
+      test('[div][span] => [span]', () {
+        final a = ve('div')([ve('div'), ve('span')]);
+        final b = ve('div')([ve('span')]);
         checkSync(a, b);
       });
 

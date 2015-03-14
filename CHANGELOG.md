@@ -1,3 +1,8 @@
+# 0.8.3
+
+- Fix
+  [bug with implicit keys](https://github.com/localvoid/vdom/issues/5).
+
 # 0.8.2
 
 - Improved performance in children diff algorithm with explicit keys.

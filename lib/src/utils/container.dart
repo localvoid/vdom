@@ -350,7 +350,7 @@ abstract class Container<T extends html.Node> {
     int aEnd = a.length - 1;
     int bEnd = b.length - 1;
 
-    // prefix
+    // Update nodes with the same type at the beginning.
     while (aStart <= aEnd && bStart <= bEnd) {
       final aNode = a[aStart];
       final bNode = b[bStart];
@@ -365,7 +365,7 @@ abstract class Container<T extends html.Node> {
       aNode.update(bNode, context);
     }
 
-    // suffix
+    // Update nodes with the same type at the end.
     while (aStart <= aEnd && bStart <= bEnd) {
       final aNode = a[aEnd];
       final bNode = b[bEnd];
@@ -380,37 +380,31 @@ abstract class Container<T extends html.Node> {
       aNode.update(bNode, context);
     }
 
-    if (aStart > aEnd) {
-      final nextPos = bEnd + 1;
-      final next = nextPos < b.length ? b[nextPos].ref : null;
-      while (bStart <= bEnd) {
-        insertBefore(b[bStart++], next, context);
+    // Iterate through the remaining nodes and if they have the same
+    // type, then update, otherwise just remove the old node and insert
+    // the new one.
+    while (aStart <= aEnd && bStart <= bEnd) {
+      final aNode = a[aStart++];
+      final bNode = b[bStart++];
+      if (aNode.sameType(bNode)) {
+        aNode.update(bNode, context);
+      } else {
+        insertBefore(bNode, aNode.ref, context);
+        removeChild(aNode, context);
       }
-    } else if (bStart > bEnd) {
-      while (aStart <= aEnd) {
-        removeChild(a[aStart++], context);
-      }
-    } else {
-      while (aStart <= aEnd && bStart <= bEnd) {
-        final aNode = a[aStart++];
-        final bNode = b[bStart++];
-        if (aNode.sameType(bNode)) {
-          aNode.update(bNode, context);
-        } else {
-          insertBefore(bNode, aNode.ref, context);
-          removeChild(aNode, context);
-        }
-      }
-      while (aStart <= aEnd) {
-        removeChild(a[aStart++], context);
-      }
+    }
 
-      final nextPos = bEnd + 1;
-      final next = nextPos < b.length ? b[nextPos].ref : null;
+    // All nodes from [a] are updated, insert the rest from [b].
+    while (aStart <= aEnd) {
+      removeChild(a[aStart++], context);
+    }
 
-      while (bStart <= bEnd) {
-        insertBefore(b[bStart++], next, context);
-      }
+    final nextPos = bEnd + 1;
+    final next = nextPos < b.length ? b[nextPos].ref : null;
+
+    // All nodes from [b] are updated, remove the rest from [a].
+    while (bStart <= bEnd) {
+      insertBefore(b[bStart++], next, context);
     }
   }
 
@@ -427,10 +421,18 @@ abstract class Container<T extends html.Node> {
 
     bool stop = false;
 
+    // Algorithm that works on simple cases with basic list
+    // transformations.
+    //
+    // It tries to reduce the diff problem by simultaneously iterating
+    // from the beginning and the end of both lists, if keys are the
+    // same, they're updated, if node is moved from the beginning to the
+    // end of the current cursor positions or vice versa it just
+    // performs move operation and continues to reduce the diff problem.
     outer: do {
       stop = true;
 
-      // prefix
+      // Update nodes with the same key at the beginning.
       while (aStartNode.key == bStartNode.key) {
         aStartNode.update(bStartNode, context);
 
@@ -446,7 +448,7 @@ abstract class Container<T extends html.Node> {
         stop = false;
       }
 
-      // suffix
+      // Update nodes with the same key at the end.
       while (aEndNode.key == bEndNode.key) {
         aEndNode.update(bEndNode, context);
 
@@ -462,6 +464,7 @@ abstract class Container<T extends html.Node> {
         stop = false;
       }
 
+      // Move nodes from left to right.
       while (aStartNode.key == bEndNode.key) {
         aStartNode.update(bEndNode, context);
 
@@ -479,8 +482,10 @@ abstract class Container<T extends html.Node> {
         bEndNode = b[bEnd];
 
         stop = false;
+        continue outer;
       }
 
+      // Move nodes from right to left.
       while (aEndNode.key == bStartNode.key) {
         aEndNode.update(bStartNode, context);
 
@@ -500,31 +505,39 @@ abstract class Container<T extends html.Node> {
     } while (!stop && aStart <= aEnd && bStart <= bEnd);
 
     if (aStart > aEnd) {
+      // All nodes from [a] are updated, insert the rest from [b].
       final nextPos = bEnd + 1;
       final next = nextPos < b.length ? b[nextPos].ref : null;
       while (bStart <= bEnd) {
         insertBefore(b[bStart++], next, context);
       }
     } else if (bStart > bEnd) {
+      // All nodes from [b] are updated, remove the rest from [a].
       while (aStart <= aEnd) {
         removeChild(a[aStart++], context);
       }
     } else {
+      // Perform more complex update algorithm on the remaining nodes.
+      //
+      // We start by marking all nodes from [b] as inserted, then we try
+      // to find all removed nodes and simultaneously perform updates on
+      // the nodes that exists in both lists and replacing "inserted"
+      // marks with the position of the node from the list [b] in list [a].
+      // Then we just need to perform slightly modified LIS algorith,
+      // that ignores "inserted" marks and find common subsequence and
+      // move all nodes that doesn't belong to this subsequence, or
+      // insert if they have "inserted" mark.
       final aLength = aEnd - aStart + 1;
       final bLength = bEnd - bStart + 1;
 
+      // -1 value means that it should be inserted.
       final sources = new List<int>.filled(bLength, -1);
 
       var moved = false;
       var removeOffset = 0;
 
-      // when both lists are small, the join operation is much
-      // faster with simple MxN list search instead of hashmap join
-      //
-      // TODO: it is probably bad heuristic because items with the small
-      // number of nodes in most cases will use String keys, and maybe it
-      // will just makes everything worse. It will behave badly in situations
-      // when `operator==` for key is slow.
+      // when both lists are small, we are using naive O(M*N) algorithm to
+      // find removed children.
       if (aLength * bLength <= 16) {
         var lastTarget = 0;
 
@@ -586,20 +599,13 @@ abstract class Container<T extends html.Node> {
       }
 
       if (moved) {
-        // if it is detected that one of the nodes is in the wrong place
-        // we will find minimum number of moves using slightly modified
-        // LIS algorithm.
-        //
-        // moves and inserts are apllied in one step, when `sources[i]` is
-        // equal to -1, it means that node with the same key doesn't exist
-        // in list `a`, so we should make insert operation.
-        //
-        // all modifications are performed from right to left, so we
-        // can use insertBefore method and use reference to the html element
-        // from the next virtual node.
         final seq = _lis(sources);
         var j = seq.length - 1;
 
+        // All modifications are performed from right to left, so we
+        // can use insertBefore method and use reference to the html
+        // element from the next VNode. All Nodes on the right side
+        // should be in the correct state.
         for (var i = bLength - 1; i >= 0; i--) {
           if (sources[i] == -1) {
             final pos = i + bStart;
